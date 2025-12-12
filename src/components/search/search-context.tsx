@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   createContext,
@@ -6,20 +6,20 @@ import {
   useReducer,
   type ReactNode,
   type Dispatch,
-} from "react";
+} from 'react';
 import type {
-  Property,
+  Companion,
   SearchFilters,
   MapViewState,
   SearchState,
-} from "@/types/property";
-import { defaultMapCenter, defaultMapZoom } from "@/lib/mock-data/properties";
+} from '@/types/companion';
+import { defaultMapCenter, defaultMapZoom } from '@/lib/mock-data/companions';
 
 // Default values
 const defaultFilters: SearchFilters = {
-  location: "",
-  checkIn: null,
-  checkOut: null,
+  location: '',
+  dateFrom: null,
+  dateTo: null,
   guests: 1,
 };
 
@@ -30,39 +30,39 @@ const defaultMapViewState: MapViewState = {
 
 const initialState: SearchState = {
   filters: defaultFilters,
-  properties: [],
-  selectedPropertyId: null,
-  hoveredPropertyId: null,
+  companions: [],
+  selectedCompanionId: null,
+  hoveredCompanionId: null,
   mapViewState: defaultMapViewState,
   isLoading: false,
 };
 
 // Action types
 type SearchAction =
-  | { type: "SET_FILTERS"; payload: Partial<SearchFilters> }
-  | { type: "SET_PROPERTIES"; payload: Property[] }
-  | { type: "SET_SELECTED_PROPERTY"; payload: string | null }
-  | { type: "SET_HOVERED_PROPERTY"; payload: string | null }
-  | { type: "SET_MAP_VIEW_STATE"; payload: MapViewState }
-  | { type: "SET_LOADING"; payload: boolean }
-  | { type: "RESET_FILTERS" };
+  | { type: 'SET_FILTERS'; payload: Partial<SearchFilters> }
+  | { type: 'SET_COMPANIONS'; payload: Companion[] }
+  | { type: 'SET_SELECTED_COMPANION'; payload: string | null }
+  | { type: 'SET_HOVERED_COMPANION'; payload: string | null }
+  | { type: 'SET_MAP_VIEW_STATE'; payload: MapViewState }
+  | { type: 'SET_LOADING'; payload: boolean }
+  | { type: 'RESET_FILTERS' };
 
 // Reducer
 function searchReducer(state: SearchState, action: SearchAction): SearchState {
   switch (action.type) {
-    case "SET_FILTERS":
+    case 'SET_FILTERS':
       return { ...state, filters: { ...state.filters, ...action.payload } };
-    case "SET_PROPERTIES":
-      return { ...state, properties: action.payload };
-    case "SET_SELECTED_PROPERTY":
-      return { ...state, selectedPropertyId: action.payload };
-    case "SET_HOVERED_PROPERTY":
-      return { ...state, hoveredPropertyId: action.payload };
-    case "SET_MAP_VIEW_STATE":
+    case 'SET_COMPANIONS':
+      return { ...state, companions: action.payload };
+    case 'SET_SELECTED_COMPANION':
+      return { ...state, selectedCompanionId: action.payload };
+    case 'SET_HOVERED_COMPANION':
+      return { ...state, hoveredCompanionId: action.payload };
+    case 'SET_MAP_VIEW_STATE':
       return { ...state, mapViewState: action.payload };
-    case "SET_LOADING":
+    case 'SET_LOADING':
       return { ...state, isLoading: action.payload };
-    case "RESET_FILTERS":
+    case 'RESET_FILTERS':
       return { ...state, filters: defaultFilters };
     default:
       return state;
@@ -78,14 +78,14 @@ const SearchDispatchContext = createContext<Dispatch<SearchAction> | null>(
 // Provider
 export function SearchProvider({
   children,
-  initialProperties = [],
+  initialCompanions = [],
 }: {
   children: ReactNode;
-  initialProperties?: Property[];
+  initialCompanions?: Companion[];
 }) {
   const [state, dispatch] = useReducer(searchReducer, {
     ...initialState,
-    properties: initialProperties,
+    companions: initialCompanions,
   });
 
   return (
@@ -101,7 +101,7 @@ export function SearchProvider({
 export function useSearchState() {
   const context = useContext(SearchContext);
   if (!context) {
-    throw new Error("useSearchState must be used within SearchProvider");
+    throw new Error('useSearchState must be used within SearchProvider');
   }
   return context;
 }
@@ -109,7 +109,7 @@ export function useSearchState() {
 export function useSearchDispatch() {
   const context = useContext(SearchDispatchContext);
   if (!context) {
-    throw new Error("useSearchDispatch must be used within SearchProvider");
+    throw new Error('useSearchDispatch must be used within SearchProvider');
   }
   return context;
 }

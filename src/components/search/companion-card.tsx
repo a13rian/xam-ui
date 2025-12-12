@@ -1,15 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { Heart, Star } from "lucide-react";
+import { Heart, Star, MapPin } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { Property } from "@/types/property";
-import { PropertyCardCarousel } from "./property-card-carousel";
-import { PropertyCardBadge } from "./property-card-badge";
-import { formatPrice } from "@/lib/mock-data/properties";
+import type { Companion } from "@/types/companion";
+import { CompanionCardCarousel } from "./companion-card-carousel";
+import { CompanionCardBadge } from "./companion-card-badge";
+import { formatPrice } from "@/lib/mock-data/companions";
 
-interface PropertyCardProps {
-  property: Property;
+interface CompanionCardProps {
+  companion: Companion;
   isSelected?: boolean;
   isHovered?: boolean;
   onHover?: () => void;
@@ -17,31 +17,25 @@ interface PropertyCardProps {
   onClick?: () => void;
 }
 
-export function PropertyCard({
-  property,
+export function CompanionCard({
+  companion,
   isSelected = false,
   isHovered = false,
   onHover,
   onLeave,
   onClick,
-}: PropertyCardProps) {
+}: CompanionCardProps) {
   const {
-    title,
-    description,
+    name,
+    bio,
     images,
     location,
-    host,
+    profile,
     pricing,
     rating,
     badges,
-  } = property;
-
-  // Calculate total price for 5 nights (example)
-  const nights = 5;
-  const totalPrice =
-    pricing.perNight * nights +
-    (pricing.cleaningFee || 0) +
-    (pricing.serviceFee || 0);
+    age,
+  } = companion;
 
   return (
     <article
@@ -54,12 +48,12 @@ export function PropertyCard({
       onClick={onClick}
     >
       {/* Image carousel with badges */}
-      <Link href={`/properties/${property.id}`} className="relative block">
-        <PropertyCardCarousel images={images} alt={title} />
+      <Link href={`/companions/${companion.id}`} className="relative block" onClick={(e) => e.stopPropagation()}>
+        <CompanionCardCarousel images={images} alt={name} />
 
         {/* Display badges */}
         {badges.length > 0 && (
-          <PropertyCardBadge badge={badges[0]} />
+          <CompanionCardBadge badge={badges[0]} />
         )}
 
         {/* Favorite button */}
@@ -76,16 +70,16 @@ export function PropertyCard({
         </button>
       </Link>
 
-      {/* Property details */}
+      {/* Companion details */}
       <div className="pt-3 space-y-1">
-        {/* Title and rating row */}
+        {/* Name and rating row */}
         <div className="flex items-start justify-between gap-2">
           <Link
-            href={`/properties/${property.id}`}
+            href={`/companions/${companion.id}`}
             className="font-semibold text-gray-900 truncate hover:underline"
             onClick={(e) => e.stopPropagation()}
           >
-            {title}
+            {name}, {age}
           </Link>
           <div className="flex items-center gap-1 shrink-0">
             <Star className="size-3.5 fill-gray-900 text-gray-900" />
@@ -94,32 +88,30 @@ export function PropertyCard({
         </div>
 
         {/* Location */}
-        <p className="text-sm text-gray-500 truncate">
-          {location.city}, {location.country}
-        </p>
+        <div className="flex items-center gap-1 text-sm text-gray-500">
+          <MapPin className="size-3.5" />
+          <span className="truncate">{location.city}, {location.country}</span>
+        </div>
 
-        {/* Description */}
-        <p className="text-sm text-gray-500 truncate">{description}</p>
+        {/* Bio */}
+        <p className="text-sm text-gray-500 truncate">{bio}</p>
 
-        {/* Host info */}
-        {host.isSuperhost && (
+        {/* Verified badge */}
+        {profile.isVerified && (
           <p className="text-sm text-gray-500">
-            Hosted by {host.name}
+            Đã xác minh
           </p>
         )}
 
         {/* Pricing */}
         <div className="pt-1">
           <span className="font-semibold text-gray-900">
-            {formatPrice(pricing.perNight, pricing.currency)}
+            {formatPrice(pricing.perHour, pricing.currency)}
           </span>
-          <span className="text-gray-500 text-sm"> night</span>
-          <span className="text-gray-400 text-sm mx-1">·</span>
-          <span className="text-gray-500 text-sm underline">
-            {formatPrice(totalPrice, pricing.currency)} total
-          </span>
+          <span className="text-gray-500 text-sm"> / giờ</span>
         </div>
       </div>
     </article>
   );
 }
+

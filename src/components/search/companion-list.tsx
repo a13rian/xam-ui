@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState, useMemo, useEffect, useRef } from 'react';
-import { cn } from '@/lib/utils';
-import type { Property } from '@/types/property';
-import { PropertyCard } from './property-card';
+import { useState, useMemo, useEffect, useRef } from "react";
+import { cn } from "@/lib/utils";
+import type { Companion } from "@/types/companion";
+import { CompanionCard } from "./companion-card";
 import {
   Pagination,
   PaginationContent,
@@ -12,58 +12,58 @@ import {
   PaginationNext,
   PaginationPrevious,
   PaginationEllipsis,
-} from '@/components/ui/pagination';
+} from "@/components/ui/pagination";
 
-interface PropertyListProps {
-  properties: Property[];
+interface CompanionListProps {
+  companions: Companion[];
   selectedId: string | null;
   hoveredId: string | null;
-  onPropertyHover: (id: string | null) => void;
-  onPropertySelect: (id: string) => void;
+  onCompanionHover: (id: string | null) => void;
+  onCompanionSelect: (id: string) => void;
   className?: string;
   itemsPerPage?: number;
 }
 
-export function PropertyList({
-  properties,
+export function CompanionList({
+  companions,
   selectedId,
   hoveredId,
-  onPropertyHover,
-  onPropertySelect,
+  onCompanionHover,
+  onCompanionSelect,
   className,
   itemsPerPage = 12,
-}: PropertyListProps) {
+}: CompanionListProps) {
   const [currentPage, setCurrentPage] = useState(1);
-  const prevPropertiesLengthRef = useRef(properties.length);
+  const prevCompanionsLengthRef = useRef(companions.length);
 
-  // Reset to first page when properties change
+  // Reset to first page when companions change
   useEffect(() => {
-    if (prevPropertiesLengthRef.current !== properties.length) {
-      prevPropertiesLengthRef.current = properties.length;
+    if (prevCompanionsLengthRef.current !== companions.length) {
+      prevCompanionsLengthRef.current = companions.length;
       // Use setTimeout to schedule state update asynchronously
       const timeoutId = setTimeout(() => {
         setCurrentPage(1);
       }, 0);
       return () => clearTimeout(timeoutId);
     }
-  }, [properties.length]);
+  }, [companions.length]);
 
-  const totalPages = Math.ceil(properties.length / itemsPerPage);
+  const totalPages = Math.ceil(companions.length / itemsPerPage);
 
-  const paginatedProperties = useMemo(() => {
+  const paginatedCompanions = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    return properties.slice(startIndex, endIndex);
-  }, [properties, currentPage, itemsPerPage]);
+    return companions.slice(startIndex, endIndex);
+  }, [companions, currentPage, itemsPerPage]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    // Scroll to top of property list
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Scroll to top of companion list
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const getPageNumbers = () => {
-    const pages: (number | 'ellipsis')[] = [];
+    const pages: (number | "ellipsis")[] = [];
     const maxVisible = 5;
 
     if (totalPages <= maxVisible) {
@@ -76,7 +76,7 @@ export function PropertyList({
       pages.push(1);
 
       if (currentPage > 3) {
-        pages.push('ellipsis');
+        pages.push("ellipsis");
       }
 
       // Show pages around current page
@@ -88,7 +88,7 @@ export function PropertyList({
       }
 
       if (currentPage < totalPages - 2) {
-        pages.push('ellipsis');
+        pages.push("ellipsis");
       }
 
       // Always show last page
@@ -101,35 +101,35 @@ export function PropertyList({
   };
 
   return (
-    <div className={cn('space-y-6', className)}>
+    <div className={cn("space-y-6", className)}>
       {/* Results count */}
       <div className="flex items-center justify-between">
         <p className="text-sm text-gray-600">
-          Over {properties.length.toLocaleString()} homes
+          Tìm thấy {companions.length.toLocaleString()} người đồng hành
         </p>
       </div>
 
-      {/* Property grid */}
+      {/* Companion grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {paginatedProperties.map((property) => (
-          <PropertyCard
-            key={property.id}
-            property={property}
-            isSelected={selectedId === property.id}
-            isHovered={hoveredId === property.id}
-            onHover={() => onPropertyHover(property.id)}
-            onLeave={() => onPropertyHover(null)}
-            onClick={() => onPropertySelect(property.id)}
+        {paginatedCompanions.map((companion) => (
+          <CompanionCard
+            key={companion.id}
+            companion={companion}
+            isSelected={selectedId === companion.id}
+            isHovered={hoveredId === companion.id}
+            onHover={() => onCompanionHover(companion.id)}
+            onLeave={() => onCompanionHover(null)}
+            onClick={() => onCompanionSelect(companion.id)}
           />
         ))}
       </div>
 
       {/* Empty state */}
-      {properties.length === 0 && (
+      {companions.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-gray-500">No properties found</p>
+          <p className="text-gray-500">Không tìm thấy người đồng hành</p>
           <p className="text-sm text-gray-400 mt-1">
-            Try adjusting your search filters
+            Hãy thử điều chỉnh bộ lọc tìm kiếm của bạn
           </p>
         </div>
       )}
@@ -148,14 +148,14 @@ export function PropertyList({
                   }
                 }}
                 className={cn(
-                  currentPage === 1 && 'pointer-events-none opacity-50'
+                  currentPage === 1 && "pointer-events-none opacity-50"
                 )}
               />
             </PaginationItem>
 
             {getPageNumbers().map((page, index) => (
               <PaginationItem key={index}>
-                {page === 'ellipsis' ? (
+                {page === "ellipsis" ? (
                   <PaginationEllipsis />
                 ) : (
                   <PaginationLink
@@ -182,7 +182,7 @@ export function PropertyList({
                   }
                 }}
                 className={cn(
-                  currentPage === totalPages && 'pointer-events-none opacity-50'
+                  currentPage === totalPages && "pointer-events-none opacity-50"
                 )}
               />
             </PaginationItem>
@@ -192,3 +192,4 @@ export function PropertyList({
     </div>
   );
 }
+

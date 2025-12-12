@@ -4,65 +4,46 @@ import { use, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Star, Users, Bed, Bath, Home, Heart, Share2, MapPin } from "lucide-react";
-import { mockProperties, formatPrice } from "@/lib/mock-data/properties";
+import { ArrowLeft, Star, Heart, Share2, MapPin, Clock, Users, CheckCircle2 } from "lucide-react";
+import { mockCompanions, formatPrice } from "@/lib/mock-data/companions";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
-export default function PropertyDetailPage({
+export default function CompanionDetailPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
   const router = useRouter();
   const { id } = use(params);
-  const property = mockProperties.find((p) => p.id === id);
+  const companion = mockCompanions.find((c) => c.id === id);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const [checkInDate, setCheckInDate] = useState<Date | null>(null);
-  const [checkOutDate, setCheckOutDate] = useState<Date | null>(null);
-  const [guests, setGuests] = useState(1);
+  const [dateFrom, setDateFrom] = useState<Date | null>(null);
+  const [dateTo, setDateTo] = useState<Date | null>(null);
+  const [hours, setHours] = useState(1);
 
-  if (!property) {
+  if (!companion) {
     router.push("/search");
     return null;
   }
 
   const {
-    title,
-    description,
+    name,
+    bio,
     images,
     location,
-    host,
+    profile,
     pricing,
     rating,
     badges,
-    maxGuests,
-    bedrooms,
-    beds,
-    bathrooms,
-  } = property;
+    age,
+    specialties,
+    languages,
+  } = companion;
 
-  const nights = checkInDate && checkOutDate
-    ? Math.ceil((checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 60 * 60 * 24))
-    : 1;
-  const totalPrice =
-    pricing.perNight * nights +
-    (pricing.cleaningFee || 0) +
-    (pricing.serviceFee || 0);
-
-  const amenities = [
-    "WiFi",
-    "Kitchen",
-    "Washing machine",
-    "Air conditioning",
-    "Heating",
-    "TV",
-    "Hair dryer",
-    "Iron",
-    "Free parking",
-  ];
+  const totalPrice = pricing.perHour * hours + (pricing.serviceFee || 0);
 
   return (
     <div className="min-h-screen bg-white">
@@ -75,7 +56,7 @@ export default function PropertyDetailPage({
               className="inline-flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
             >
               <ArrowLeft className="size-4" />
-              Back to search
+              Quay lại tìm kiếm
             </Link>
             <div className="flex items-center gap-3">
               <Button variant="ghost" size="icon" className="rounded-full">
@@ -97,7 +78,7 @@ export default function PropertyDetailPage({
             <div className="md:col-span-2 md:row-span-2 relative rounded-2xl overflow-hidden">
               <Image
                 src={images[selectedImageIndex] || images[0]}
-                alt={title}
+                alt={name}
                 fill
                 className="object-cover"
                 priority
@@ -115,7 +96,7 @@ export default function PropertyDetailPage({
               >
                 <Image
                   src={image}
-                  alt={`${title} ${index + 1}`}
+                  alt={`${name} ${index + 1}`}
                   fill
                   className="object-cover"
                 />
@@ -132,12 +113,14 @@ export default function PropertyDetailPage({
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
-            {/* Title and Location */}
+            {/* Name and Location */}
             <div>
               <div className="flex items-start justify-between gap-4 mb-4">
                 <div>
-                  <h1 className="text-3xl font-semibold text-gray-900 mb-2">{title}</h1>
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <h1 className="text-3xl font-semibold text-gray-900 mb-2">
+                    {name}, {age}
+                  </h1>
+                  <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
                     <MapPin className="size-4" />
                     <span>{location.address}, {location.city}, {location.country}</span>
                   </div>
@@ -157,7 +140,7 @@ export default function PropertyDetailPage({
                       key={badge}
                       className="px-3 py-1 text-xs font-medium bg-gray-100 text-gray-700 rounded-full"
                     >
-                      {badge === "superhost" ? "Superhost" : "Guest Favorite"}
+                      {badge === "verified" ? "Đã xác minh" : badge === "popular" ? "Phổ biến" : "Mới"}
                     </span>
                   ))}
                 </div>
@@ -167,17 +150,20 @@ export default function PropertyDetailPage({
             {/* Divider */}
             <div className="border-t border-gray-200" />
 
-            {/* Host Info */}
+            {/* Profile Info */}
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-xl font-semibold mb-2">Hosted by {host.name}</h2>
-                {host.isSuperhost && (
-                  <p className="text-sm text-gray-600">Superhost · 5 years hosting</p>
+                <h2 className="text-xl font-semibold mb-2">{profile.name}</h2>
+                {profile.isVerified && (
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <CheckCircle2 className="size-4 text-green-600" />
+                    <span>Đã xác minh danh tính</span>
+                  </div>
                 )}
               </div>
               <div className="size-16 rounded-full bg-gray-200 flex items-center justify-center">
                 <span className="text-xl font-semibold text-gray-600">
-                  {host.name.charAt(0)}
+                  {profile.name.charAt(0)}
                 </span>
               </div>
             </div>
@@ -185,66 +171,53 @@ export default function PropertyDetailPage({
             {/* Divider */}
             <div className="border-t border-gray-200" />
 
-            {/* Property Details */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              <div className="flex items-center gap-3">
-                <Users className="size-5 text-gray-600" />
-                <div>
-                  <p className="text-sm text-gray-500">Guests</p>
-                  <p className="font-semibold">{maxGuests}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <Bed className="size-5 text-gray-600" />
-                <div>
-                  <p className="text-sm text-gray-500">Bedrooms</p>
-                  <p className="font-semibold">{bedrooms}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <Bed className="size-5 text-gray-600" />
-                <div>
-                  <p className="text-sm text-gray-500">Beds</p>
-                  <p className="font-semibold">{beds}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <Bath className="size-5 text-gray-600" />
-                <div>
-                  <p className="text-sm text-gray-500">Bathrooms</p>
-                  <p className="font-semibold">{bathrooms}</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Divider */}
-            <div className="border-t border-gray-200" />
-
-            {/* Description */}
+            {/* Bio */}
             <div>
-              <h2 className="text-xl font-semibold mb-4">About this place</h2>
+              <h2 className="text-xl font-semibold mb-4">Giới thiệu</h2>
               <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-                {description}
+                {bio}
               </p>
             </div>
 
             {/* Divider */}
             <div className="border-t border-gray-200" />
 
-            {/* Amenities */}
-            <div>
-              <h2 className="text-xl font-semibold mb-4">What this place offers</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {amenities.map((amenity) => (
-                  <div key={amenity} className="flex items-center gap-3">
-                    <div className="size-6 rounded-full bg-gray-100 flex items-center justify-center">
-                      <Home className="size-4 text-gray-600" />
-                    </div>
-                    <span className="text-gray-700">{amenity}</span>
+            {/* Specialties */}
+            {specialties && specialties.length > 0 && (
+              <>
+                <div>
+                  <h2 className="text-xl font-semibold mb-4">Chuyên môn</h2>
+                  <div className="flex flex-wrap gap-2">
+                    {specialties.map((specialty) => (
+                      <span
+                        key={specialty}
+                        className="px-4 py-2 text-sm font-medium bg-gray-100 text-gray-700 rounded-full"
+                      >
+                        {specialty}
+                      </span>
+                    ))}
                   </div>
-                ))}
+                </div>
+                <div className="border-t border-gray-200" />
+              </>
+            )}
+
+            {/* Languages */}
+            {languages && languages.length > 0 && (
+              <div>
+                <h2 className="text-xl font-semibold mb-4">Ngôn ngữ</h2>
+                <div className="flex flex-wrap gap-2">
+                  {languages.map((language) => (
+                    <span
+                      key={language}
+                      className="px-4 py-2 text-sm font-medium bg-gray-100 text-gray-700 rounded-full"
+                    >
+                      {language}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
           {/* Booking Card */}
@@ -253,9 +226,9 @@ export default function PropertyDetailPage({
               <div className="mb-6">
                 <div className="flex items-baseline gap-2 mb-4">
                   <span className="text-2xl font-semibold">
-                    {formatPrice(pricing.perNight, pricing.currency)}
+                    {formatPrice(pricing.perHour, pricing.currency)}
                   </span>
-                  <span className="text-gray-600">night</span>
+                  <span className="text-gray-600">/ giờ</span>
                 </div>
 
                 {/* Date Selection */}
@@ -267,25 +240,25 @@ export default function PropertyDetailPage({
                           variant="outline"
                           className={cn(
                             "w-full h-12 rounded-full justify-start text-left font-normal",
-                            !checkInDate && "text-muted-foreground"
+                            !dateFrom && "text-muted-foreground"
                           )}
                         >
-                          {checkInDate
-                            ? checkInDate.toLocaleDateString("en-US", {
+                          {dateFrom
+                            ? dateFrom.toLocaleDateString("vi-VN", {
                                 month: "short",
                                 day: "numeric",
                               })
-                            : "Check-in"}
+                            : "Từ ngày"}
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0" align="start">
                         <Calendar
                           mode="single"
-                          selected={checkInDate || undefined}
+                          selected={dateFrom || undefined}
                           onSelect={(date) => {
-                            setCheckInDate(date || null);
-                            if (date && checkOutDate && date >= checkOutDate) {
-                              setCheckOutDate(null);
+                            setDateFrom(date || null);
+                            if (date && dateTo && date >= dateTo) {
+                              setDateTo(null);
                             }
                           }}
                           disabled={(date) => date < new Date()}
@@ -299,110 +272,87 @@ export default function PropertyDetailPage({
                           variant="outline"
                           className={cn(
                             "w-full h-12 rounded-full justify-start text-left font-normal",
-                            !checkOutDate && "text-muted-foreground"
+                            !dateTo && "text-muted-foreground"
                           )}
-                          disabled={!checkInDate}
+                          disabled={!dateFrom}
                         >
-                          {checkOutDate
-                            ? checkOutDate.toLocaleDateString("en-US", {
+                          {dateTo
+                            ? dateTo.toLocaleDateString("vi-VN", {
                                 month: "short",
                                 day: "numeric",
                               })
-                            : "Check-out"}
+                            : "Đến ngày"}
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0" align="start">
                         <Calendar
                           mode="single"
-                          selected={checkOutDate || undefined}
-                          onSelect={(date) => setCheckOutDate(date || null)}
+                          selected={dateTo || undefined}
+                          onSelect={(date) => setDateTo(date || null)}
                           disabled={(date) =>
-                            !checkInDate || date <= checkInDate || date < new Date()
+                            !dateFrom || date <= dateFrom || date < new Date()
                           }
                         />
                       </PopoverContent>
                     </Popover>
                   </div>
 
-                  {/* Guests */}
-                  <Popover>
-                    <PopoverTrigger asChild>
+                  {/* Hours */}
+                  <div className="border border-gray-200 rounded-full p-2 flex items-center justify-between">
+                    <span className="text-sm font-medium px-2">Số giờ</span>
+                    <div className="flex items-center gap-3">
                       <Button
                         variant="outline"
-                        className="w-full h-12 rounded-full justify-between font-normal"
+                        size="icon-sm"
+                        onClick={() => setHours(Math.max(1, hours - 1))}
+                        className="rounded-full"
                       >
-                        <span>Guests</span>
-                        <span>{guests} {guests === 1 ? "guest" : "guests"}</span>
+                        -
                       </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-56" align="end">
-                      <div className="space-y-4">
-                        <div className="flex items-center justify-between">
-                          <span className="font-medium">Guests</span>
-                          <div className="flex items-center gap-3">
-                            <Button
-                              variant="outline"
-                              size="icon-sm"
-                              onClick={() => setGuests(Math.max(1, guests - 1))}
-                              className="rounded-full"
-                            >
-                              -
-                            </Button>
-                            <span className="w-6 text-center font-medium">{guests}</span>
-                            <Button
-                              variant="outline"
-                              size="icon-sm"
-                              onClick={() => setGuests(Math.min(maxGuests, guests + 1))}
-                              className="rounded-full"
-                            >
-                              +
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    </PopoverContent>
-                  </Popover>
+                      <span className="w-8 text-center font-medium">{hours}</span>
+                      <Button
+                        variant="outline"
+                        size="icon-sm"
+                        onClick={() => setHours(Math.min(24, hours + 1))}
+                        className="rounded-full"
+                      >
+                        +
+                      </Button>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Reserve Button */}
                 <Button className="w-full h-12 rounded-full mb-4">
-                  Reserve
+                  Đặt lịch
                 </Button>
 
                 <p className="text-center text-sm text-gray-600">
-                  You won&apos;t be charged yet
+                  Bạn sẽ không bị tính phí ngay
                 </p>
               </div>
 
               {/* Price Breakdown */}
-              {(checkInDate && checkOutDate) && (
+              {(dateFrom && dateTo) && (
                 <div className="border-t border-gray-200 pt-4 space-y-3">
                   <div className="flex justify-between">
                     <span className="text-gray-700">
-                      {formatPrice(pricing.perNight, pricing.currency)} × {nights} nights
+                      {formatPrice(pricing.perHour, pricing.currency)} × {hours} giờ
                     </span>
                     <span className="text-gray-900">
-                      {formatPrice(pricing.perNight * nights, pricing.currency)}
+                      {formatPrice(pricing.perHour * hours, pricing.currency)}
                     </span>
                   </div>
-                  {pricing.cleaningFee && (
-                    <div className="flex justify-between">
-                      <span className="text-gray-700">Cleaning fee</span>
-                      <span className="text-gray-900">
-                        {formatPrice(pricing.cleaningFee, pricing.currency)}
-                      </span>
-                    </div>
-                  )}
                   {pricing.serviceFee && (
                     <div className="flex justify-between">
-                      <span className="text-gray-700">Service fee</span>
+                      <span className="text-gray-700">Phí dịch vụ</span>
                       <span className="text-gray-900">
                         {formatPrice(pricing.serviceFee, pricing.currency)}
                       </span>
                     </div>
                   )}
                   <div className="flex justify-between pt-3 border-t border-gray-200">
-                    <span className="font-semibold text-gray-900">Total</span>
+                    <span className="font-semibold text-gray-900">Tổng cộng</span>
                     <span className="font-semibold text-gray-900">
                       {formatPrice(totalPrice, pricing.currency)}
                     </span>
@@ -416,3 +366,4 @@ export default function PropertyDetailPage({
     </div>
   );
 }
+

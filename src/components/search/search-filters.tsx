@@ -27,10 +27,10 @@ export function SearchFilters({ className }: SearchFiltersProps) {
 
   const handleDateSelect = (date: Date | null) => {
     if (selectingCheckIn) {
-      dispatch({ type: "SET_FILTERS", payload: { checkIn: date, checkOut: null } });
+      dispatch({ type: "SET_FILTERS", payload: { dateFrom: date, dateTo: null } });
       setSelectingCheckIn(false);
     } else {
-      dispatch({ type: "SET_FILTERS", payload: { checkOut: date } });
+      dispatch({ type: "SET_FILTERS", payload: { dateTo: date } });
       setDatePopoverOpen(false);
       setSelectingCheckIn(true);
     }
@@ -46,9 +46,9 @@ export function SearchFilters({ className }: SearchFiltersProps) {
     return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
   };
 
-  const dateLabel = filters.checkIn || filters.checkOut
-    ? `${formatDate(filters.checkIn) || "Check-in"} - ${formatDate(filters.checkOut) || "Check-out"}`
-    : "Add dates";
+  const dateLabel = filters.dateFrom || filters.dateTo
+    ? `${formatDate(filters.dateFrom) || "Từ ngày"} - ${formatDate(filters.dateTo) || "Đến ngày"}`
+    : "Chọn thời gian";
 
   return (
     <div className={cn("flex items-center gap-2 flex-wrap", className)}>
@@ -56,7 +56,7 @@ export function SearchFilters({ className }: SearchFiltersProps) {
       <div className="relative flex-1 min-w-[200px] max-w-[340px]">
         <Input
           type="text"
-          placeholder="Where to?"
+          placeholder="Tìm kiếm người đồng hành..."
           value={filters.location}
           onChange={handleLocationChange}
           className="pl-4 pr-14 h-10 rounded-full border-gray-200"
@@ -77,36 +77,36 @@ export function SearchFilters({ className }: SearchFiltersProps) {
             variant="outline"
             className={cn(
               "h-10 px-4 rounded-full gap-2 font-normal",
-              (filters.checkIn || filters.checkOut) && "text-gray-900"
+              (filters.dateFrom || filters.dateTo) && "text-gray-900"
             )}
           >
             <CalendarIcon className="size-4" />
             <span className="hidden sm:inline">{dateLabel}</span>
-            <span className="sm:hidden">Dates</span>
+            <span className="sm:hidden">Thời gian</span>
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-4" align="start">
           <div className="space-y-4">
             <div className="flex items-center justify-between text-sm">
               <span className="font-medium">
-                {selectingCheckIn ? "Select check-in date" : "Select check-out date"}
+                {selectingCheckIn ? "Chọn ngày bắt đầu" : "Chọn ngày kết thúc"}
               </span>
-              {(filters.checkIn || filters.checkOut) && (
+              {(filters.dateFrom || filters.dateTo) && (
                 <button
                   className="text-gray-500 hover:text-gray-900 underline"
                   onClick={() => {
-                    dispatch({ type: "SET_FILTERS", payload: { checkIn: null, checkOut: null } });
+                    dispatch({ type: "SET_FILTERS", payload: { dateFrom: null, dateTo: null } });
                     setSelectingCheckIn(true);
                   }}
                 >
-                  Clear
+                  Xóa
                 </button>
               )}
             </div>
             <Calendar
-              selected={selectingCheckIn ? filters.checkIn : filters.checkOut}
+              selected={selectingCheckIn ? filters.dateFrom : filters.dateTo}
               onSelect={handleDateSelect}
-              minDate={selectingCheckIn ? new Date() : filters.checkIn || new Date()}
+              minDate={selectingCheckIn ? new Date() : filters.dateFrom || new Date()}
             />
           </div>
         </PopoverContent>
@@ -121,7 +121,7 @@ export function SearchFilters({ className }: SearchFiltersProps) {
           >
             <Users className="size-4" />
             <span className="hidden sm:inline">
-              {filters.guests} {filters.guests === 1 ? "guest" : "guests"}
+              {filters.guests} {filters.guests === 1 ? "người" : "người"}
             </span>
             <span className="sm:hidden">{filters.guests}</span>
           </Button>
@@ -130,8 +130,8 @@ export function SearchFilters({ className }: SearchFiltersProps) {
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium">Guests</p>
-                <p className="text-sm text-gray-500">Ages 13 or above</p>
+                <p className="font-medium">Số người</p>
+                <p className="text-sm text-gray-500">Từ 13 tuổi trở lên</p>
               </div>
               <div className="flex items-center gap-3">
                 <Button

@@ -3,8 +3,8 @@
 import { useEffect, useRef } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import type { Property, MapViewState } from "@/types/property";
-import { formatPrice } from "@/lib/mock-data/properties";
+import type { Companion, MapViewState } from "@/types/companion";
+import { formatPrice } from "@/lib/mock-data/companions";
 
 // Fix Leaflet default icon issues
 delete (L.Icon.Default.prototype as unknown as { _getIconUrl?: unknown })._getIconUrl;
@@ -14,8 +14,8 @@ L.Icon.Default.mergeOptions({
   shadowUrl: "",
 });
 
-interface PropertyMapProps {
-  properties: Property[];
+interface CompanionMapProps {
+  companions: Companion[];
   selectedId: string | null;
   hoveredId: string | null;
   onMarkerClick: (id: string) => void;
@@ -25,8 +25,8 @@ interface PropertyMapProps {
   className?: string;
 }
 
-export function PropertyMap({
-  properties,
+export function CompanionMap({
+  companions,
   selectedId,
   hoveredId,
   onMarkerClick,
@@ -34,7 +34,7 @@ export function PropertyMap({
   viewState,
   onViewStateChange,
   className,
-}: PropertyMapProps) {
+}: CompanionMapProps) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<L.Map | null>(null);
   const markersRef = useRef<Map<string, L.Marker>>(new Map());
@@ -73,7 +73,7 @@ export function PropertyMap({
     };
   }, []);
 
-  // Update markers when properties change
+  // Update markers when companions change
   useEffect(() => {
     if (!map.current) return;
 
@@ -82,12 +82,12 @@ export function PropertyMap({
     markersRef.current.clear();
 
     // Add new markers
-    properties.forEach((property) => {
-      const isSelected = property.id === selectedId;
-      const isHovered = property.id === hoveredId;
+    companions.forEach((companion) => {
+      const isSelected = companion.id === selectedId;
+      const isHovered = companion.id === hoveredId;
 
       // Create custom div icon
-      const priceText = formatPrice(property.pricing.perNight, property.pricing.currency);
+      const priceText = formatPrice(companion.pricing.perHour, companion.pricing.currency);
       const icon = L.divIcon({
         className: "leaflet-price-marker",
         html: `<div class="price-marker-inner ${isSelected || isHovered ? "active" : ""}">${priceText}</div>`,
@@ -95,17 +95,17 @@ export function PropertyMap({
         iconAnchor: [50, 18],
       });
 
-      const marker = L.marker([property.location.lat, property.location.lng], {
+      const marker = L.marker([companion.location.lat, companion.location.lng], {
         icon,
       }).addTo(map.current!);
 
-      marker.on("click", () => onMarkerClick(property.id));
-      marker.on("mouseover", () => onMarkerHover(property.id));
+      marker.on("click", () => onMarkerClick(companion.id));
+      marker.on("mouseover", () => onMarkerHover(companion.id));
       marker.on("mouseout", () => onMarkerHover(null));
 
-      markersRef.current.set(property.id, marker);
+      markersRef.current.set(companion.id, marker);
     });
-  }, [properties, onMarkerClick, onMarkerHover]);
+  }, [companions, onMarkerClick, onMarkerHover]);
 
   // Update marker styles when selection/hover changes
   useEffect(() => {
@@ -114,11 +114,11 @@ export function PropertyMap({
     markersRef.current.forEach((marker, id) => {
       const isSelected = id === selectedId;
       const isHovered = id === hoveredId;
-      const property = properties.find((p) => p.id === id);
+      const companion = companions.find((c) => c.id === id);
 
-      if (!property) return;
+      if (!companion) return;
 
-      const priceText = formatPrice(property.pricing.perNight, property.pricing.currency);
+      const priceText = formatPrice(companion.pricing.perHour, companion.pricing.currency);
       const icon = L.divIcon({
         className: "leaflet-price-marker",
         html: `<div class="price-marker-inner ${isSelected || isHovered ? "active" : ""}">${priceText}</div>`,
@@ -128,7 +128,7 @@ export function PropertyMap({
 
       marker.setIcon(icon);
     });
-  }, [selectedId, hoveredId, properties]);
+  }, [selectedId, hoveredId, companions]);
 
   return (
     <div
@@ -137,3 +137,4 @@ export function PropertyMap({
     />
   );
 }
+

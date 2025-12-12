@@ -1,35 +1,37 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
-import type { PropertyBadge } from "@/types/property";
+import type { CompanionBadge } from "@/types/companion";
 
 const badgeVariants = cva(
   "absolute top-3 left-3 z-10 px-2 py-1 text-xs font-semibold rounded-full",
   {
     variants: {
       type: {
-        superhost: "bg-white text-gray-900 shadow-sm",
-        "guest-favorite": "bg-white text-gray-900 shadow-sm",
+        verified: "bg-white text-gray-900 shadow-sm",
+        popular: "bg-white text-gray-900 shadow-sm",
+        new: "bg-white text-gray-900 shadow-sm",
       },
     },
     defaultVariants: {
-      type: "superhost",
+      type: "verified",
     },
   }
 );
 
-interface PropertyCardBadgeProps
+interface CompanionCardBadgeProps
   extends VariantProps<typeof badgeVariants> {
-  badge: PropertyBadge;
+  badge: CompanionBadge;
   className?: string;
 }
 
-export function PropertyCardBadge({
+export function CompanionCardBadge({
   badge,
   className,
-}: PropertyCardBadgeProps) {
-  const labels: Record<PropertyBadge, string> = {
-    superhost: "Superhost",
-    "guest-favorite": "Guest favorite",
+}: CompanionCardBadgeProps) {
+  const labels: Record<CompanionBadge, string> = {
+    verified: "Đã xác minh",
+    popular: "Phổ biến",
+    new: "Mới",
   };
 
   return (
@@ -38,3 +40,4 @@ export function PropertyCardBadge({
     </span>
   );
 }
+

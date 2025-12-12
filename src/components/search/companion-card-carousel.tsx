@@ -5,17 +5,17 @@ import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-interface PropertyCardCarouselProps {
+interface CompanionCardCarouselProps {
   images: string[];
   alt: string;
   className?: string;
 }
 
-export function PropertyCardCarousel({
+export function CompanionCardCarousel({
   images,
   alt,
   className,
-}: PropertyCardCarouselProps) {
+}: CompanionCardCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -113,3 +113,4 @@ export function PropertyCardCarousel({
     </div>
   );
 }
+

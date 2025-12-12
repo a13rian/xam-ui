@@ -1,11 +1,11 @@
 import { SearchPageClient } from "@/components/search/search-page-client";
-import { mockProperties } from "@/lib/mock-data/properties";
+import { mockCompanions } from "@/lib/mock-data/companions";
 
 export const metadata = {
-  title: "Search Properties | Cogie",
-  description: "Find your perfect vacation rental from our curated collection of properties.",
+  title: "Tìm kiếm người đồng hành | Cogie",
+  description: "Tìm người để trò chuyện, tâm sự và gặp mặt ngoài đời. Kết nối với những người bạn đồng hành phù hợp.",
 };
 
 export default function SearchPage() {
-  return <SearchPageClient initialProperties={mockProperties} />;
+  return <SearchPageClient initialCompanions={mockCompanions} />;
 }

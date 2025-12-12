@@ -1,43 +1,46 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import dynamic from "next/dynamic";
-import { Map as MapIcon, List } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { SearchProvider, useSearch } from "./search-context";
-import { SearchFilters } from "./search-filters";
-import { PropertyList } from "./property-list";
-import type { Property } from "@/types/property";
+import { useState } from 'react';
+import dynamic from 'next/dynamic';
+import { Map as MapIcon, List } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { SearchProvider, useSearch } from './search-context';
+import { SearchFilters } from './search-filters';
+import { CompanionList } from './companion-list';
+import type { Companion } from '@/types/companion';
 
 // Dynamically import map to avoid SSR issues with Leaflet
-const PropertyMap = dynamic(() => import("./property-map").then((mod) => mod.PropertyMap), {
-  ssr: false,
-  loading: () => (
-    <div className="w-full h-full min-h-[400px] bg-gray-100 animate-pulse flex items-center justify-center">
-      <span className="text-gray-400">Loading map...</span>
-    </div>
-  ),
-});
+const CompanionMap = dynamic(
+  () => import('./companion-map').then((mod) => mod.CompanionMap),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-full min-h-[400px] bg-gray-100 animate-pulse flex items-center justify-center">
+        <span className="text-gray-400">Đang tải bản đồ...</span>
+      </div>
+    ),
+  }
+);
 
 interface SearchPageClientProps {
-  initialProperties: Property[];
+  initialCompanions: Companion[];
 }
 
 function SearchContent() {
   const { state, dispatch } = useSearch();
   const [showMobileMap, setShowMobileMap] = useState(false);
 
-  const handlePropertyHover = (id: string | null) => {
-    dispatch({ type: "SET_HOVERED_PROPERTY", payload: id });
+  const handleCompanionHover = (id: string | null) => {
+    dispatch({ type: 'SET_HOVERED_COMPANION', payload: id });
   };
 
-  const handlePropertySelect = (id: string) => {
-    dispatch({ type: "SET_SELECTED_PROPERTY", payload: id });
+  const handleCompanionSelect = (id: string) => {
+    dispatch({ type: 'SET_SELECTED_COMPANION', payload: id });
   };
 
   const handleMapViewChange = (viewState: typeof state.mapViewState) => {
-    dispatch({ type: "SET_MAP_VIEW_STATE", payload: viewState });
+    dispatch({ type: 'SET_MAP_VIEW_STATE', payload: viewState });
   };
 
   return (
@@ -51,20 +54,20 @@ function SearchContent() {
 
       {/* Main content */}
       <div className="flex flex-1 relative">
-        {/* Property list */}
+        {/* Companion list */}
         <div
           className={cn(
-            "w-full lg:w-[65%] xl:w-[60%] overflow-y-auto p-4 lg:p-6",
-            showMobileMap && "hidden lg:block"
+            'w-full lg:w-[65%] xl:w-[60%] overflow-y-auto p-4 lg:p-6',
+            showMobileMap && 'hidden lg:block'
           )}
         >
           <div className="max-w-3xl mx-auto lg:max-w-none">
-            <PropertyList
-              properties={state.properties}
-              selectedId={state.selectedPropertyId}
-              hoveredId={state.hoveredPropertyId}
-              onPropertyHover={handlePropertyHover}
-              onPropertySelect={handlePropertySelect}
+            <CompanionList
+              companions={state.companions}
+              selectedId={state.selectedCompanionId}
+              hoveredId={state.hoveredCompanionId}
+              onCompanionHover={handleCompanionHover}
+              onCompanionSelect={handleCompanionSelect}
             />
           </div>
         </div>
@@ -72,12 +75,12 @@ function SearchContent() {
         {/* Map - desktop */}
         <div className="hidden lg:block lg:w-[35%] xl:w-[40%] sticky top-16 h-[calc(100vh-4rem)] p-4 lg:p-6">
           <div className="w-full h-full rounded-[32px] overflow-hidden">
-            <PropertyMap
-              properties={state.properties}
-              selectedId={state.selectedPropertyId}
-              hoveredId={state.hoveredPropertyId}
-              onMarkerClick={handlePropertySelect}
-              onMarkerHover={handlePropertyHover}
+            <CompanionMap
+              companions={state.companions}
+              selectedId={state.selectedCompanionId}
+              hoveredId={state.hoveredCompanionId}
+              onMarkerClick={handleCompanionSelect}
+              onMarkerHover={handleCompanionHover}
               viewState={state.mapViewState}
               onViewStateChange={handleMapViewChange}
             />
@@ -88,12 +91,12 @@ function SearchContent() {
         {showMobileMap && (
           <div className="lg:hidden fixed inset-0 z-50 bg-white pt-16">
             <div className="h-full">
-              <PropertyMap
-                properties={state.properties}
-                selectedId={state.selectedPropertyId}
-                hoveredId={state.hoveredPropertyId}
-                onMarkerClick={handlePropertySelect}
-                onMarkerHover={handlePropertyHover}
+              <CompanionMap
+                companions={state.companions}
+                selectedId={state.selectedCompanionId}
+                hoveredId={state.hoveredCompanionId}
+                onMarkerClick={handleCompanionSelect}
+                onMarkerHover={handleCompanionHover}
                 viewState={state.mapViewState}
                 onViewStateChange={handleMapViewChange}
               />
@@ -109,12 +112,12 @@ function SearchContent() {
           {showMobileMap ? (
             <>
               <List className="size-4" />
-              Show list
+              Hiện danh sách
             </>
           ) : (
             <>
               <MapIcon className="size-4" />
-              Show map
+              Hiện bản đồ
             </>
           )}
         </Button>
@@ -123,9 +126,9 @@ function SearchContent() {
   );
 }
 
-export function SearchPageClient({ initialProperties }: SearchPageClientProps) {
+export function SearchPageClient({ initialCompanions }: SearchPageClientProps) {
   return (
-    <SearchProvider initialProperties={initialProperties}>
+    <SearchProvider initialCompanions={initialCompanions}>
       <SearchContent />
     </SearchProvider>
   );
