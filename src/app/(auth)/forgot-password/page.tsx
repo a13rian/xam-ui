@@ -83,7 +83,7 @@ export default function ForgotPasswordPage() {
                     <Input
                       type="email"
                       placeholder="Enter your email"
-                      className="h-11"
+                      className="h-11 rounded-full"
                       {...field}
                     />
                   </FormControl>
@@ -93,7 +93,7 @@ export default function ForgotPasswordPage() {
             />
 
             {/* Send Reset Link Button */}
-            <Button type="submit" className="w-full h-11">
+            <Button type="submit" className="w-full h-11 rounded-full">
               Send Reset Link
             </Button>
           </form>

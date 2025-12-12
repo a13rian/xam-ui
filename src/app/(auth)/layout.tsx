@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function AuthLayout({
   children,
 }: Readonly<{
@@ -6,11 +8,21 @@ export default function AuthLayout({
   return (
     <div className="flex min-h-screen">
       {/* Left Panel - Quote Section */}
-      <div className="relative hidden w-1/2 overflow-hidden bg-black lg:flex lg:flex-col lg:justify-between p-12">
-        {/* Gradient Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-pink-500 via-purple-600 to-cyan-400 opacity-80" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-cyan-400 via-transparent to-transparent opacity-60" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-pink-500 via-transparent to-transparent opacity-60" />
+      <div className="relative hidden w-1/2 overflow-hidden bg-gray-900 lg:flex lg:flex-col lg:justify-between p-12">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <Image
+            src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&h=1600&fit=crop"
+            alt="Beautiful travel destination"
+            fill
+            className="object-cover"
+            priority
+            quality={90}
+          />
+          {/* Overlay for better text readability */}
+          <div className="absolute inset-0 bg-gradient-to-br from-gray-900/80 via-gray-900/60 to-gray-900/80" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-gray-900/50 via-transparent to-transparent" />
+        </div>
 
         {/* Content */}
         <div className="relative z-10">
@@ -32,9 +44,6 @@ export default function AuthLayout({
             You can get everything you want if you work hard, trust the process, and stick to the plan.
           </p>
         </div>
-
-        {/* Decorative corner gradient */}
-        <div className="absolute -bottom-32 -right-32 h-64 w-64 rounded-full bg-gradient-to-tr from-pink-500 to-purple-600 opacity-40 blur-3xl" />
       </div>
 
       {/* Right Panel - Form Section */}

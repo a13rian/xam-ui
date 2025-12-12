@@ -95,7 +95,7 @@ export default function SignInPage() {
                     <Input
                       type="email"
                       placeholder="Enter your email"
-                      className="h-11"
+                      className="h-11 rounded-full"
                       {...field}
                     />
                   </FormControl>
@@ -116,7 +116,7 @@ export default function SignInPage() {
                       <Input
                         type={showPassword ? "text" : "password"}
                         placeholder="Enter your password"
-                        className="h-11 pr-12"
+                        className="h-11 pr-12 rounded-full"
                         {...field}
                       />
                       <Button
@@ -124,7 +124,7 @@ export default function SignInPage() {
                         variant="ghost"
                         size="icon"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-1 top-1/2 -translate-y-1/2 h-9 w-9 text-muted-foreground hover:text-foreground"
+                        className="absolute right-1 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full text-muted-foreground hover:text-foreground"
                         data-testid="toggle-password"
                         aria-label={showPassword ? "Hide password" : "Show password"}
                       >
@@ -169,12 +169,12 @@ export default function SignInPage() {
             </div>
 
             {/* Sign In Button */}
-            <Button type="submit" className="w-full h-11">
+            <Button type="submit" className="w-full h-11 rounded-full">
               Sign In
             </Button>
 
             {/* Google Sign In */}
-            <Button type="button" variant="outline" className="w-full h-11">
+            <Button type="button" variant="outline" className="w-full h-11 rounded-full">
               <svg className="h-5 w-5" viewBox="0 0 24 24">
                 <path
                   d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"

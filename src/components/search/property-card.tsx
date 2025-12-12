@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Heart, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Property } from "@/types/property";
@@ -46,7 +47,6 @@ export function PropertyCard({
     <article
       className={cn(
         "group cursor-pointer rounded-xl transition-all duration-200",
-        isSelected && "ring-2 ring-gray-900",
         isHovered && "scale-[1.02]"
       )}
       onMouseEnter={onHover}
@@ -54,7 +54,7 @@ export function PropertyCard({
       onClick={onClick}
     >
       {/* Image carousel with badges */}
-      <div className="relative">
+      <Link href={`/properties/${property.id}`} className="relative block">
         <PropertyCardCarousel images={images} alt={title} />
 
         {/* Display badges */}
@@ -74,15 +74,19 @@ export function PropertyCard({
         >
           <Heart className="size-6 text-white drop-shadow-md hover:scale-110 transition-transform" />
         </button>
-      </div>
+      </Link>
 
       {/* Property details */}
       <div className="pt-3 space-y-1">
         {/* Title and rating row */}
         <div className="flex items-start justify-between gap-2">
-          <h3 className="font-semibold text-gray-900 truncate">
+          <Link
+            href={`/properties/${property.id}`}
+            className="font-semibold text-gray-900 truncate hover:underline"
+            onClick={(e) => e.stopPropagation()}
+          >
             {title}
-          </h3>
+          </Link>
           <div className="flex items-center gap-1 shrink-0">
             <Star className="size-3.5 fill-gray-900 text-gray-900" />
             <span className="text-sm font-medium">{rating.average}</span>
