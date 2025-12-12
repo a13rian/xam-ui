@@ -57,13 +57,13 @@ export function Header() {
         <div className="hidden md:flex items-center gap-3">
           <Link
             href="/partner"
-            className="rounded-lg border border-gray-900 px-5 h-[46px] flex items-center text-sm font-medium text-gray-900 transition-colors hover:bg-gray-100"
+            className="rounded-full border border-gray-900 px-5 h-[40px] flex items-center text-sm font-medium text-gray-900 transition-colors hover:bg-gray-100"
           >
             Become a Partner
           </Link>
           <Link
             href="/sign-in"
-            className="rounded-lg bg-gray-900 px-5 h-[46px] flex items-center text-sm font-medium text-white transition-colors hover:bg-gray-800"
+            className="rounded-full bg-gray-900 px-5 h-[40px] flex items-center text-sm font-medium text-white transition-colors hover:bg-gray-800"
           >
             Sign In
           </Link>
@@ -143,14 +143,14 @@ export function Header() {
             <div className="pt-3 border-t border-gray-200 flex flex-col gap-3">
               <Link
                 href="/partner"
-                className="rounded-lg border border-gray-900 px-5 h-[46px] flex items-center justify-center text-sm font-medium text-gray-900 transition-colors hover:bg-gray-100"
+                className="rounded-full border border-gray-900 px-5 h-[40px] flex items-center justify-center text-sm font-medium text-gray-900 transition-colors hover:bg-gray-100"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Become a Partner
               </Link>
               <Link
                 href="/sign-in"
-                className="rounded-lg bg-gray-900 px-5 h-[46px] flex items-center justify-center text-sm font-medium text-white transition-colors hover:bg-gray-800"
+                className="rounded-full bg-gray-900 px-5 h-[40px] flex items-center justify-center text-sm font-medium text-white transition-colors hover:bg-gray-800"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Sign In
