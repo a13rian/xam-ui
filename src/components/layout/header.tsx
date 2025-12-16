@@ -2,9 +2,37 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useAuth } from "@/hooks/use-auth";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { LogOut } from "lucide-react";
 
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { isAuthenticated, user, logout } = useAuth();
+
+  // Get user initials for avatar
+  const getUserInitials = () => {
+    if (user?.firstName && user?.lastName) {
+      return `${user.firstName[0]}${user.lastName[0]}`.toUpperCase();
+    }
+    if (user?.firstName) {
+      return user.firstName[0].toUpperCase();
+    }
+    if (user?.email) {
+      return user.email[0].toUpperCase();
+    }
+    return "U";
+  };
+
+  const handleLogout = async () => {
+    await logout();
+    setIsMobileMenuOpen(false);
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
@@ -61,12 +89,54 @@ export function Header() {
           >
             Become a Partner
           </Link>
-          <Link
-            href="/sign-in"
-            className="rounded-full bg-gray-900 px-5 h-[40px] flex items-center text-sm font-medium text-white transition-colors hover:bg-gray-800"
-          >
-            Sign In
-          </Link>
+          {isAuthenticated && user ? (
+            <Popover>
+              <PopoverTrigger asChild>
+                <button
+                  className="rounded-full w-[40px] h-[40px] flex items-center justify-center text-sm font-medium text-white bg-gray-900 transition-colors hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
+                  aria-label="User menu"
+                >
+                  {getUserInitials()}
+                </button>
+              </PopoverTrigger>
+              <PopoverContent align="end" className="w-64 p-0">
+                <div className="p-4">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="rounded-full w-10 h-10 flex items-center justify-center text-sm font-medium text-white bg-gray-900">
+                      {getUserInitials()}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-gray-900 truncate">
+                        {user.firstName && user.lastName
+                          ? `${user.firstName} ${user.lastName}`
+                          : user.firstName || "User"}
+                      </p>
+                      <p className="text-xs text-gray-500 truncate">
+                        {user.email}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="border-t border-gray-200 pt-3">
+                    <Button
+                      variant="ghost"
+                      className="w-full justify-start text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+                      onClick={handleLogout}
+                    >
+                      <LogOut className="mr-2 h-4 w-4" />
+                      Logout
+                    </Button>
+                  </div>
+                </div>
+              </PopoverContent>
+            </Popover>
+          ) : (
+            <Link
+              href="/sign-in"
+              className="rounded-full bg-gray-900 px-5 h-[40px] flex items-center text-sm font-medium text-white transition-colors hover:bg-gray-800"
+            >
+              Sign In
+            </Link>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -148,13 +218,43 @@ export function Header() {
               >
                 Become a Partner
               </Link>
-              <Link
-                href="/sign-in"
-                className="rounded-full bg-gray-900 px-5 h-[40px] flex items-center justify-center text-sm font-medium text-white transition-colors hover:bg-gray-800"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Sign In
-              </Link>
+              {isAuthenticated && user ? (
+                <>
+                  <div className="px-5 py-3 bg-gray-50 rounded-lg">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="rounded-full w-10 h-10 flex items-center justify-center text-sm font-medium text-white bg-gray-900">
+                        {getUserInitials()}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-semibold text-gray-900 truncate">
+                          {user.firstName && user.lastName
+                            ? `${user.firstName} ${user.lastName}`
+                            : user.firstName || "User"}
+                        </p>
+                        <p className="text-xs text-gray-500 truncate">
+                          {user.email}
+                        </p>
+                      </div>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      className="w-full justify-start text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+                      onClick={handleLogout}
+                    >
+                      <LogOut className="mr-2 h-4 w-4" />
+                      Logout
+                    </Button>
+                  </div>
+                </>
+              ) : (
+                <Link
+                  href="/sign-in"
+                  className="rounded-full bg-gray-900 px-5 h-[40px] flex items-center justify-center text-sm font-medium text-white transition-colors hover:bg-gray-800"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Sign In
+                </Link>
+              )}
             </div>
           </nav>
         </div>

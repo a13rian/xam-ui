@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -17,6 +18,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { register as registerApi } from "@/lib/api/auth";
 
 const signUpSchema = z
   .object({
@@ -47,6 +49,10 @@ type SignUpFormValues = z.infer<typeof signUpSchema>;
 export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
+  const router = useRouter();
 
   const form = useForm<SignUpFormValues>({
     resolver: zodResolver(signUpSchema),
@@ -59,9 +65,38 @@ export default function SignUpPage() {
     },
   });
 
-  function onSubmit(data: SignUpFormValues) {
-    console.log(data);
-    // TODO: Handle sign up logic
+  async function onSubmit(data: SignUpFormValues) {
+    setIsLoading(true);
+    setError(null);
+    setSuccess(false);
+
+    try {
+      // Split fullName into firstName and lastName
+      const nameParts = data.fullName.trim().split(/\s+/);
+      const firstName = nameParts[0] || "";
+      const lastName = nameParts.slice(1).join(" ") || "";
+
+      await registerApi({
+        email: data.email,
+        password: data.password,
+        firstName,
+        lastName,
+      });
+
+      setSuccess(true);
+      // Redirect to login page after 3 seconds
+      setTimeout(() => {
+        router.push("/sign-in");
+      }, 3000);
+    } catch (err: unknown) {
+      const errorMessage =
+        err && typeof err === 'object' && 'message' in err
+          ? (err.message as string)
+          : 'Registration failed. Please try again later';
+      setError(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -95,6 +130,20 @@ export default function SignUpPage() {
             Enter your details to create your account
           </p>
         </div>
+
+        {/* Success Message */}
+        {success && (
+          <div className="mb-4 p-3 text-sm text-green-600 bg-green-50 border border-green-200 rounded-lg">
+            Registration successful! Please check your email to verify your account. Redirecting to login page...
+          </div>
+        )}
+
+        {/* Error Message */}
+        {error && (
+          <div className="mb-4 p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg">
+            {error}
+          </div>
+        )}
 
         {/* Form */}
         <Form {...form}>
@@ -248,8 +297,12 @@ export default function SignUpPage() {
             />
 
             {/* Sign Up Button */}
-            <Button type="submit" className="w-full h-11 rounded-full">
-              Sign Up
+            <Button
+              type="submit"
+              className="w-full h-11 rounded-full"
+              disabled={isLoading || success}
+            >
+              {isLoading ? 'Creating Account...' : success ? 'Account Created!' : 'Sign Up'}
             </Button>
 
             {/* Google Sign Up */}

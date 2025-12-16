@@ -1,11 +1,12 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useState } from 'react';
+import Link from 'next/link';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Form,
   FormControl,
@@ -13,28 +14,48 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from '@/components/ui/form';
+import { forgotPassword as forgotPasswordApi } from '@/lib/api/auth';
 
 const forgotPasswordSchema = z.object({
   email: z
     .string()
-    .min(1, "Email is required")
-    .email("Please enter a valid email address"),
+    .min(1, 'Email is required')
+    .email('Please enter a valid email address'),
 });
 
 type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>;
 
 export default function ForgotPasswordPage() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
+
   const form = useForm<ForgotPasswordFormValues>({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
-      email: "",
+      email: '',
     },
   });
 
-  function onSubmit(data: ForgotPasswordFormValues) {
-    console.log(data);
-    // TODO: Handle forgot password logic
+  async function onSubmit(data: ForgotPasswordFormValues) {
+    setIsLoading(true);
+    setError(null);
+    setSuccess(false);
+
+    try {
+      await forgotPasswordApi({ email: data.email });
+      setSuccess(true);
+      form.reset();
+    } catch (err: unknown) {
+      const errorMessage =
+        err && typeof err === 'object' && 'message' in err
+          ? (err.message as string)
+          : 'Failed to send reset link. Please try again later';
+      setError(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -65,9 +86,24 @@ export default function ForgotPasswordPage() {
             Forgot Password
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Enter your email address and we&apos;ll send you a link to reset your password
+            Enter your email address and we&apos;ll send you a link to reset
+            your password
           </p>
         </div>
+
+        {/* Success Message */}
+        {success && (
+          <div className="mb-4 p-3 text-sm text-green-600 bg-green-50 border border-green-200 rounded-lg">
+            Reset link has been sent to your email. Please check your inbox.
+          </div>
+        )}
+
+        {/* Error Message */}
+        {error && (
+          <div className="mb-4 p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg">
+            {error}
+          </div>
+        )}
 
         {/* Form */}
         <Form {...form}>
@@ -93,15 +129,23 @@ export default function ForgotPasswordPage() {
             />
 
             {/* Send Reset Link Button */}
-            <Button type="submit" className="w-full h-11 rounded-full">
-              Send Reset Link
+            <Button
+              type="submit"
+              className="w-full h-11 rounded-full"
+              disabled={isLoading || success}
+            >
+              {isLoading
+                ? 'Sending...'
+                : success
+                ? 'Reset Link Sent!'
+                : 'Send Reset Link'}
             </Button>
           </form>
         </Form>
 
         {/* Back to Sign In Link */}
         <p className="mt-8 text-center text-sm text-muted-foreground">
-          Remember your password?{" "}
+          Remember your password?{' '}
           <Link
             href="/sign-in"
             className="font-semibold text-foreground hover:underline"

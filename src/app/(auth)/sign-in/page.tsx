@@ -17,6 +17,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useAuth } from "@/hooks/use-auth";
 
 const signInSchema = z.object({
   email: z
@@ -34,6 +35,9 @@ type SignInFormValues = z.infer<typeof signInSchema>;
 
 export default function SignInPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const { login } = useAuth();
 
   const form = useForm<SignInFormValues>({
     resolver: zodResolver(signInSchema),
@@ -44,9 +48,22 @@ export default function SignInPage() {
     },
   });
 
-  function onSubmit(data: SignInFormValues) {
-    console.log(data);
-    // TODO: Handle sign in logic
+  async function onSubmit(data: SignInFormValues) {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      await login(data.email, data.password);
+      // Redirect will be handled automatically by AuthContext after successful login
+    } catch (err: unknown) {
+      const errorMessage =
+        err && typeof err === 'object' && 'message' in err
+          ? (err.message as string)
+          : 'Login failed. Please check your email and password';
+      setError(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -80,6 +97,13 @@ export default function SignInPage() {
             Enter your email and password to access your account
           </p>
         </div>
+
+        {/* Error Message */}
+        {error && (
+          <div className="mb-4 p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg">
+            {error}
+          </div>
+        )}
 
         {/* Form */}
         <Form {...form}>
@@ -169,8 +193,12 @@ export default function SignInPage() {
             </div>
 
             {/* Sign In Button */}
-            <Button type="submit" className="w-full h-11 rounded-full">
-              Sign In
+            <Button
+              type="submit"
+              className="w-full h-11 rounded-full"
+              disabled={isLoading}
+            >
+              {isLoading ? 'Signing In...' : 'Sign In'}
             </Button>
 
             {/* Google Sign In */}

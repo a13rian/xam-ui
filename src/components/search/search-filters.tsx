@@ -1,13 +1,23 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Search, Calendar as CalendarIcon, Users, Minus, Plus } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
-import { useSearch } from "./search-context";
+import { useState } from 'react';
+import {
+  Search,
+  Calendar as CalendarIcon,
+  Users,
+  Minus,
+  Plus,
+} from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import { Calendar } from '@/components/ui/calendar';
+import { useSearch } from './search-context';
 
 interface SearchFiltersProps {
   className?: string;
@@ -22,15 +32,18 @@ export function SearchFilters({ className }: SearchFiltersProps) {
   const [selectingCheckIn, setSelectingCheckIn] = useState(true);
 
   const handleLocationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch({ type: "SET_FILTERS", payload: { location: e.target.value } });
+    dispatch({ type: 'SET_FILTERS', payload: { location: e.target.value } });
   };
 
   const handleDateSelect = (date: Date | null) => {
     if (selectingCheckIn) {
-      dispatch({ type: "SET_FILTERS", payload: { dateFrom: date, dateTo: null } });
+      dispatch({
+        type: 'SET_FILTERS',
+        payload: { dateFrom: date, dateTo: null },
+      });
       setSelectingCheckIn(false);
     } else {
-      dispatch({ type: "SET_FILTERS", payload: { dateTo: date } });
+      dispatch({ type: 'SET_FILTERS', payload: { dateTo: date } });
       setDatePopoverOpen(false);
       setSelectingCheckIn(true);
     }
@@ -38,20 +51,23 @@ export function SearchFilters({ className }: SearchFiltersProps) {
 
   const handleGuestsChange = (delta: number) => {
     const newGuests = Math.max(1, Math.min(16, filters.guests + delta));
-    dispatch({ type: "SET_FILTERS", payload: { guests: newGuests } });
+    dispatch({ type: 'SET_FILTERS', payload: { guests: newGuests } });
   };
 
   const formatDate = (date: Date | null) => {
     if (!date) return null;
-    return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   };
 
-  const dateLabel = filters.dateFrom || filters.dateTo
-    ? `${formatDate(filters.dateFrom) || "Từ ngày"} - ${formatDate(filters.dateTo) || "Đến ngày"}`
-    : "Chọn thời gian";
+  const dateLabel =
+    filters.dateFrom || filters.dateTo
+      ? `${formatDate(filters.dateFrom) || 'Từ ngày'} - ${
+          formatDate(filters.dateTo) || 'Đến ngày'
+        }`
+      : 'Chọn thời gian';
 
   return (
-    <div className={cn("flex items-center gap-2 flex-wrap", className)}>
+    <div className={cn('flex items-center gap-2 flex-wrap', className)}>
       {/* Location search */}
       <div className="relative flex-1 min-w-[200px] max-w-[340px]">
         <Input
@@ -76,8 +92,8 @@ export function SearchFilters({ className }: SearchFiltersProps) {
           <Button
             variant="outline"
             className={cn(
-              "h-10 px-4 rounded-full gap-2 font-normal",
-              (filters.dateFrom || filters.dateTo) && "text-gray-900"
+              'h-10 px-4 rounded-full gap-2 font-normal',
+              (filters.dateFrom || filters.dateTo) && 'text-gray-900'
             )}
           >
             <CalendarIcon className="size-4" />
@@ -89,13 +105,16 @@ export function SearchFilters({ className }: SearchFiltersProps) {
           <div className="space-y-4">
             <div className="flex items-center justify-between text-sm">
               <span className="font-medium">
-                {selectingCheckIn ? "Chọn ngày bắt đầu" : "Chọn ngày kết thúc"}
+                {selectingCheckIn ? 'Chọn ngày bắt đầu' : 'Chọn ngày kết thúc'}
               </span>
               {(filters.dateFrom || filters.dateTo) && (
                 <button
                   className="text-gray-500 hover:text-gray-900 underline"
                   onClick={() => {
-                    dispatch({ type: "SET_FILTERS", payload: { dateFrom: null, dateTo: null } });
+                    dispatch({
+                      type: 'SET_FILTERS',
+                      payload: { dateFrom: null, dateTo: null },
+                    });
                     setSelectingCheckIn(true);
                   }}
                 >
@@ -106,7 +125,9 @@ export function SearchFilters({ className }: SearchFiltersProps) {
             <Calendar
               selected={selectingCheckIn ? filters.dateFrom : filters.dateTo}
               onSelect={handleDateSelect}
-              minDate={selectingCheckIn ? new Date() : filters.dateFrom || new Date()}
+              minDate={
+                selectingCheckIn ? new Date() : filters.dateFrom || new Date()
+              }
             />
           </div>
         </PopoverContent>
@@ -121,7 +142,7 @@ export function SearchFilters({ className }: SearchFiltersProps) {
           >
             <Users className="size-4" />
             <span className="hidden sm:inline">
-              {filters.guests} {filters.guests === 1 ? "người" : "người"}
+              {filters.guests} {filters.guests === 1 ? 'người' : 'người'}
             </span>
             <span className="sm:hidden">{filters.guests}</span>
           </Button>
@@ -143,7 +164,9 @@ export function SearchFilters({ className }: SearchFiltersProps) {
                 >
                   <Minus className="size-4" />
                 </Button>
-                <span className="w-6 text-center font-medium">{filters.guests}</span>
+                <span className="w-6 text-center font-medium">
+                  {filters.guests}
+                </span>
                 <Button
                   variant="outline"
                   size="icon-sm"
@@ -158,7 +181,6 @@ export function SearchFilters({ className }: SearchFiltersProps) {
           </div>
         </PopoverContent>
       </Popover>
-
     </div>
   );
 }
