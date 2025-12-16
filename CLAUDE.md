@@ -68,7 +68,15 @@ Located at `src/shared/lib/api/client.ts`. Provides `get`, `post`, `put`, `patch
 ### UI Components
 
 Uses shadcn/ui with new-york style. Components installed to `src/shared/components/ui/`.
-Install new components: `npx shadcn@latest add <component>`
+
+**Component Usage Priority:**
+1. **Use existing shadcn/ui components first** - Always check `@/shared/components/ui/` for available components before creating new ones
+2. **Extend existing components** - If a shadcn component needs customization, extend it rather than building from scratch
+3. **Create new components only when necessary** - Only create new components when no existing shadcn component can fulfill the requirement
+
+Install new shadcn components: `npx shadcn@latest add <component>`
+
+Import UI components: `import { Button, Input, Card } from '@/shared/components/ui'`
 
 ### Path Aliases
 
