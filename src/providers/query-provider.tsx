@@ -2,7 +2,7 @@
 
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { getQueryClient } from '@/lib/query';
+import { getQueryClient } from '@/shared/lib/query';
 
 interface QueryProviderProps {
   children: React.ReactNode;

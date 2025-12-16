@@ -1,9 +1,9 @@
 'use client';
 
 import { Heart, Search } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/shared/components/ui/button';
 import Link from 'next/link';
-import { ROUTES } from '@/lib/constants/routes';
+import { ROUTES } from '@/shared/constants';
 
 export default function FavoritesPage() {
   // TODO: Replace with actual data from useFavorites hook

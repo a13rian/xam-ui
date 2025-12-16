@@ -2,7 +2,7 @@
 
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
-import type { AuthUser } from '@/types/api';
+import type { AuthUser } from '@/features/auth';
 
 interface AuthState {
   // State

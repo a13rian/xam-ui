@@ -7,7 +7,7 @@ import {
   Heart,
   type LucideIcon,
 } from 'lucide-react';
-import { ROUTES } from '@/lib/constants/routes';
+import { ROUTES } from '@/shared/constants/routes';
 
 export interface NavItem {
   label: string;

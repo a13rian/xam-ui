@@ -1,5 +1,4 @@
-import { MarketingHeader } from '@/components/layouts/marketing';
-import { Footer } from '@/components/layout/footer';
+import { MarketingHeader, MarketingFooter } from '@/layouts/marketing';
 
 export default function MainLayout({
   children,
@@ -10,7 +9,7 @@ export default function MainLayout({
     <div className="flex min-h-screen flex-col">
       <MarketingHeader />
       <main className="flex-1">{children}</main>
-      <Footer />
+      <MarketingFooter />
     </div>
   );
 }

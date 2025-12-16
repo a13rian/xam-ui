@@ -3,8 +3,8 @@
 import { use } from 'react';
 import { ArrowLeft, Calendar, Clock, MapPin } from 'lucide-react';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { ROUTES } from '@/lib/constants/routes';
+import { Button } from '@/shared/components/ui/button';
+import { ROUTES } from '@/shared/constants';
 
 interface BookingDetailPageProps {
   params: Promise<{ id: string }>;

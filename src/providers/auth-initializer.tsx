@@ -1,9 +1,16 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useAuthStore } from '@/stores/auth.store';
-import { useCurrentUser } from '@/hooks/queries/use-auth-query';
-import { isAuthenticated } from '@/lib/auth/token-storage';
+import {
+  useAuthStore,
+  useCurrentUser,
+  isAuthenticated,
+  initializeTokenStorage,
+} from '@/features/auth';
+
+// Initialize token storage immediately when module loads
+// This ensures the API client has access to tokens before any requests
+initializeTokenStorage();
 
 interface AuthInitializerProps {
   children: React.ReactNode;

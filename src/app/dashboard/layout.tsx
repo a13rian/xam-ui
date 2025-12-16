@@ -1,24 +1,15 @@
-import { redirect } from 'next/navigation';
-import { cookies } from 'next/headers';
 import {
   DashboardSidebar,
   DashboardHeader,
   DashboardMobileNav,
-} from '@/components/layouts/dashboard';
+} from '@/layouts/dashboard';
 
-export default async function DashboardLayout({
+export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  // Server-side auth check
-  const cookieStore = await cookies();
-  const accessToken = cookieStore.get('access_token');
-
-  if (!accessToken) {
-    redirect('/sign-in?callbackUrl=/dashboard');
-  }
-
+  // Auth check is handled by proxy.ts middleware
   return (
     <div className="min-h-screen bg-gray-50">
       <DashboardHeader />

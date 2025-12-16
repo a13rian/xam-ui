@@ -2,7 +2,14 @@
 
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import type { SearchFilters, MapViewState } from '@/types/companion';
+import type { MapViewState } from '@/features/companions';
+
+interface SearchFilters {
+  location: string;
+  dateFrom: Date | null;
+  dateTo: Date | null;
+  guests: number;
+}
 
 interface SearchUIState {
   // State

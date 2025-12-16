@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import { Calendar, Search, Filter } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/shared/components/ui/button';
 import Link from 'next/link';
-import { ROUTES } from '@/lib/constants/routes';
+import { ROUTES } from '@/shared/constants';
 
 type BookingStatus = 'all' | 'upcoming' | 'completed' | 'cancelled';
 

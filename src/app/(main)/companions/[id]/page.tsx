@@ -5,11 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Star, Heart, Share2, MapPin, Clock, Users, CheckCircle2 } from "lucide-react";
-import { mockCompanions, formatPrice } from "@/lib/mock-data/companions";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
+import { mockCompanions, formatPrice } from "@/shared/mock-data";
+import { Button } from "@/shared/components/ui/button";
+import { Calendar } from "@/shared/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/shared/components/ui/popover";
+import { cn } from "@/shared/lib/utils";
 
 export default function CompanionDetailPage({
   params,

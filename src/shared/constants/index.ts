@@ -1,0 +1,7 @@
+export {
+  ROUTES,
+  PUBLIC_ROUTES,
+  AUTH_ROUTES,
+  PROTECTED_ROUTES,
+  ADMIN_ROUTES,
+} from './routes';

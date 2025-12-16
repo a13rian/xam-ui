@@ -5,8 +5,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@/stores';
-import { Button } from '@/components/ui/button';
-import { ROUTES } from '@/lib/constants/routes';
+import { Button } from '@/shared/components/ui/button';
+import { ROUTES } from '@/shared/constants';
 import { ArrowLeft, Camera, Loader2 } from 'lucide-react';
 
 export default function EditProfilePage() {

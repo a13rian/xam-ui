@@ -9,7 +9,7 @@ import {
   ArrowRight,
 } from 'lucide-react';
 import Link from 'next/link';
-import { ROUTES } from '@/lib/constants/routes';
+import { ROUTES } from '@/shared/constants';
 
 // Placeholder stats - these would come from API
 const stats = [

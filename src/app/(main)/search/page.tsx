@@ -1,5 +1,5 @@
-import { SearchPageClient } from '@/components/search/search-page-client';
-import { mockCompanions } from '@/lib/mock-data/companions';
+import { SearchPageClient } from '@/features/search';
+import { mockCompanions } from '@/shared/mock-data';
 
 export const metadata = {
   title: 'Tìm kiếm người đồng hành | Cogie',

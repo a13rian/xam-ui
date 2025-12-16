@@ -5,8 +5,8 @@ import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/shared/components/ui/button';
+import { Input } from '@/shared/components/ui/input';
 import {
   Form,
   FormControl,
@@ -14,8 +14,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { forgotPassword as forgotPasswordApi } from '@/lib/api/auth';
+} from '@/shared/components/ui/form';
+import { forgotPassword as forgotPasswordApi } from '@/features/auth';
 
 const forgotPasswordSchema = z.object({
   email: z

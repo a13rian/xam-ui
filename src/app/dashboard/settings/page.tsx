@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/shared/components/ui/button';
 import { Bell, Lock, Eye, Trash2 } from 'lucide-react';
 
 export default function SettingsPage() {

@@ -81,7 +81,6 @@ axiosInstance.interceptors.request.use(
 
     // Inject authorization token
     const token = getAccessToken();
-    console.log('🚀 ~ token:', token);
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

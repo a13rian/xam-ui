@@ -6,7 +6,7 @@ import {
   Plus,
   CreditCard,
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/shared/components/ui/button';
 
 type TransactionType = 'all' | 'deposits' | 'payments';
 
