@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useAuth } from "@/hooks/use-auth";
 import {
   Popover,
@@ -9,7 +10,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
-import { LogOut } from "lucide-react";
+import { LogOut, User } from "lucide-react";
 
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -93,17 +94,39 @@ export function Header() {
             <Popover>
               <PopoverTrigger asChild>
                 <button
-                  className="rounded-full w-[40px] h-[40px] flex items-center justify-center text-sm font-medium text-white bg-gray-900 transition-colors hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
+                  className="rounded-full w-[40px] h-[40px] flex items-center justify-center text-sm font-medium text-white bg-gray-900 transition-colors hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 overflow-hidden"
                   aria-label="User menu"
                 >
-                  {getUserInitials()}
+                  {user.avatarUrl ? (
+                    <Image
+                      src={user.avatarUrl}
+                      alt={user.firstName || "User avatar"}
+                      width={40}
+                      height={40}
+                      className="object-cover w-full h-full"
+                      unoptimized
+                    />
+                  ) : (
+                    getUserInitials()
+                  )}
                 </button>
               </PopoverTrigger>
               <PopoverContent align="end" className="w-64 p-0">
                 <div className="p-4">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="rounded-full w-10 h-10 flex items-center justify-center text-sm font-medium text-white bg-gray-900">
-                      {getUserInitials()}
+                    <div className="rounded-full w-10 h-10 flex items-center justify-center text-sm font-medium text-white bg-gray-900 overflow-hidden">
+                      {user.avatarUrl ? (
+                        <Image
+                          src={user.avatarUrl}
+                          alt={user.firstName || "User avatar"}
+                          width={40}
+                          height={40}
+                          className="object-cover w-full h-full"
+                          unoptimized
+                        />
+                      ) : (
+                        getUserInitials()
+                      )}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-semibold text-gray-900 truncate">
@@ -116,7 +139,17 @@ export function Header() {
                       </p>
                     </div>
                   </div>
-                  <div className="border-t border-gray-200 pt-3">
+                  <div className="border-t border-gray-200 pt-3 space-y-1">
+                    <Link href="/profile">
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-start text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+                        onClick={() => {}}
+                      >
+                        <User className="mr-2 h-4 w-4" />
+                        Profile
+                      </Button>
+                    </Link>
                     <Button
                       variant="ghost"
                       className="w-full justify-start text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100"
@@ -222,8 +255,19 @@ export function Header() {
                 <>
                   <div className="px-5 py-3 bg-gray-50 rounded-lg">
                     <div className="flex items-center gap-3 mb-3">
-                      <div className="rounded-full w-10 h-10 flex items-center justify-center text-sm font-medium text-white bg-gray-900">
-                        {getUserInitials()}
+                      <div className="rounded-full w-10 h-10 flex items-center justify-center text-sm font-medium text-white bg-gray-900 overflow-hidden">
+                        {user.avatarUrl ? (
+                          <Image
+                            src={user.avatarUrl}
+                            alt={user.firstName || "User avatar"}
+                            fill
+                            className="object-cover"
+                            sizes="40px"
+                            unoptimized
+                          />
+                        ) : (
+                          getUserInitials()
+                        )}
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-semibold text-gray-900 truncate">
@@ -236,6 +280,15 @@ export function Header() {
                         </p>
                       </div>
                     </div>
+                    <Link href="/profile" onClick={() => setIsMobileMenuOpen(false)}>
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-start text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+                      >
+                        <User className="mr-2 h-4 w-4" />
+                        Profile
+                      </Button>
+                    </Link>
                     <Button
                       variant="ghost"
                       className="w-full justify-start text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100"
