@@ -10,6 +10,19 @@ import type { AuthUser } from '@/features/auth';
 import { updateUser, uploadAvatar, useAuth } from '@/features/auth';
 import { Button } from '@/shared/components/ui/button';
 import { Input } from '@/shared/components/ui/input';
+import { Calendar } from '@/shared/components/ui/calendar';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/shared/components/ui/popover';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/shared/components/ui/select';
 import {
   Form,
   FormControl,
@@ -18,7 +31,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/shared/components/ui/form';
-import { Save, Camera } from 'lucide-react';
+import { Save, Camera, ChevronDown } from 'lucide-react';
 
 const userInfoSchema = z.object({
   firstName: z
@@ -48,16 +61,14 @@ const userInfoSchema = z.object({
         const monthDiff = today.getMonth() - date.getMonth();
         const dayDiff = today.getDate() - date.getDate();
         const actualAge =
-          monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)
-            ? age - 1
-            : age;
+          monthDiff < 0 || (monthDiff === 0 && dayDiff < 0) ? age - 1 : age;
         return actualAge >= 13 && actualAge <= 120;
       },
       { message: 'Ngày sinh không hợp lệ (phải từ 13-120 tuổi)' }
     ),
   gender: z
     .enum(['male', 'female', 'other', 'prefer_not_to_say'], {
-      errorMap: () => ({ message: 'Vui lòng chọn giới tính' }),
+      message: 'Vui lòng chọn giới tính',
     })
     .optional()
     .nullable(),
@@ -75,6 +86,7 @@ export function UserInfo({ user }: UserInfoTabProps) {
   const [avatarUrl, setAvatarUrl] = useState<string | null | undefined>(
     user.avatarUrl
   );
+  const [datePickerOpen, setDatePickerOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { refreshAuth } = useAuth();
 
@@ -270,7 +282,7 @@ export function UserInfo({ user }: UserInfoTabProps) {
                         <Input
                           type="text"
                           placeholder="Nhập họ"
-                          className="h-11"
+                          className="h-10"
                           {...field}
                         />
                       </FormControl>
@@ -289,7 +301,7 @@ export function UserInfo({ user }: UserInfoTabProps) {
                         <Input
                           type="text"
                           placeholder="Nhập tên"
-                          className="h-11"
+                          className="h-10"
                           {...field}
                         />
                       </FormControl>
@@ -310,7 +322,7 @@ export function UserInfo({ user }: UserInfoTabProps) {
                         <Input
                           type="tel"
                           placeholder="Nhập số điện thoại"
-                          className="h-11"
+                          className="h-10"
                           {...field}
                           value={field.value || ''}
                         />
@@ -323,87 +335,102 @@ export function UserInfo({ user }: UserInfoTabProps) {
                 <FormField
                   control={form.control}
                   name="dateOfBirth"
+                  render={({ field }) => {
+                    const selectedDate = field.value
+                      ? new Date(field.value)
+                      : undefined;
+
+                    return (
+                      <FormItem>
+                        <FormLabel>Ngày sinh</FormLabel>
+                        <Popover
+                          open={datePickerOpen}
+                          onOpenChange={setDatePickerOpen}
+                        >
+                          <PopoverTrigger asChild>
+                            <FormControl>
+                              <Button
+                                type="button"
+                                variant="outline"
+                                className="flex h-10 w-full justify-between px-3 text-left font-normal"
+                              >
+                                {selectedDate
+                                  ? selectedDate.toLocaleDateString('vi-VN')
+                                  : 'Chọn ngày sinh'}
+                                <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                              </Button>
+                            </FormControl>
+                          </PopoverTrigger>
+                          <PopoverContent
+                            className="w-auto overflow-hidden p-0"
+                            align="start"
+                          >
+                            <Calendar
+                              mode="single"
+                              selected={selectedDate}
+                              captionLayout="dropdown"
+                              onSelect={(date) => {
+                                field.onChange(
+                                  date ? date.toISOString().split('T')[0] : null
+                                );
+                                setDatePickerOpen(false);
+                              }}
+                              fromYear={new Date().getFullYear() - 120}
+                              toYear={new Date().getFullYear() - 13}
+                            />
+                          </PopoverContent>
+                        </Popover>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <FormField
+                  control={form.control}
+                  name="gender"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Ngày sinh</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="date"
-                          className="h-11"
-                          {...field}
-                          value={field.value || ''}
-                          max={new Date(
-                            new Date().setFullYear(new Date().getFullYear() - 13)
-                          )
-                            .toISOString()
-                            .split('T')[0]}
-                        />
-                      </FormControl>
+                      <FormLabel>Giới tính</FormLabel>
+                      <Select
+                        onValueChange={(value) =>
+                          field.onChange(value === '' ? null : value)
+                        }
+                        value={field.value || undefined}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="h-10 w-full data-[size=default]:h-10">
+                            <SelectValue placeholder="Chọn giới tính" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="male">Nam</SelectItem>
+                          <SelectItem value="female">Nữ</SelectItem>
+                          <SelectItem value="other">Khác</SelectItem>
+                          <SelectItem value="prefer_not_to_say">
+                            Không muốn tiết lộ
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
+
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="email"
+                      value={user.email}
+                      readOnly
+                      className="h-10 bg-gray-50 cursor-not-allowed"
+                    />
+                  </FormControl>
+                </FormItem>
               </div>
-
-              <FormField
-                control={form.control}
-                name="gender"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Giới tính</FormLabel>
-                    <FormControl>
-                      <select
-                        {...field}
-                        value={field.value || ''}
-                        className="flex h-11 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                      >
-                        <option value="">Chọn giới tính</option>
-                        <option value="male">Nam</option>
-                        <option value="female">Nữ</option>
-                        <option value="other">Khác</option>
-                        <option value="prefer_not_to_say">
-                          Không muốn tiết lộ
-                        </option>
-                      </select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Email
-                </label>
-                <Input
-                  type="email"
-                  value={user.email}
-                  readOnly
-                  className="h-11 bg-gray-50 cursor-not-allowed"
-                />
-                <p className="mt-1 text-xs text-gray-500">
-                  Email không thể thay đổi
-                </p>
-              </div>
-
-              {user.roleIds && user.roleIds.length > 0 && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Vai trò
-                  </label>
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    {user.roleIds.map((roleId) => (
-                      <span
-                        key={roleId}
-                        className="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-800"
-                      >
-                        {roleId}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-
               <div className="flex gap-3 pt-4">
                 <Button
                   type="submit"
