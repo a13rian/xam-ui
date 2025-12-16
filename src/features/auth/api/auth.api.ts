@@ -57,19 +57,28 @@ export async function updateUser(data: UpdateUserRequest): Promise<AuthUser> {
 
 /**
  * Upload avatar
+ *
+ * Backend endpoint:
+ *   PATCH /api/users/me/avatar
+ *   field name: "file" (multipart/form-data)
  */
 export async function uploadAvatar(file: File): Promise<AvatarResponse> {
   const formData = new FormData();
-  formData.append('avatar', file);
+  formData.append('file', file);
 
-  return post<AvatarResponse>('/auth/me/avatar', formData);
+  // axios baseURL is `/api/v1`, so this becomes `/api/v1/users/me/avatar`
+  // which the Next.js proxy should forward to the NestJS route `/api/users/me/avatar`.
+  return patch<AvatarResponse>('/users/me/avatar', formData);
 }
 
 /**
  * Remove avatar
+ *
+ * Backend endpoint:
+ *   DELETE /api/users/me/avatar
  */
 export async function removeAvatar(): Promise<void> {
-  return del('/auth/me/avatar');
+  return del('/users/me/avatar');
 }
 
 /**

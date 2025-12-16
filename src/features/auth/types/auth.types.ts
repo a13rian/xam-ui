@@ -7,8 +7,10 @@ export interface AuthUser {
   email: string;
   firstName: string;
   lastName: string;
-  phone?: string;
-  avatarUrl?: string;
+  phone?: string | null;
+  dateOfBirth?: string | null;
+  gender?: 'male' | 'female' | 'other' | 'prefer_not_to_say' | null;
+  avatarUrl?: string | null;
   roleIds?: string[];
   createdAt?: string;
 }
@@ -47,6 +49,9 @@ export interface TokenResponse {
 export interface UpdateUserRequest {
   firstName?: string;
   lastName?: string;
+  phone?: string | null;
+  dateOfBirth?: string | null;
+  gender?: 'male' | 'female' | 'other' | 'prefer_not_to_say' | null;
 }
 
 export interface AvatarResponse {

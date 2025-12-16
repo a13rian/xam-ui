@@ -9,11 +9,11 @@ export default function AccountLayout({
   return (
     <div className="bg-gray-50 py-8 min-h-[calc(100vh-64px)]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col lg:flex-row lg:gap-8">
+        <div className="flex flex-col lg:flex-row lg:gap-10">
           {/* Sidebar - hidden on mobile, shown on desktop */}
-          <aside className="hidden lg:block lg:w-64 lg:flex-shrink-0">
+          <aside className="hidden lg:block lg:w-72 lg:shrink-0">
             <div className="sticky top-24 rounded-xl bg-white p-4 shadow-sm">
-              <h2 className="mb-4 px-3 text-sm font-semibold text-gray-500 uppercase tracking-wider">
+              <h2 className="mb-4 px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
                 Tài khoản
               </h2>
               <AccountSidebar />

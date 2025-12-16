@@ -32,3 +32,4 @@ export {
   PaginationNext,
   PaginationPrevious,
 } from './pagination';
+export { Toaster } from './sonner';

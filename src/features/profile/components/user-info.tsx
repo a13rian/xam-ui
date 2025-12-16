@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import Image from 'next/image';
+import { toast } from 'sonner';
 import type { AuthUser } from '@/features/auth';
 import { updateUser, uploadAvatar, useAuth } from '@/features/auth';
 import { Button } from '@/shared/components/ui/button';
@@ -28,6 +29,38 @@ const userInfoSchema = z.object({
     .string()
     .min(1, 'Tên là bắt buộc')
     .max(100, 'Tên không được vượt quá 100 ký tự'),
+  phone: z
+    .string()
+    .max(20, 'Số điện thoại không được vượt quá 20 ký tự')
+    .regex(/^[0-9+\-\s()]*$/, 'Số điện thoại không hợp lệ')
+    .optional()
+    .nullable(),
+  dateOfBirth: z
+    .string()
+    .optional()
+    .nullable()
+    .refine(
+      (val) => {
+        if (!val) return true;
+        const date = new Date(val);
+        const today = new Date();
+        const age = today.getFullYear() - date.getFullYear();
+        const monthDiff = today.getMonth() - date.getMonth();
+        const dayDiff = today.getDate() - date.getDate();
+        const actualAge =
+          monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)
+            ? age - 1
+            : age;
+        return actualAge >= 13 && actualAge <= 120;
+      },
+      { message: 'Ngày sinh không hợp lệ (phải từ 13-120 tuổi)' }
+    ),
+  gender: z
+    .enum(['male', 'female', 'other', 'prefer_not_to_say'], {
+      errorMap: () => ({ message: 'Vui lòng chọn giới tính' }),
+    })
+    .optional()
+    .nullable(),
 });
 
 type UserInfoFormValues = z.infer<typeof userInfoSchema>;
@@ -39,7 +72,6 @@ interface UserInfoTabProps {
 export function UserInfo({ user }: UserInfoTabProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null | undefined>(
     user.avatarUrl
   );
@@ -51,6 +83,11 @@ export function UserInfo({ user }: UserInfoTabProps) {
     defaultValues: {
       firstName: user.firstName || '',
       lastName: user.lastName || '',
+      phone: user.phone || null,
+      dateOfBirth: user.dateOfBirth
+        ? new Date(user.dateOfBirth).toISOString().split('T')[0]
+        : null,
+      gender: user.gender || null,
     },
   });
 
@@ -59,22 +96,38 @@ export function UserInfo({ user }: UserInfoTabProps) {
     setAvatarUrl(user.avatarUrl);
   }, [user.avatarUrl]);
 
+  // Sync form values with user when user changes
+  useEffect(() => {
+    form.reset({
+      firstName: user.firstName || '',
+      lastName: user.lastName || '',
+      phone: user.phone || null,
+      dateOfBirth: user.dateOfBirth
+        ? new Date(user.dateOfBirth).toISOString().split('T')[0]
+        : null,
+      gender: user.gender || null,
+    });
+  }, [user, form]);
+
   const onSubmit = async (data: UserInfoFormValues) => {
     setIsLoading(true);
-    setError(null);
 
     try {
       await updateUser({
         firstName: data.firstName,
         lastName: data.lastName,
+        phone: data.phone || null,
+        dateOfBirth: data.dateOfBirth || null,
+        gender: data.gender || null,
       });
       await refreshAuth();
+      toast.success('Cập nhật thông tin thành công');
     } catch (err: unknown) {
       const errorMessage =
         err && typeof err === 'object' && 'message' in err
           ? (err.message as string)
           : 'Cập nhật thông tin thất bại. Vui lòng thử lại.';
-      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -90,29 +143,29 @@ export function UserInfo({ user }: UserInfoTabProps) {
 
     // Validate file type
     if (!file.type.startsWith('image/')) {
-      setError('Vui lòng chọn file ảnh');
+      toast.error('Vui lòng chọn file ảnh');
       return;
     }
 
     // Validate file size (5MB)
     if (file.size > 5 * 1024 * 1024) {
-      setError('Kích thước file không được vượt quá 5MB');
+      toast.error('Kích thước file không được vượt quá 5MB');
       return;
     }
 
     setIsUploadingAvatar(true);
-    setError(null);
 
     try {
       const response = await uploadAvatar(file);
       setAvatarUrl(response.avatarUrl);
       await refreshAuth();
+      toast.success('Cập nhật ảnh đại diện thành công');
     } catch (err: unknown) {
       const errorMessage =
         err && typeof err === 'object' && 'message' in err
           ? (err.message as string)
           : 'Upload avatar thất bại. Vui lòng thử lại.';
-      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setIsUploadingAvatar(false);
       if (fileInputRef.current) {
@@ -146,12 +199,6 @@ export function UserInfo({ user }: UserInfoTabProps) {
           Thông tin cá nhân
         </h2>
       </div>
-
-      {error && (
-        <div className="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-600">
-          {error}
-        </div>
-      )}
 
       <div className="flex flex-col gap-8 lg:flex-row lg:gap-12">
         {/* Avatar Section - Left Side */}
@@ -251,6 +298,78 @@ export function UserInfo({ user }: UserInfoTabProps) {
                   )}
                 />
               </div>
+
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Số điện thoại</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="tel"
+                          placeholder="Nhập số điện thoại"
+                          className="h-11"
+                          {...field}
+                          value={field.value || ''}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="dateOfBirth"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Ngày sinh</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="date"
+                          className="h-11"
+                          {...field}
+                          value={field.value || ''}
+                          max={new Date(
+                            new Date().setFullYear(new Date().getFullYear() - 13)
+                          )
+                            .toISOString()
+                            .split('T')[0]}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <FormField
+                control={form.control}
+                name="gender"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Giới tính</FormLabel>
+                    <FormControl>
+                      <select
+                        {...field}
+                        value={field.value || ''}
+                        className="flex h-11 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+                        <option value="">Chọn giới tính</option>
+                        <option value="male">Nam</option>
+                        <option value="female">Nữ</option>
+                        <option value="other">Khác</option>
+                        <option value="prefer_not_to_say">
+                          Không muốn tiết lộ
+                        </option>
+                      </select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">

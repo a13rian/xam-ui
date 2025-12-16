@@ -42,14 +42,14 @@ export function AccountSidebar() {
             key={item.href}
             href={item.href}
             className={cn(
-              'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
+              'flex items-center gap-3 rounded-lg px-3 py-2 text-xs font-medium transition-colors sm:text-sm',
               isActive
                 ? 'bg-orange-50 text-orange-600'
                 : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
             )}
           >
-            <Icon className="h-5 w-5" />
-            <span>{item.label}</span>
+            <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
+            <span className="truncate">{item.label}</span>
           </Link>
         );
       })}
