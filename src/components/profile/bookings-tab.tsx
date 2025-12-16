@@ -1,45 +1,24 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { getMyBookings } from '@/lib/api/bookings';
-import type { BookingResponse, BookingStatus } from '@/lib/api/types';
+import { useState } from 'react';
+import { useBookings } from '@/hooks/queries/use-bookings-query';
+import type { BookingStatus } from '@/lib/api/types';
 import { Button } from '@/components/ui/button';
 import { Calendar, MapPin, Clock, DollarSign } from 'lucide-react';
 import Link from 'next/link';
 
 export function BookingsTab() {
-  const [bookings, setBookings] = useState<BookingResponse[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const [statusFilter, setStatusFilter] = useState<BookingStatus | 'all'>('all');
 
-  const fetchBookings = async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const response = await getMyBookings({
-        page,
-        limit: 10,
-        status: statusFilter !== 'all' ? statusFilter : undefined,
-      });
-      setBookings(response.items);
-      setTotalPages(Math.ceil(response.total / response.limit));
-    } catch (err: unknown) {
-      const errorMessage =
-        err && typeof err === 'object' && 'message' in err
-          ? (err.message as string)
-          : 'Failed to load bookings';
-      setError(errorMessage);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { data, isLoading, error } = useBookings({
+    page,
+    limit: 10,
+    status: statusFilter !== 'all' ? statusFilter : undefined,
+  });
 
-  useEffect(() => {
-    fetchBookings();
-  }, [page, statusFilter]);
+  const bookings = data?.items ?? [];
+  const totalPages = data ? Math.ceil(data.total / data.limit) : 1;
 
   const formatCurrency = (amount: number, currency: string = 'VND') => {
     return new Intl.NumberFormat('vi-VN', {
@@ -118,7 +97,11 @@ export function BookingsTab() {
       </div>
 
       {error && (
-        <div className="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-600">{error}</div>
+        <div className="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-600">
+          {error && typeof error === 'object' && 'message' in error
+            ? (error.message as string)
+            : 'Failed to load bookings'}
+        </div>
       )}
 
       {bookings.length === 0 ? (

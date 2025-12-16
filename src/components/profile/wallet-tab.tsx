@@ -1,46 +1,17 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { getBalance, getWallet } from '@/lib/api/wallet';
-import type { BalanceResponse, WalletResponse } from '@/lib/api/types';
+import { useState } from 'react';
+import { useWalletData } from '@/hooks/queries/use-wallet-query';
 import { Button } from '@/components/ui/button';
 import { DepositModal } from './deposit-modal';
 import { Wallet, Plus } from 'lucide-react';
 
 export function WalletTab() {
-  const [wallet, setWallet] = useState<WalletResponse | null>(null);
-  const [balance, setBalance] = useState<BalanceResponse | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { wallet, balance, isLoading, error, refetch } = useWalletData();
   const [isDepositModalOpen, setIsDepositModalOpen] = useState(false);
 
-  const fetchWalletData = async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const [walletData, balanceData] = await Promise.all([
-        getWallet(),
-        getBalance(),
-      ]);
-      setWallet(walletData);
-      setBalance(balanceData);
-    } catch (err: unknown) {
-      const errorMessage =
-        err && typeof err === 'object' && 'message' in err
-          ? (err.message as string)
-          : 'Failed to load wallet information';
-      setError(errorMessage);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchWalletData();
-  }, []);
-
   const handleDepositSuccess = () => {
-    fetchWalletData();
+    refetch();
     setIsDepositModalOpen(false);
   };
 
@@ -62,11 +33,15 @@ export function WalletTab() {
   }
 
   if (error) {
+    const errorMessage =
+      error && typeof error === 'object' && 'message' in error
+        ? (error.message as string)
+        : 'Failed to load wallet information';
     return (
       <div className="rounded-2xl bg-white p-6 shadow-sm sm:p-8">
         <div className="text-center">
-          <p className="text-red-600">{error}</p>
-          <Button onClick={fetchWalletData} className="mt-4">
+          <p className="text-red-600">{errorMessage}</p>
+          <Button onClick={() => refetch()} className="mt-4">
             Retry
           </Button>
         </div>
