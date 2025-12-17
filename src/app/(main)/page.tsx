@@ -7,8 +7,8 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative min-h-screen overflow-hidden bg-white">
         {/* Background decorative blob */}
-        <div className="pointer-events-none absolute -right-20 -top-20 h-[600px] w-[600px] rounded-full bg-gradient-to-br from-orange-200 via-orange-300 to-orange-400 opacity-60 blur-3xl"></div>
-        <div className="pointer-events-none absolute -right-40 top-20 h-[400px] w-[400px] rounded-full bg-gradient-to-br from-orange-300 to-orange-500 opacity-40"></div>
+        <div className="pointer-events-none absolute -right-20 -top-20 h-[600px] w-[600px] rounded-full bg-linear-to-br from-orange-200 via-orange-300 to-orange-400 opacity-60 blur-3xl"></div>
+        <div className="pointer-events-none absolute -right-40 top-20 h-[400px] w-[400px] rounded-full bg-linear-to-br from-orange-300 to-orange-500 opacity-40"></div>
 
         <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid min-h-[calc(100vh-64px)] items-center gap-12 py-12 lg:grid-cols-2 lg:gap-8 lg:py-24">
@@ -42,6 +42,12 @@ export default function Home() {
                 >
                   Tìm hiểu thêm
                 </Link>
+                <Link
+                  href="/become-partner"
+                  className="inline-flex h-12 items-center justify-center rounded-full border border-orange-500 bg-white px-8 text-sm font-medium text-orange-600 transition-colors hover:bg-orange-50"
+                >
+                  Trở thành Partner
+                </Link>
               </div>
 
               {/* Stats with avatars */}
@@ -63,7 +69,7 @@ export default function Home() {
             <div className="relative hidden lg:block">
               <div className="relative mx-auto w-full max-w-lg">
                 {/* Main hero image */}
-                <div className="relative z-10 aspect-[4/5] overflow-hidden rounded-[2rem] shadow-2xl">
+                <div className="relative z-10 aspect-4/5 overflow-hidden rounded-4xl shadow-2xl">
                   <Image
                     src="/hero.jpg"
                     alt="Hai người đang trò chuyện vui vẻ tại quán cafe"
@@ -147,7 +153,7 @@ export default function Home() {
           <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
             {/* Left - Image */}
             <div className="relative">
-              <div className="relative aspect-square overflow-hidden rounded-3xl bg-gradient-to-br from-orange-100 to-orange-50">
+              <div className="relative aspect-square overflow-hidden rounded-3xl bg-linear-to-br from-orange-100 to-orange-50">
                 <Image
                   src="/hero.jpg"
                   alt="Người dùng Cogie"
@@ -418,7 +424,7 @@ export default function Home() {
       {/* CTA Section */}
       <section className="bg-white py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-orange-500 to-orange-600 px-8 py-16 text-center text-white shadow-2xl sm:px-16">
+          <div className="relative overflow-hidden rounded-3xl bg-linear-to-r from-orange-500 to-orange-600 px-8 py-16 text-center text-white shadow-2xl sm:px-16">
             {/* Decorative elements */}
             <div className="pointer-events-none absolute -left-20 -top-20 h-64 w-64 rounded-full bg-white/10"></div>
             <div className="pointer-events-none absolute -bottom-20 -right-20 h-64 w-64 rounded-full bg-white/10"></div>

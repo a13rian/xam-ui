@@ -16,6 +16,10 @@ export function MarketingHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { isAuthenticated, user, logout } = useAuth();
 
+  const partnerHref = isAuthenticated
+    ? '/become-partner'
+    : '/sign-in?callbackUrl=/become-partner';
+
   const getUserInitials = () => {
     if (user?.firstName && user?.lastName) {
       return `${user.firstName[0]}${user.lastName[0]}`.toUpperCase();
@@ -35,7 +39,7 @@ export function MarketingHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+    <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/95 backdrop-blur supports-backdrop-filter:bg-white/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
@@ -84,7 +88,7 @@ export function MarketingHeader() {
         {/* Desktop Auth Buttons */}
         <div className="hidden md:flex items-center gap-3">
           <Link
-            href="/partner"
+            href={partnerHref}
             className="rounded-full border border-gray-900 px-5 h-[40px] flex items-center text-sm font-medium text-gray-900 transition-colors hover:bg-gray-100"
           >
             Become a Partner
@@ -243,7 +247,7 @@ export function MarketingHeader() {
             </Link>
             <div className="pt-3 border-t border-gray-200 flex flex-col gap-3">
               <Link
-                href="/partner"
+                href={partnerHref}
                 className="rounded-full border border-gray-900 px-5 h-[40px] flex items-center justify-center text-sm font-medium text-gray-900 transition-colors hover:bg-gray-100"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
@@ -277,7 +281,10 @@ export function MarketingHeader() {
                       </p>
                     </div>
                   </div>
-                  <Link href="/account/profile" onClick={() => setIsMobileMenuOpen(false)}>
+                  <Link
+                    href="/account/profile"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
                     <Button
                       variant="ghost"
                       className="w-full justify-start text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100"

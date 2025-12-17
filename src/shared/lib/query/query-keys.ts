@@ -64,4 +64,10 @@ export const queryKeys = {
     verificationStatus: () =>
       [...queryKeys.profile.all, 'verification-status'] as const,
   },
+
+  // Partner / Account
+  partner: {
+    all: ['partner'] as const,
+    account: () => [...queryKeys.partner.all, 'account'] as const,
+  },
 } as const;
