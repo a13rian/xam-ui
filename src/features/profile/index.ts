@@ -35,9 +35,9 @@ export {
 
 // Components
 export {
-  ProfileHeader,
   UserInfoTab,
   ChangePasswordForm,
   EmailVerificationSection,
   NotificationSettings as NotificationSettingsComponent,
+  AccountSidebar,
 } from './components';

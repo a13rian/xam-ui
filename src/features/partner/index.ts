@@ -9,9 +9,19 @@ export type {
 export {
   registerPartner,
   getMyAccount,
+  listPendingAccounts,
+  approveAccount,
+  rejectAccount,
   usePartnerRegister,
   usePartnerAccountStatus,
+  usePendingAccounts,
+  useApproveAccount,
+  useRejectAccount,
 } from './api';
+export type {
+  PendingAccount,
+  ListPendingAccountsResponse,
+} from './api/partner.api';
 
 export { PartnerRegisterForm, PartnerStatusCard } from './components';
 

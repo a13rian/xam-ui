@@ -123,11 +123,16 @@ export function SearchFilters({ className }: SearchFiltersProps) {
               )}
             </div>
             <Calendar
-              selected={selectingCheckIn ? filters.dateFrom : filters.dateTo}
-              onSelect={handleDateSelect}
-              minDate={
-                selectingCheckIn ? new Date() : filters.dateFrom || new Date()
-              }
+              {...({
+                mode: 'single',
+                selected: selectingCheckIn ? filters.dateFrom ?? undefined : filters.dateTo ?? undefined,
+                onSelect: handleDateSelect,
+                disabled: (date: Date) =>
+                  selectingCheckIn
+                    ? date < new Date()
+                    : date < (filters.dateFrom || new Date()),
+                 
+              } as unknown as Record<string, unknown>)}
             />
           </div>
         </PopoverContent>

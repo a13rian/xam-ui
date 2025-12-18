@@ -10,11 +10,17 @@ import {
   PopoverTrigger,
 } from '@/shared/components/ui/popover';
 import { Button } from '@/shared/components/ui/button';
-import { LogOut, User } from 'lucide-react';
+import { LogOut, User, Shield } from 'lucide-react';
+import { ROUTES } from '@/shared/constants/routes';
 
 export function MarketingHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { isAuthenticated, user, logout } = useAuth();
+
+  // Check if user is admin
+  const isAdmin = user?.roles?.some((role) =>
+    role.name.toLowerCase().includes('admin')
+  );
 
   const partnerHref = isAuthenticated
     ? '/become-partner'
@@ -152,6 +158,17 @@ export function MarketingHeader() {
                         Profile
                       </Button>
                     </Link>
+                    {isAdmin && (
+                      <Link href={ROUTES.ADMIN.HOME}>
+                        <Button
+                          variant="ghost"
+                          className="w-full justify-start text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+                        >
+                          <Shield className="mr-2 h-4 w-4" />
+                          Admin Panel
+                        </Button>
+                      </Link>
+                    )}
                     <Button
                       variant="ghost"
                       className="w-full justify-start text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100"
@@ -293,6 +310,20 @@ export function MarketingHeader() {
                       Profile
                     </Button>
                   </Link>
+                  {isAdmin && (
+                    <Link
+                      href={ROUTES.ADMIN.HOME}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-start text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+                      >
+                        <Shield className="mr-2 h-4 w-4" />
+                        Admin Panel
+                      </Button>
+                    </Link>
+                  )}
                   <Button
                     variant="ghost"
                     className="w-full justify-start text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100"

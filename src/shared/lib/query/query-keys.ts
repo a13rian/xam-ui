@@ -69,5 +69,24 @@ export const queryKeys = {
   partner: {
     all: ['partner'] as const,
     account: () => [...queryKeys.partner.all, 'account'] as const,
+    pendingAll: () => [...queryKeys.partner.all, 'pending'] as const,
+    pending: (page: number, limit: number) =>
+      [...queryKeys.partner.pendingAll(), { page, limit }] as const,
+  },
+
+  // Users (Admin)
+  users: {
+    all: ['users'] as const,
+    list: (params?: { page?: number; limit?: number; search?: string; isActive?: boolean }) =>
+      [...queryKeys.users.all, 'list', params] as const,
+    detail: (id: string) => [...queryKeys.users.all, 'detail', id] as const,
+  },
+
+  // Accounts (Admin)
+  accounts: {
+    all: ['accounts'] as const,
+    list: (params?: { page?: number; limit?: number; type?: string; status?: string }) =>
+      [...queryKeys.accounts.all, 'list', params] as const,
+    detail: (id: string) => [...queryKeys.accounts.all, 'detail', id] as const,
   },
 } as const;

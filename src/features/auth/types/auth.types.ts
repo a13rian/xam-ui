@@ -11,8 +11,22 @@ export interface AuthUser {
   dateOfBirth?: string | null;
   gender?: 'male' | 'female' | 'other' | 'prefer_not_to_say' | null;
   avatarUrl?: string | null;
-  roleIds?: string[];
   createdAt?: string;
+  roles?: Role[];
+}
+
+export interface Role {
+  id: string;
+  name: string;
+  permissions: Permission[];
+}
+
+export interface Permission {
+  id: string;
+  name: string;
+  description: string;
+  resource: string;
+  action: string;
 }
 
 export interface LoginRequest {

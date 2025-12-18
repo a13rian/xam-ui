@@ -6,6 +6,8 @@ import {
   BarChart3,
   Settings,
   Shield,
+  UserCheck,
+  Building2,
   type LucideIcon,
 } from 'lucide-react';
 import { ROUTES } from '@/shared/constants/routes';
@@ -41,6 +43,16 @@ export const adminNavItems: AdminNavItem[] = [
     label: 'Companions',
     href: ROUTES.ADMIN.COMPANIONS,
     icon: UserCircle,
+  },
+  {
+    label: 'Partners',
+    href: ROUTES.ADMIN.PARTNERS,
+    icon: UserCheck,
+  },
+  {
+    label: 'Accounts',
+    href: ROUTES.ADMIN.ACCOUNTS,
+    icon: Building2,
   },
   {
     label: 'Bookings',
@@ -84,6 +96,16 @@ export const adminNavSections: AdminNavSection[] = [
         label: 'Companions',
         href: ROUTES.ADMIN.COMPANIONS,
         icon: UserCircle,
+      },
+      {
+        label: 'Partners',
+        href: ROUTES.ADMIN.PARTNERS,
+        icon: UserCheck,
+      },
+      {
+        label: 'Accounts',
+        href: ROUTES.ADMIN.ACCOUNTS,
+        icon: Building2,
       },
       {
         label: 'Bookings',
