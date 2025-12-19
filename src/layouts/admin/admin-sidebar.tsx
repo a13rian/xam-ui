@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/shared/lib/utils';
 import { adminNavSections, type AdminNavItem } from '@/config/admin-nav';
 import { useSidebarCollapsed, useUIStore } from '@/stores';
-import { ChevronLeft, Shield } from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
 
 function NavItemComponent({
   item,
@@ -70,18 +70,6 @@ export function AdminSidebar() {
           )}
         />
       </button>
-
-      {/* Admin Badge */}
-      {!isCollapsed && (
-        <div className="px-4 py-3 border-b border-gray-200">
-          <div className="flex items-center gap-2 text-indigo-600">
-            <Shield className="h-4 w-4" />
-            <span className="text-xs font-semibold uppercase tracking-wider">
-              Admin Panel
-            </span>
-          </div>
-        </div>
-      )}
 
       {/* Navigation */}
       <nav className="flex-1 overflow-y-auto px-3 py-6">

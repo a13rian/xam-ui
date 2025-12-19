@@ -2,12 +2,14 @@
 
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
+import { Text } from 'lucide-react';
 
 import { Badge } from '@/shared/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/ui/avatar';
-import { DataTableColumnHeader } from '@/shared/components/ui/data-table-column-header';
+import { DataTableColumnHeader } from '@/shared/components/ui/table/data-table-column-header';
 import type { User } from '../../types';
 import { CellAction } from './cell-action';
+import { USER_STATUS_OPTIONS } from './options';
 
 export const columns: ColumnDef<User>[] = [
   {
@@ -32,6 +34,13 @@ export const columns: ColumnDef<User>[] = [
         </div>
       );
     },
+    meta: {
+      label: 'Search',
+      placeholder: 'Search users...',
+      variant: 'text',
+      icon: Text
+    },
+    enableColumnFilter: true,
     enableSorting: false,
   },
   {
@@ -48,6 +57,12 @@ export const columns: ColumnDef<User>[] = [
         </Badge>
       );
     },
+    meta: {
+      label: 'Status',
+      variant: 'select',
+      options: USER_STATUS_OPTIONS
+    },
+    enableColumnFilter: true,
     enableSorting: false,
   },
   {

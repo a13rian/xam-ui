@@ -1,11 +1,13 @@
-'use client';
-
 import Link from 'next/link';
 import { Plus } from 'lucide-react';
 
 import { Button } from '@/shared/components/ui/button';
 import { ROUTES } from '@/shared/constants/routes';
 import { UserListing } from '@/features/user-management';
+
+export const metadata = {
+  title: 'Users | Admin',
+};
 
 export default function AdminUsersPage() {
   return (

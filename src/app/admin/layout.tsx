@@ -13,7 +13,7 @@ export default async function AdminLayout({
 }) {
   // Server-side auth check
   const cookieStore = await cookies();
-  const accessToken = cookieStore.get('access_token');
+  const accessToken = cookieStore.get('accessToken');
 
   if (!accessToken) {
     redirect('/sign-in?callbackUrl=/admin');

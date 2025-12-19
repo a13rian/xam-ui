@@ -2,12 +2,13 @@
 
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
-import { User, Briefcase } from 'lucide-react';
+import { User, Briefcase, Text } from 'lucide-react';
 
 import { Badge } from '@/shared/components/ui/badge';
-import { DataTableColumnHeader } from '@/shared/components/ui/data-table-column-header';
+import { DataTableColumnHeader } from '@/shared/components/ui/table/data-table-column-header';
 import type { Account } from '../../types';
 import { CellAction } from './cell-action';
+import { ACCOUNT_TYPE_OPTIONS, ACCOUNT_STATUS_OPTIONS } from './options';
 
 const statusColors: Record<string, string> = {
   pending: 'bg-yellow-100 text-yellow-800 border-yellow-200',
@@ -40,6 +41,13 @@ export const columns: ColumnDef<Account>[] = [
         </div>
       );
     },
+    meta: {
+      label: 'Search',
+      placeholder: 'Search accounts...',
+      variant: 'text',
+      icon: Text
+    },
+    enableColumnFilter: true,
     enableSorting: false,
   },
   {
@@ -53,6 +61,12 @@ export const columns: ColumnDef<Account>[] = [
         {row.original.type === 'individual' ? 'Individual' : 'Business'}
       </Badge>
     ),
+    meta: {
+      label: 'Type',
+      variant: 'select',
+      options: ACCOUNT_TYPE_OPTIONS
+    },
+    enableColumnFilter: true,
     enableSorting: false,
   },
   {
@@ -69,6 +83,12 @@ export const columns: ColumnDef<Account>[] = [
         </Badge>
       );
     },
+    meta: {
+      label: 'Status',
+      variant: 'select',
+      options: ACCOUNT_STATUS_OPTIONS
+    },
+    enableColumnFilter: true,
     enableSorting: false,
   },
   {

@@ -1,7 +1,8 @@
-'use client';
-
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/components/ui/tabs';
 import { AccountListing } from '@/features/account-management/components/account-listing';
+
+export const metadata = {
+  title: 'Accounts | Admin',
+};
 
 export default function AdminAccountsPage() {
   return (
@@ -13,30 +14,7 @@ export default function AdminAccountsPage() {
         </p>
       </div>
 
-      <Tabs defaultValue="all" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="all">All Accounts</TabsTrigger>
-          <TabsTrigger value="pending">Pending Approval</TabsTrigger>
-          <TabsTrigger value="active">Active</TabsTrigger>
-          <TabsTrigger value="suspended">Suspended</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="all" className="space-y-4">
-          <AccountListing />
-        </TabsContent>
-
-        <TabsContent value="pending" className="space-y-4">
-          <AccountListing status="pending" />
-        </TabsContent>
-
-        <TabsContent value="active" className="space-y-4">
-          <AccountListing status="active" />
-        </TabsContent>
-
-        <TabsContent value="suspended" className="space-y-4">
-          <AccountListing status="suspended" />
-        </TabsContent>
-      </Tabs>
+      <AccountListing />
     </div>
   );
 }

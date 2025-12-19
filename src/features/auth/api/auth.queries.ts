@@ -52,11 +52,13 @@ export function useLogin() {
       const response = await loginApi(credentials);
       return response;
     },
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       setTokens(data.accessToken, data.refreshToken, data.expiresIn);
       setUser(data.user);
       setLoading(false);
       queryClient.setQueryData(queryKeys.auth.me(), data.user);
+      // Refetch to ensure useCurrentUser syncs with store and triggers re-renders
+      await queryClient.refetchQueries({ queryKey: queryKeys.auth.me() });
       router.push('/');
     },
     onError: () => {
@@ -79,11 +81,13 @@ export function useRegister() {
       const response = await registerApi(data);
       return response;
     },
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       setTokens(data.accessToken, data.refreshToken, data.expiresIn);
       setUser(data.user);
       setLoading(false);
       queryClient.setQueryData(queryKeys.auth.me(), data.user);
+      // Refetch to ensure useCurrentUser syncs with store and triggers re-renders
+      await queryClient.refetchQueries({ queryKey: queryKeys.auth.me() });
       router.push('/');
     },
     onError: () => {

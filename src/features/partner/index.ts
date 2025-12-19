@@ -23,6 +23,15 @@ export type {
   ListPendingAccountsResponse,
 } from './api/partner.api';
 
-export { PartnerRegisterForm, PartnerStatusCard } from './components';
+export {
+  PartnerRegisterForm,
+  PartnerStatusCard,
+  BecomePartnerHero,
+  BecomePartnerBenefits,
+  BecomePartnerSteps,
+  BecomePartnerForm,
+  BecomePartnerFAQ,
+  BecomePartnerCTA,
+} from './components';
 
 

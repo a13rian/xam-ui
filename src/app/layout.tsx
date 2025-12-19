@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono, Playfair_Display } from 'next/font/google';
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { QueryProvider, AuthInitializer } from '@/providers';
 import { Toaster } from '@/shared/components/ui';
 import './globals.css';
@@ -34,10 +35,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${playfairDisplay.variable} antialiased`}
       >
-        <QueryProvider>
-          <AuthInitializer>{children}</AuthInitializer>
-          <Toaster />
-        </QueryProvider>
+        <NuqsAdapter>
+          <QueryProvider>
+            <AuthInitializer>{children}</AuthInitializer>
+            <Toaster />
+          </QueryProvider>
+        </NuqsAdapter>
       </body>
     </html>
   );

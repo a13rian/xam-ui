@@ -1,27 +1,25 @@
 'use client';
 
-import { useState } from 'react';
+import { parseAsInteger, parseAsString, useQueryState } from 'nuqs';
 
-import { DataTableSkeleton } from '@/shared/components/ui/data-table-skeleton';
+import { DataTableSkeleton } from '@/shared/components/ui/table/data-table-skeleton';
 import { useAccounts } from '../api/account.queries';
 import { AccountTable } from './account-table';
+import type { AccountStatus } from '../types';
 
-interface AccountListingProps {
-  status?: string;
-}
-
-export function AccountListing({ status }: AccountListingProps) {
-  const [page] = useState(1);
-  const [limit] = useState(10);
+export function AccountListing() {
+  const [page] = useQueryState('page', parseAsInteger.withDefault(1));
+  const [perPage] = useQueryState('perPage', parseAsInteger.withDefault(10));
+  const [status] = useQueryState('status', parseAsString);
 
   const { data, isLoading, isError, error } = useAccounts({
-    page,
-    limit,
-    status: status as 'pending' | 'active' | 'rejected' | 'suspended' | undefined,
+    page: page ?? 1,
+    limit: perPage ?? 10,
+    status: status as AccountStatus | undefined,
   });
 
   if (isLoading) {
-    return <DataTableSkeleton columnCount={7} rowCount={10} />;
+    return <DataTableSkeleton columnCount={7} rowCount={10} filterCount={3} />;
   }
 
   if (isError) {
@@ -36,7 +34,7 @@ export function AccountListing({ status }: AccountListingProps) {
   }
 
   const accounts = data?.items || [];
-  const pageCount = data ? Math.ceil(data.total / data.limit) : 0;
+  const totalItems = data?.total || 0;
 
-  return <AccountTable data={accounts} pageCount={pageCount} />;
+  return <AccountTable data={accounts} totalItems={totalItems} />;
 }

@@ -1,57 +1,35 @@
 'use client';
 
-import {
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-  type ColumnFiltersState,
-  type SortingState,
-} from '@tanstack/react-table';
-import { useState } from 'react';
+import { ColumnDef } from '@tanstack/react-table';
+import { parseAsInteger, useQueryState } from 'nuqs';
 
-import { DataTable } from '@/shared/components/ui/data-table';
-import { DataTablePagination } from '@/shared/components/ui/data-table-pagination';
-import { DataTableToolbar } from '@/shared/components/ui/data-table-toolbar';
+import { DataTable } from '@/shared/components/ui/table/data-table';
+import { DataTableToolbar } from '@/shared/components/ui/table/data-table-toolbar';
+import { useDataTable } from '@/shared/hooks/use-data-table';
 import type { User } from '../../types';
 import { columns } from './columns';
 
 interface UserTableProps {
   data: User[];
-  pageCount: number;
+  totalItems: number;
 }
 
-export function UserTable({ data, pageCount }: UserTableProps) {
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+export function UserTable({ data, totalItems }: UserTableProps) {
+  const [pageSize] = useQueryState('perPage', parseAsInteger.withDefault(10));
+  const effectivePageSize = pageSize ?? 10;
+  const pageCount = Math.ceil(totalItems / effectivePageSize) || 1;
 
-  const table = useReactTable({
+  const { table } = useDataTable({
     data,
-    columns,
+    columns: columns as ColumnDef<User>[],
     pageCount,
-    state: {
-      sorting,
-      columnFilters,
-    },
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    manualPagination: true,
+    shallow: false,
+    debounceMs: 500
   });
 
   return (
-    <div className="space-y-4">
-      <DataTableToolbar
-        table={table}
-        searchKey="user"
-        searchPlaceholder="Search users..."
-      />
-      <DataTable table={table} columns={columns} />
-      <DataTablePagination table={table} />
-    </div>
+    <DataTable table={table}>
+      <DataTableToolbar table={table} />
+    </DataTable>
   );
 }

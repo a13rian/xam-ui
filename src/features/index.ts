@@ -9,3 +9,4 @@ export * from './wallet';
 export * from './profile';
 export * from './favorites';
 export * from './partner';
+export * from './landing';

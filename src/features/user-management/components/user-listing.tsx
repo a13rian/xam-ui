@@ -1,19 +1,22 @@
 'use client';
 
-import { useState } from 'react';
+import { parseAsInteger, useQueryState } from 'nuqs';
 
-import { DataTableSkeleton } from '@/shared/components/ui/data-table-skeleton';
+import { DataTableSkeleton } from '@/shared/components/ui/table/data-table-skeleton';
 import { useUsers } from '../api/user.queries';
 import { UserTable } from './user-table';
 
 export function UserListing() {
-  const [page] = useState(1);
-  const [limit] = useState(10);
+  const [page] = useQueryState('page', parseAsInteger.withDefault(1));
+  const [perPage] = useQueryState('perPage', parseAsInteger.withDefault(10));
 
-  const { data, isLoading, isError, error } = useUsers({ page, limit });
+  const { data, isLoading, isError, error } = useUsers({
+    page: page ?? 1,
+    limit: perPage ?? 10
+  });
 
   if (isLoading) {
-    return <DataTableSkeleton columnCount={6} rowCount={10} />;
+    return <DataTableSkeleton columnCount={6} rowCount={10} filterCount={2} />;
   }
 
   if (isError) {
@@ -26,7 +29,7 @@ export function UserListing() {
   }
 
   const users = data?.items || [];
-  const pageCount = data ? Math.ceil(data.total / data.limit) : 0;
+  const totalItems = data?.total || 0;
 
-  return <UserTable data={users} pageCount={pageCount} />;
+  return <UserTable data={users} totalItems={totalItems} />;
 }
