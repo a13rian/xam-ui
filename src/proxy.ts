@@ -32,7 +32,7 @@ const authRoutes = [
   '/reset-password',
 ];
 
-const protectedRoutes = ['/dashboard', '/booking', '/account', '/become-partner'];
+const protectedRoutes = ['/dashboard', '/booking', '/profile', '/become-partner'];
 
 const adminRoutes = ['/admin'];
 

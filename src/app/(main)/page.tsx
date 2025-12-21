@@ -1,21 +1,29 @@
 import {
-  AnimatedHero,
-  AnimatedAbout,
-  AnimatedFeatures,
+  PremiumHero,
+  TrustIndicators,
+  FeaturedPartners,
+  ValueProposition,
   AnimatedHowItWorks,
+  AnimatedFeatures,
+  Testimonials,
+  PricingPreview,
   AnimatedFAQ,
-  AnimatedCTA,
+  PremiumCTA,
 } from '@/features/landing';
 
 export default function Home() {
   return (
     <>
-      <AnimatedHero />
-      <AnimatedAbout />
-      <AnimatedFeatures />
+      <PremiumHero />
+      <TrustIndicators />
+      <FeaturedPartners />
+      <ValueProposition />
       <AnimatedHowItWorks />
+      <AnimatedFeatures />
+      <Testimonials />
+      <PricingPreview />
       <AnimatedFAQ />
-      <AnimatedCTA />
+      <PremiumCTA />
     </>
   );
 }

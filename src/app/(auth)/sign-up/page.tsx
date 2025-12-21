@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Eye, EyeOff } from "lucide-react";
-import { Button } from "@/shared/components/ui/button";
-import { Input } from "@/shared/components/ui/input";
-import { Checkbox } from "@/shared/components/ui/checkbox";
+import { useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Eye, EyeOff, CheckCircle } from 'lucide-react';
+import { Button } from '@/shared/components/ui/button';
+import { Input } from '@/shared/components/ui/input';
+import { Checkbox } from '@/shared/components/ui/checkbox';
 import {
   Form,
   FormControl,
@@ -17,31 +17,31 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/shared/components/ui/form";
-import { register as registerApi } from "@/features/auth";
+} from '@/shared/components/ui/form';
+import { register as registerApi } from '@/features/auth';
 
 const signUpSchema = z
   .object({
     fullName: z
       .string()
-      .min(1, "Full name is required")
-      .min(2, "Full name must be at least 2 characters"),
+      .min(1, 'Full name is required')
+      .min(2, 'Full name must be at least 2 characters'),
     email: z
       .string()
-      .min(1, "Email is required")
-      .email("Please enter a valid email address"),
+      .min(1, 'Email is required')
+      .email('Please enter a valid email address'),
     password: z
       .string()
-      .min(1, "Password is required")
-      .min(8, "Password must be at least 8 characters"),
-    confirmPassword: z.string().min(1, "Please confirm your password"),
+      .min(1, 'Password is required')
+      .min(8, 'Password must be at least 8 characters'),
+    confirmPassword: z.string().min(1, 'Please confirm your password'),
     terms: z.boolean().refine((val) => val === true, {
-      message: "You must agree to the terms and conditions",
+      message: 'You must agree to the terms and conditions',
     }),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
   });
 
 type SignUpFormValues = z.infer<typeof signUpSchema>;
@@ -57,10 +57,10 @@ export default function SignUpPage() {
   const form = useForm<SignUpFormValues>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
-      fullName: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
+      fullName: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
       terms: false,
     },
   });
@@ -71,10 +71,9 @@ export default function SignUpPage() {
     setSuccess(false);
 
     try {
-      // Split fullName into firstName and lastName
       const nameParts = data.fullName.trim().split(/\s+/);
-      const firstName = nameParts[0] || "";
-      const lastName = nameParts.slice(1).join(" ") || "";
+      const firstName = nameParts[0] || '';
+      const lastName = nameParts.slice(1).join(' ') || '';
 
       await registerApi({
         email: data.email,
@@ -84,9 +83,8 @@ export default function SignUpPage() {
       });
 
       setSuccess(true);
-      // Redirect to login page after 3 seconds
       setTimeout(() => {
-        router.push("/sign-in");
+        router.push('/sign-in');
       }, 3000);
     } catch (err: unknown) {
       const errorMessage =
@@ -100,47 +98,55 @@ export default function SignUpPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center px-6 py-12 bg-white">
-      {/* Logo */}
-      <div className="absolute top-8 right-8 lg:top-12 lg:right-12">
+    <div className="flex min-h-screen flex-col items-center justify-center px-6 py-12">
+      {/* Mobile Logo */}
+      <div className="absolute right-6 top-6 lg:hidden">
         <Link href="/" className="flex items-center gap-2">
-          <svg
-            className="h-6 w-6"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"
-              fill="currentColor"
-            />
-          </svg>
-          <span className="text-xl font-semibold">Cogie</span>
+          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-terracotta">
+            <svg
+              className="h-4 w-4 text-white"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"
+                fill="currentColor"
+              />
+            </svg>
+          </div>
+          <span className="font-display text-lg tracking-tight text-foreground">Cogie</span>
         </Link>
       </div>
 
       {/* Form Container */}
       <div className="w-full max-w-md">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="font-[family-name:var(--font-playfair)] text-4xl font-semibold text-gray-900">
-            Create Account
+        <div className="mb-10 text-center">
+          <h1 className="font-display text-4xl tracking-tight text-foreground">
+            Tạo Tài Khoản
           </h1>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Enter your details to create your account
+          <p className="mt-3 text-muted-foreground">
+            Bắt đầu hành trình kết nối của bạn
           </p>
         </div>
 
         {/* Success Message */}
         {success && (
-          <div className="mb-4 p-3 text-sm text-green-600 bg-green-50 border border-green-200 rounded-lg">
-            Registration successful! Please check your email to verify your account. Redirecting to login page...
+          <div className="mb-6 flex items-start gap-3 rounded-xl border border-sage/30 bg-sage/10 p-4 text-sm text-sage">
+            <CheckCircle className="mt-0.5 h-5 w-5 shrink-0" />
+            <div>
+              <p className="font-medium">Đăng ký thành công!</p>
+              <p className="mt-1 text-sage/80">
+                Vui lòng kiểm tra email để xác thực tài khoản. Đang chuyển hướng...
+              </p>
+            </div>
           </div>
         )}
 
         {/* Error Message */}
         {error && (
-          <div className="mb-4 p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg">
+          <div className="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-600">
             {error}
           </div>
         )}
@@ -154,12 +160,12 @@ export default function SignUpPage() {
               name="fullName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Full Name</FormLabel>
+                  <FormLabel className="text-foreground">Họ và tên</FormLabel>
                   <FormControl>
                     <Input
                       type="text"
-                      placeholder="Enter your full name"
-                      className="h-11 rounded-full"
+                      placeholder="Nhập họ và tên"
+                      className="h-12 rounded-xl border-border/50 bg-background focus:border-terracotta focus:ring-terracotta"
                       {...field}
                     />
                   </FormControl>
@@ -174,12 +180,12 @@ export default function SignUpPage() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel className="text-foreground">Email</FormLabel>
                   <FormControl>
                     <Input
                       type="email"
-                      placeholder="Enter your email"
-                      className="h-11 rounded-full"
+                      placeholder="Nhập email của bạn"
+                      className="h-12 rounded-xl border-border/50 bg-background focus:border-terracotta focus:ring-terracotta"
                       {...field}
                     />
                   </FormControl>
@@ -194,13 +200,13 @@ export default function SignUpPage() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel className="text-foreground">Mật khẩu</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Input
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Enter your password"
-                        className="h-11 pr-12 rounded-full"
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder="Tối thiểu 8 ký tự"
+                        className="h-12 rounded-xl border-border/50 bg-background pr-12 focus:border-terracotta focus:ring-terracotta"
                         {...field}
                       />
                       <Button
@@ -208,9 +214,9 @@ export default function SignUpPage() {
                         variant="ghost"
                         size="icon"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-1 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full text-muted-foreground hover:text-foreground"
+                        className="absolute right-1 top-1/2 h-10 w-10 -translate-y-1/2 rounded-lg text-muted-foreground hover:text-foreground"
                         data-testid="toggle-password"
-                        aria-label={showPassword ? "Hide password" : "Show password"}
+                        aria-label={showPassword ? 'Hide password' : 'Show password'}
                       >
                         {showPassword ? (
                           <EyeOff className="h-5 w-5" />
@@ -231,13 +237,13 @@ export default function SignUpPage() {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Confirm Password</FormLabel>
+                  <FormLabel className="text-foreground">Xác nhận mật khẩu</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Input
-                        type={showConfirmPassword ? "text" : "password"}
-                        placeholder="Confirm your password"
-                        className="h-11 pr-12 rounded-full"
+                        type={showConfirmPassword ? 'text' : 'password'}
+                        placeholder="Nhập lại mật khẩu"
+                        className="h-12 rounded-xl border-border/50 bg-background pr-12 focus:border-terracotta focus:ring-terracotta"
                         {...field}
                       />
                       <Button
@@ -245,12 +251,10 @@ export default function SignUpPage() {
                         variant="ghost"
                         size="icon"
                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                        className="absolute right-1 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full text-muted-foreground hover:text-foreground"
+                        className="absolute right-1 top-1/2 h-10 w-10 -translate-y-1/2 rounded-lg text-muted-foreground hover:text-foreground"
                         data-testid="toggle-confirm-password"
                         aria-label={
-                          showConfirmPassword
-                            ? "Hide confirm password"
-                            : "Show confirm password"
+                          showConfirmPassword ? 'Hide confirm password' : 'Show confirm password'
                         }
                       >
                         {showConfirmPassword ? (
@@ -271,23 +275,29 @@ export default function SignUpPage() {
               control={form.control}
               name="terms"
               render={({ field }) => (
-                <FormItem className="flex flex-row items-start gap-2 space-y-0">
+                <FormItem className="flex flex-row items-start gap-3 space-y-0">
                   <FormControl>
                     <Checkbox
                       checked={field.value}
                       onCheckedChange={field.onChange}
-                      className="mt-0.5"
+                      className="mt-0.5 border-border/50 data-[state=checked]:border-terracotta data-[state=checked]:bg-terracotta"
                     />
                   </FormControl>
                   <div className="space-y-1 leading-none">
-                    <FormLabel className="text-sm font-normal leading-relaxed cursor-pointer">
-                      I agree to the{" "}
-                      <Link href="/terms" className="font-medium hover:underline">
-                        Terms of Service
-                      </Link>{" "}
-                      and{" "}
-                      <Link href="/privacy" className="font-medium hover:underline">
-                        Privacy Policy
+                    <FormLabel className="cursor-pointer text-sm font-normal leading-relaxed text-muted-foreground">
+                      Tôi đồng ý với{' '}
+                      <Link
+                        href="/terms"
+                        className="font-medium text-terracotta hover:text-terracotta-dark"
+                      >
+                        Điều khoản dịch vụ
+                      </Link>{' '}
+                      và{' '}
+                      <Link
+                        href="/privacy"
+                        className="font-medium text-terracotta hover:text-terracotta-dark"
+                      >
+                        Chính sách bảo mật
                       </Link>
                     </FormLabel>
                     <FormMessage />
@@ -299,15 +309,29 @@ export default function SignUpPage() {
             {/* Sign Up Button */}
             <Button
               type="submit"
-              className="w-full h-11 rounded-full"
+              className="h-12 w-full rounded-xl bg-terracotta font-medium text-white transition-colors hover:bg-terracotta-dark"
               disabled={isLoading || success}
             >
-              {isLoading ? 'Creating Account...' : success ? 'Account Created!' : 'Sign Up'}
+              {isLoading ? 'Đang tạo tài khoản...' : success ? 'Đã tạo thành công!' : 'Đăng ký'}
             </Button>
 
+            {/* Divider */}
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t border-border/50" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-cream px-4 text-muted-foreground">Hoặc</span>
+              </div>
+            </div>
+
             {/* Google Sign Up */}
-            <Button type="button" variant="outline" className="w-full h-11 rounded-full">
-              <svg className="h-5 w-5" viewBox="0 0 24 24">
+            <Button
+              type="button"
+              variant="outline"
+              className="h-12 w-full rounded-xl border-border/50 bg-background font-medium transition-colors hover:border-terracotta/30 hover:bg-terracotta-light"
+            >
+              <svg className="mr-2 h-5 w-5" viewBox="0 0 24 24">
                 <path
                   d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
                   fill="#4285F4"
@@ -325,16 +349,19 @@ export default function SignUpPage() {
                   fill="#EA4335"
                 />
               </svg>
-              Sign Up with Google
+              Đăng ký với Google
             </Button>
           </form>
         </Form>
 
         {/* Sign In Link */}
-        <p className="mt-8 text-center text-sm text-muted-foreground">
-          Already have an account?{" "}
-          <Link href="/sign-in" className="font-semibold text-foreground hover:underline">
-            Sign In
+        <p className="mt-10 text-center text-sm text-muted-foreground">
+          Đã có tài khoản?{' '}
+          <Link
+            href="/sign-in"
+            className="font-medium text-terracotta transition-colors hover:text-terracotta-dark"
+          >
+            Đăng nhập
           </Link>
         </p>
       </div>

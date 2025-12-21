@@ -45,51 +45,53 @@ export function EmailVerificationSection() {
   const isVerified = false; // TODO: Get from user object when backend supports it
 
   return (
-    <div className="rounded-2xl bg-white p-6 shadow-sm sm:p-8">
-      <div className="mb-6 flex items-center gap-3">
-        <div className="rounded-lg bg-purple-100 p-2">
-          <Mail className="h-5 w-5 text-purple-600" />
+    <div className="rounded-2xl border border-border/50 bg-background p-6 sm:p-8">
+      <div className="mb-8 flex items-center gap-4">
+        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-sage/20">
+          <Mail className="h-6 w-6 text-sage" />
         </div>
         <div>
-          <h2 className="text-xl font-semibold text-gray-900">
+          <h2 className="font-display text-2xl text-foreground">
             Xác thực email
           </h2>
-          <p className="text-sm text-gray-500">
+          <p className="mt-1 text-sm text-muted-foreground">
             Xác thực email để bảo vệ tài khoản của bạn
           </p>
         </div>
       </div>
 
       {error && (
-        <div className="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-600">
+        <div className="mb-6 rounded-xl bg-red-50 p-4 text-sm text-red-600">
           {(error as { message?: string })?.message ||
             'Gửi email xác thực thất bại. Vui lòng thử lại.'}
         </div>
       )}
 
       {success && (
-        <div className="mb-4 rounded-lg bg-green-50 p-3 text-sm text-green-600">
+        <div className="mb-6 rounded-xl bg-sage/10 p-4 text-sm text-sage">
           Email xác thực đã được gửi! Vui lòng kiểm tra hộp thư của bạn.
         </div>
       )}
 
       <div className="space-y-6">
         {/* Email display */}
-        <div className="flex items-center justify-between rounded-lg border border-gray-200 p-4">
-          <div className="flex items-center gap-3">
-            <Mail className="h-5 w-5 text-gray-400" />
+        <div className="flex items-center justify-between rounded-xl border border-border/50 p-5">
+          <div className="flex items-center gap-4">
+            <Mail className="h-5 w-5 text-muted-foreground" />
             <div>
-              <p className="font-medium text-gray-900">{user?.email}</p>
-              <p className="text-sm text-gray-500">Email đăng ký</p>
+              <p className="font-medium text-foreground">{user?.email}</p>
+              <p className="mt-0.5 text-sm text-muted-foreground">
+                Email đăng ký
+              </p>
             </div>
           </div>
           {isVerified ? (
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-700">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-sage/10 px-4 py-1.5 text-sm font-medium text-sage">
               <CheckCircle className="h-4 w-4" />
               Đã xác thực
             </span>
           ) : (
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-yellow-100 px-3 py-1 text-sm font-medium text-yellow-700">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-terracotta-light px-4 py-1.5 text-sm font-medium text-terracotta">
               <XCircle className="h-4 w-4" />
               Chưa xác thực
             </span>
@@ -98,19 +100,19 @@ export function EmailVerificationSection() {
 
         {/* Verification actions */}
         {!isVerified && (
-          <div className="rounded-lg bg-gray-50 p-4">
-            <h3 className="font-medium text-gray-900">
+          <div className="rounded-xl bg-muted/50 p-5">
+            <h3 className="font-medium text-foreground">
               Xác thực email của bạn
             </h3>
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-1 text-sm text-muted-foreground">
               Chúng tôi sẽ gửi một email chứa liên kết xác thực đến địa chỉ
               email của bạn. Nhấp vào liên kết để hoàn tất quá trình xác thực.
             </p>
-            <div className="mt-4">
+            <div className="mt-5">
               <Button
                 onClick={handleRequestVerification}
                 disabled={isPending || cooldown > 0}
-                className="bg-orange-500 hover:bg-orange-600"
+                className="h-12 rounded-xl bg-terracotta px-8 text-sm font-medium hover:bg-terracotta-dark"
               >
                 <Send className="mr-2 h-4 w-4" />
                 {isPending
@@ -124,25 +126,25 @@ export function EmailVerificationSection() {
         )}
 
         {/* Benefits of verification */}
-        <div className="space-y-3">
-          <h3 className="font-medium text-gray-900">
+        <div className="space-y-4">
+          <h3 className="font-medium text-foreground">
             Lợi ích của việc xác thực email
           </h3>
-          <ul className="space-y-2 text-sm text-gray-600">
-            <li className="flex items-start gap-2">
-              <CheckCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-500" />
+          <ul className="space-y-3 text-sm text-muted-foreground">
+            <li className="flex items-start gap-3">
+              <CheckCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-sage" />
               <span>Bảo vệ tài khoản của bạn tốt hơn</span>
             </li>
-            <li className="flex items-start gap-2">
-              <CheckCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-500" />
+            <li className="flex items-start gap-3">
+              <CheckCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-sage" />
               <span>Nhận thông báo quan trọng về đặt chỗ</span>
             </li>
-            <li className="flex items-start gap-2">
-              <CheckCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-500" />
+            <li className="flex items-start gap-3">
+              <CheckCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-sage" />
               <span>Khôi phục mật khẩu dễ dàng khi cần</span>
             </li>
-            <li className="flex items-start gap-2">
-              <CheckCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-500" />
+            <li className="flex items-start gap-3">
+              <CheckCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-sage" />
               <span>Tăng độ tin cậy cho hồ sơ của bạn</span>
             </li>
           </ul>

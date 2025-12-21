@@ -1,8 +1,7 @@
 'use client';
 
 import { motion } from 'motion/react';
-import Link from 'next/link';
-import { Users, Wallet, Star, Sparkles } from 'lucide-react';
+import { Users, CheckCircle } from 'lucide-react';
 import { containerVariants, itemVariants } from '../../lib/animations';
 import { stats } from '../../constants';
 
@@ -12,60 +11,9 @@ interface HeroSectionProps {
 
 export function HeroSection({ onScrollToForm }: HeroSectionProps) {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-orange-50 via-white to-amber-50 pb-16 pt-12 lg:pb-24 lg:pt-20">
-      {/* Background decorative elements */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 0.5, scale: 1 }}
-        transition={{ duration: 1.2 }}
-        className="pointer-events-none absolute -left-40 top-0 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-orange-200 via-orange-300 to-amber-200 blur-3xl"
-      />
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 0.3, scale: 1 }}
-        transition={{ duration: 1.2, delay: 0.2 }}
-        className="pointer-events-none absolute -right-20 bottom-0 h-[400px] w-[400px] rounded-full bg-gradient-to-br from-rose-200 to-orange-200 blur-3xl"
-      />
-
-      {/* Floating decorative cards */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: [0, -15, 0] }}
-        transition={{
-          opacity: { duration: 0.8, delay: 0.5 },
-          y: { duration: 4, repeat: Infinity, ease: 'easeInOut' },
-        }}
-        className="pointer-events-none absolute right-[10%] top-24 hidden rounded-2xl bg-white/80 p-4 shadow-xl backdrop-blur-sm lg:block"
-      >
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100">
-            <Wallet className="h-5 w-5 text-emerald-600" />
-          </div>
-          <div>
-            <p className="text-lg font-bold text-gray-900">2-5M</p>
-            <p className="text-xs text-gray-500">VNĐ / tuần</p>
-          </div>
-        </div>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: [0, -12, 0] }}
-        transition={{
-          opacity: { duration: 0.8, delay: 0.7 },
-          y: { duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 },
-        }}
-        className="pointer-events-none absolute left-[8%] top-40 hidden rounded-2xl bg-white/80 p-4 shadow-xl backdrop-blur-sm lg:block"
-      >
-        <div className="flex items-center gap-2">
-          <Star className="h-5 w-5 fill-amber-400 text-amber-400" />
-          <Star className="h-5 w-5 fill-amber-400 text-amber-400" />
-          <Star className="h-5 w-5 fill-amber-400 text-amber-400" />
-          <Star className="h-5 w-5 fill-amber-400 text-amber-400" />
-          <Star className="h-5 w-5 fill-amber-400 text-amber-400" />
-        </div>
-        <p className="mt-1 text-xs text-gray-500">Đánh giá từ khách hàng</p>
-      </motion.div>
+    <section className="relative overflow-hidden bg-cream py-20 lg:py-28">
+      {/* Subtle background gradient */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-terracotta/[0.03] to-transparent" />
 
       <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
@@ -75,68 +23,60 @@ export function HeroSection({ onScrollToForm }: HeroSectionProps) {
           className="mx-auto max-w-4xl text-center"
         >
           {/* Badge */}
-          <motion.div variants={itemVariants} className="mb-6">
-            <span className="inline-flex items-center gap-2 rounded-full bg-orange-100 px-4 py-2 text-sm font-medium text-orange-700">
+          <motion.div variants={itemVariants} className="mb-8">
+            <span className="inline-flex items-center gap-2.5 rounded-full border border-terracotta/20 bg-terracotta-light px-5 py-2.5 text-sm font-medium text-terracotta">
               <Users className="h-4 w-4" />
               Cộng đồng Partner Cogie
             </span>
           </motion.div>
 
-          {/* Headline */}
+          {/* Headline with serif font */}
           <motion.h1
             variants={itemVariants}
-            className="mb-6 text-4xl font-bold leading-tight tracking-tight text-gray-900 sm:text-5xl lg:text-6xl"
+            className="mb-6 font-display text-4xl tracking-tight text-foreground sm:text-5xl lg:text-6xl"
           >
-            Trở Thành{' '}
-            <span className="bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent">
-              Partner
-            </span>
+            Trở Thành Partner,
             <br />
-            Kết Nối & Lan Tỏa Giá Trị
+            <span className="text-terracotta">Lan Tỏa Giá Trị</span>
           </motion.h1>
 
           {/* Subheadline */}
           <motion.p
             variants={itemVariants}
-            className="mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-gray-600"
+            className="mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-muted-foreground"
           >
-            Gia nhập cộng đồng những người lắng nghe tại Cogie. Thu nhập linh hoạt, thời gian tự
-            do, và cơ hội tạo ra những cuộc trò chuyện ý nghĩa.
+            Gia nhập cộng đồng những người lắng nghe tại Cogie. Thu nhập linh hoạt,
+            thời gian tự do, và cơ hội tạo ra những cuộc trò chuyện ý nghĩa.
           </motion.p>
 
-          {/* CTA Buttons */}
-          <motion.div variants={itemVariants} className="mb-12 flex flex-wrap justify-center gap-4">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+          {/* Single CTA Button */}
+          <motion.div variants={itemVariants} className="mb-16">
+            <button
               onClick={onScrollToForm}
-              className="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-orange-500 to-orange-600 px-10 text-base font-semibold text-white shadow-lg shadow-orange-500/30 transition-all hover:shadow-xl"
+              className="inline-flex h-14 items-center justify-center gap-2.5 rounded-full bg-terracotta px-10 text-base font-medium text-white transition-colors hover:bg-terracotta-dark"
             >
-              <Sparkles className="h-5 w-5" />
-              Đăng ký ngay
-            </motion.button>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Link
-                href="/how-it-works"
-                className="inline-flex h-14 items-center justify-center rounded-full border-2 border-gray-200 bg-white px-10 text-base font-semibold text-gray-700 transition-colors hover:border-orange-200 hover:bg-orange-50"
-              >
-                Tìm hiểu thêm
-              </Link>
-            </motion.div>
+              <CheckCircle className="h-5 w-5" />
+              Đăng ký trở thành Partner
+            </button>
           </motion.div>
 
           {/* Stats */}
-          <motion.div variants={itemVariants} className="grid grid-cols-2 gap-6 sm:grid-cols-4">
+          <motion.div
+            variants={itemVariants}
+            className="grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-6"
+          >
             {stats.map((stat, i) => (
               <motion.div
                 key={stat.label}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.8 + i * 0.1, duration: 0.5 }}
-                className="rounded-2xl bg-white/70 p-4 backdrop-blur-sm"
+                transition={{ delay: 0.6 + i * 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                className="rounded-2xl border border-border/50 bg-background p-5"
               >
-                <div className="text-2xl font-bold text-orange-600 sm:text-3xl">{stat.value}</div>
-                <div className="text-sm text-gray-600">{stat.label}</div>
+                <div className="font-display text-2xl text-terracotta sm:text-3xl">
+                  {stat.value}
+                </div>
+                <div className="mt-1 text-sm text-muted-foreground">{stat.label}</div>
               </motion.div>
             ))}
           </motion.div>

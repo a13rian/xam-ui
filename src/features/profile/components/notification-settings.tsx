@@ -27,18 +27,19 @@ function NotificationItem({
   disabled,
 }: NotificationItemProps) {
   return (
-    <div className="flex items-center justify-between py-4">
-      <div className="flex items-start gap-3">
-        <div className="mt-0.5 text-gray-400">{icon}</div>
+    <div className="flex items-center justify-between py-5">
+      <div className="flex items-start gap-4">
+        <div className="mt-0.5 text-muted-foreground">{icon}</div>
         <div>
-          <p className="font-medium text-gray-900">{title}</p>
-          <p className="text-sm text-gray-500">{description}</p>
+          <p className="font-medium text-foreground">{title}</p>
+          <p className="mt-0.5 text-sm text-muted-foreground">{description}</p>
         </div>
       </div>
       <Switch
         checked={checked}
         onCheckedChange={onCheckedChange}
         disabled={disabled}
+        className="data-[state=checked]:bg-terracotta"
       />
     </div>
   );
@@ -69,18 +70,18 @@ export function NotificationSettings() {
 
   if (isLoading) {
     return (
-      <div className="rounded-2xl bg-white p-6 shadow-sm sm:p-8">
+      <div className="rounded-2xl border border-border/50 bg-background p-6 sm:p-8">
         <div className="animate-pulse space-y-4">
-          <div className="h-6 w-48 rounded bg-gray-200" />
-          <div className="h-4 w-64 rounded bg-gray-200" />
+          <div className="h-6 w-48 rounded-lg bg-muted" />
+          <div className="h-4 w-64 rounded-lg bg-muted" />
           <div className="space-y-4 pt-4">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="flex justify-between py-4">
+              <div key={i} className="flex justify-between py-5">
                 <div className="space-y-2">
-                  <div className="h-4 w-32 rounded bg-gray-200" />
-                  <div className="h-3 w-48 rounded bg-gray-200" />
+                  <div className="h-4 w-32 rounded-lg bg-muted" />
+                  <div className="h-3 w-48 rounded-lg bg-muted" />
                 </div>
-                <div className="h-6 w-11 rounded-full bg-gray-200" />
+                <div className="h-6 w-11 rounded-full bg-muted" />
               </div>
             ))}
           </div>
@@ -90,29 +91,29 @@ export function NotificationSettings() {
   }
 
   return (
-    <div className="rounded-2xl bg-white p-6 shadow-sm sm:p-8">
-      <div className="mb-6 flex items-center gap-3">
-        <div className="rounded-lg bg-orange-100 p-2">
-          <Bell className="h-5 w-5 text-orange-600" />
+    <div className="rounded-2xl border border-border/50 bg-background p-6 sm:p-8">
+      <div className="mb-8 flex items-center gap-4">
+        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-terracotta-light">
+          <Bell className="h-6 w-6 text-terracotta" />
         </div>
         <div>
-          <h2 className="text-xl font-semibold text-gray-900">
+          <h2 className="font-display text-2xl text-foreground">
             Cài đặt thông báo
           </h2>
-          <p className="text-sm text-gray-500">
+          <p className="mt-1 text-sm text-muted-foreground">
             Tùy chỉnh cách bạn nhận thông báo
           </p>
         </div>
       </div>
 
       {error && (
-        <div className="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-600">
+        <div className="mb-6 rounded-xl bg-red-50 p-4 text-sm text-red-600">
           {(error as { message?: string })?.message ||
             'Không thể tải cài đặt thông báo. Vui lòng thử lại.'}
         </div>
       )}
 
-      <div className="divide-y divide-gray-100">
+      <div className="divide-y divide-border/50">
         <NotificationItem
           icon={<Mail className="h-5 w-5" />}
           title="Thông báo qua email"

@@ -33,3 +33,10 @@ export {
   PaginationPrevious,
 } from './pagination';
 export { Toaster } from './sonner';
+export {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from './carousel';

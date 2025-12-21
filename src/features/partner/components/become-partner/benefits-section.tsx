@@ -3,53 +3,81 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'motion/react';
 import { benefits } from '../../constants';
+import { containerVariants, itemVariants, cardHover } from '../../lib/animations';
+
+// Premium benefit colors with terracotta accent
+const premiumColors: Record<string, string> = {
+  'bg-emerald-100 text-emerald-600': 'bg-sage/20 text-sage',
+  'bg-blue-100 text-blue-600': 'bg-terracotta-light text-terracotta',
+  'bg-amber-100 text-amber-600': 'bg-terracotta/10 text-terracotta-dark',
+  'bg-rose-100 text-rose-600': 'bg-cream text-terracotta',
+};
 
 export function BenefitsSection() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
   return (
-    <section ref={ref} className="bg-white py-20">
+    <section ref={ref} className="bg-background py-20 lg:py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="mb-12 text-center"
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? 'visible' : 'hidden'}
+          className="mb-14 text-center"
         >
-          <span className="mb-4 inline-flex items-center gap-2 text-sm font-medium text-orange-500">
-            <span className="h-1.5 w-1.5 rounded-full bg-orange-500" />
+          <motion.span
+            variants={itemVariants}
+            className="mb-4 inline-flex items-center gap-2 text-sm font-medium uppercase tracking-wider text-terracotta"
+          >
+            <span className="h-px w-8 bg-terracotta/40" />
             Tại sao chọn Cogie?
-          </span>
-          <h2 className="mb-4 text-3xl font-bold text-gray-900 sm:text-4xl">
+            <span className="h-px w-8 bg-terracotta/40" />
+          </motion.span>
+          <motion.h2
+            variants={itemVariants}
+            className="mb-4 font-display text-3xl tracking-tight text-foreground sm:text-4xl"
+          >
             Những Lợi Ích Dành Cho Partner
-          </h2>
-          <p className="mx-auto max-w-2xl text-gray-600">
-            Cogie mang đến môi trường lý tưởng để bạn phát triển sự nghiệp với sự linh hoạt và hỗ
-            trợ tối đa.
-          </p>
+          </motion.h2>
+          <motion.p
+            variants={itemVariants}
+            className="mx-auto max-w-2xl text-muted-foreground"
+          >
+            Cogie mang đến môi trường lý tưởng để bạn phát triển sự nghiệp với sự linh hoạt
+            và hỗ trợ tối đa.
+          </motion.p>
         </motion.div>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {benefits.map((benefit, i) => (
+        {/* Benefits Grid */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? 'visible' : 'hidden'}
+          className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
+        >
+          {benefits.map((benefit) => (
             <motion.div
               key={benefit.title}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              whileHover={{ y: -8, transition: { duration: 0.3 } }}
-              className="group rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition-shadow hover:shadow-lg"
+              variants={itemVariants}
+              whileHover={cardHover}
+              className="group rounded-2xl border border-border/50 bg-background p-6 transition-shadow hover:shadow-lg"
             >
               <div
-                className={`mb-4 flex h-14 w-14 items-center justify-center rounded-2xl ${benefit.color} transition-transform group-hover:scale-110`}
+                className={`mb-5 flex h-14 w-14 items-center justify-center rounded-2xl ${premiumColors[benefit.color] || benefit.color}`}
               >
                 <benefit.icon className="h-7 w-7" />
               </div>
-              <h3 className="mb-2 text-lg font-semibold text-gray-900">{benefit.title}</h3>
-              <p className="text-gray-600">{benefit.description}</p>
+              <h3 className="mb-2 font-display text-lg text-foreground">
+                {benefit.title}
+              </h3>
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                {benefit.description}
+              </p>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

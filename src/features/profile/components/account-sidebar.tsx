@@ -5,24 +5,24 @@ import { usePathname } from 'next/navigation';
 import { User, Lock, Bell, Mail } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
 
-const accountNavItems = [
+const profileNavItems = [
   {
-    href: '/account/profile',
+    href: '/profile',
     label: 'Thông tin cá nhân',
     icon: User,
   },
   {
-    href: '/account/security',
+    href: '/profile/security',
     label: 'Bảo mật',
     icon: Lock,
   },
   {
-    href: '/account/notifications',
+    href: '/profile/notifications',
     label: 'Thông báo',
     icon: Bell,
   },
   {
-    href: '/account/verification',
+    href: '/profile/verification',
     label: 'Xác thực',
     icon: Mail,
   },
@@ -33,8 +33,12 @@ export function AccountSidebar() {
 
   return (
     <nav className="space-y-1">
-      {accountNavItems.map((item) => {
-        const isActive = pathname === item.href;
+      {profileNavItems.map((item) => {
+        // For /profile (main), exact match. For sub-routes, prefix match
+        const isActive =
+          item.href === '/profile'
+            ? pathname === '/profile'
+            : pathname.startsWith(item.href);
         const Icon = item.icon;
 
         return (
@@ -42,14 +46,19 @@ export function AccountSidebar() {
             key={item.href}
             href={item.href}
             className={cn(
-              'flex items-center gap-3 rounded-lg px-3 py-2 text-xs font-medium transition-colors sm:text-sm',
+              'flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200',
               isActive
-                ? 'bg-orange-50 text-orange-600'
-                : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                ? 'bg-terracotta-light text-terracotta'
+                : 'text-muted-foreground hover:bg-terracotta-light/50 hover:text-foreground'
             )}
           >
-            <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
-            <span className="truncate">{item.label}</span>
+            <Icon
+              className={cn(
+                'h-5 w-5 transition-colors',
+                isActive ? 'text-terracotta' : ''
+              )}
+            />
+            <span>{item.label}</span>
           </Link>
         );
       })}

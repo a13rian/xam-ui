@@ -26,6 +26,14 @@ export const ROUTES = {
   COMPANION: (id: string) => `/companions/${id}`,
   BOOKING: (companionId: string) => `/booking/${companionId}`,
 
+  // Profile/Account (protected)
+  PROFILE: {
+    HOME: '/profile',
+    SECURITY: '/profile/security',
+    NOTIFICATIONS: '/profile/notifications',
+    VERIFICATION: '/profile/verification',
+  },
+
   // Dashboard (protected)
   DASHBOARD: {
     HOME: '/dashboard',

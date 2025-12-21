@@ -69,49 +69,53 @@ export function ChangePasswordForm() {
   };
 
   return (
-    <div className="rounded-2xl bg-white p-6 shadow-sm sm:p-8">
-      <div className="mb-6 flex items-center gap-3">
-        <div className="rounded-lg bg-blue-100 p-2">
-          <Lock className="h-5 w-5 text-blue-600" />
+    <div className="rounded-2xl border border-border/50 bg-background p-6 sm:p-8">
+      <div className="mb-8 flex items-center gap-4">
+        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-terracotta-light">
+          <Lock className="h-6 w-6 text-terracotta" />
         </div>
         <div>
-          <h2 className="text-xl font-semibold text-gray-900">Đổi mật khẩu</h2>
-          <p className="text-sm text-gray-500">
+          <h2 className="font-display text-2xl text-foreground">
+            Đổi mật khẩu
+          </h2>
+          <p className="mt-1 text-sm text-muted-foreground">
             Cập nhật mật khẩu để bảo vệ tài khoản của bạn
           </p>
         </div>
       </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
           <FormField
             control={form.control}
             name="currentPassword"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Mật khẩu hiện tại</FormLabel>
+                <FormLabel className="text-muted-foreground">
+                  Mật khẩu hiện tại
+                </FormLabel>
                 <div className="relative">
                   <FormControl>
                     <Input
                       type={showCurrentPassword ? 'text' : 'password'}
                       placeholder="Nhập mật khẩu hiện tại"
-                      className="h-11 pr-10"
+                      className="h-12 rounded-xl border-border/50 pr-12 focus-visible:border-terracotta focus-visible:ring-terracotta/20"
                       {...field}
                     />
                   </FormControl>
                   <button
                     type="button"
                     onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
                     aria-label={
                       showCurrentPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'
                     }
                     tabIndex={-1}
                   >
                     {showCurrentPassword ? (
-                      <EyeOff className="h-4 w-4" />
+                      <EyeOff className="h-5 w-5" />
                     ) : (
-                      <Eye className="h-4 w-4" />
+                      <Eye className="h-5 w-5" />
                     )}
                   </button>
                 </div>
@@ -125,33 +129,37 @@ export function ChangePasswordForm() {
             name="newPassword"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Mật khẩu mới</FormLabel>
+                <FormLabel className="text-muted-foreground">
+                  Mật khẩu mới
+                </FormLabel>
                 <div className="relative">
                   <FormControl>
                     <Input
                       type={showNewPassword ? 'text' : 'password'}
                       placeholder="Nhập mật khẩu mới"
-                      className="h-11 pr-10"
+                      className="h-12 rounded-xl border-border/50 pr-12 focus-visible:border-terracotta focus-visible:ring-terracotta/20"
                       {...field}
                     />
                   </FormControl>
                   <button
                     type="button"
                     onClick={() => setShowNewPassword(!showNewPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
                     aria-label={
                       showNewPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'
                     }
                     tabIndex={-1}
                   >
                     {showNewPassword ? (
-                      <EyeOff className="h-4 w-4" />
+                      <EyeOff className="h-5 w-5" />
                     ) : (
-                      <Eye className="h-4 w-4" />
+                      <Eye className="h-5 w-5" />
                     )}
                   </button>
                 </div>
-                <FormDescription>Ít nhất 6 ký tự</FormDescription>
+                <FormDescription className="text-muted-foreground/70">
+                  Ít nhất 6 ký tự
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -162,29 +170,31 @@ export function ChangePasswordForm() {
             name="confirmPassword"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Xác nhận mật khẩu mới</FormLabel>
+                <FormLabel className="text-muted-foreground">
+                  Xác nhận mật khẩu mới
+                </FormLabel>
                 <div className="relative">
                   <FormControl>
                     <Input
                       type={showConfirmPassword ? 'text' : 'password'}
                       placeholder="Nhập lại mật khẩu mới"
-                      className="h-11 pr-10"
+                      className="h-12 rounded-xl border-border/50 pr-12 focus-visible:border-terracotta focus-visible:ring-terracotta/20"
                       {...field}
                     />
                   </FormControl>
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
                     aria-label={
                       showConfirmPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'
                     }
                     tabIndex={-1}
                   >
                     {showConfirmPassword ? (
-                      <EyeOff className="h-4 w-4" />
+                      <EyeOff className="h-5 w-5" />
                     ) : (
-                      <Eye className="h-4 w-4" />
+                      <Eye className="h-5 w-5" />
                     )}
                   </button>
                 </div>
@@ -193,10 +203,10 @@ export function ChangePasswordForm() {
             )}
           />
 
-          <div className="pt-4">
+          <div className="pt-6">
             <Button
               type="submit"
-              className="bg-orange-500 hover:bg-orange-600"
+              className="h-12 rounded-xl bg-terracotta px-8 text-sm font-medium hover:bg-terracotta-dark"
               disabled={isPending}
             >
               <Lock className="mr-2 h-4 w-4" />

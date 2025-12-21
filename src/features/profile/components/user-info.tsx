@@ -205,17 +205,20 @@ export function UserInfo({ user }: UserInfoTabProps) {
       : user.firstName || 'N/A';
 
   return (
-    <div className="rounded-2xl bg-white p-6 shadow-sm sm:p-8">
-      <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-xl font-semibold text-gray-900">
+    <div className="rounded-2xl border border-border/50 bg-background p-6 sm:p-8">
+      <div className="mb-8">
+        <h2 className="font-display text-2xl text-foreground">
           Thông tin cá nhân
         </h2>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Cập nhật thông tin cá nhân của bạn
+        </p>
       </div>
 
       <div className="flex flex-col gap-8 lg:flex-row lg:gap-12">
         {/* Avatar Section - Left Side */}
         <div className="shrink-0">
-          <label className="mb-4 block text-sm font-medium text-gray-700">
+          <label className="mb-4 block text-sm font-medium text-muted-foreground">
             Ảnh đại diện
           </label>
           <div className="flex flex-col items-center gap-4">
@@ -230,7 +233,7 @@ export function UserInfo({ user }: UserInfoTabProps) {
               type="button"
               onClick={handleAvatarClick}
               disabled={isUploadingAvatar}
-              className="group relative size-28 cursor-pointer rounded-full border border-dashed border-gray-300 p-1.5 text-xs sm:size-32"
+              className="group relative size-32 cursor-pointer rounded-full border-2 border-dashed border-border p-1.5 transition-colors hover:border-terracotta sm:size-36"
               aria-label={avatarUrl ? 'Cập nhật ảnh' : 'Tải ảnh'}
             >
               <div className="relative h-full w-full overflow-hidden rounded-full">
@@ -244,15 +247,15 @@ export function UserInfo({ user }: UserInfoTabProps) {
                     unoptimized
                   />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center rounded-full bg-orange-500 text-3xl font-semibold text-white sm:text-4xl">
+                  <div className="flex h-full w-full items-center justify-center rounded-full bg-terracotta text-3xl font-semibold text-white sm:text-4xl">
                     {getUserInitials()}
                   </div>
                 )}
 
                 {/* Hover overlay: update photo */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center rounded-full bg-black/60 text-white opacity-0 transition-opacity group-hover:opacity-100">
-                  <Camera className="h-5 w-5" />
-                  <span className="mt-1 text-xs font-medium">
+                  <Camera className="h-6 w-6" />
+                  <span className="mt-1.5 text-xs font-medium">
                     {avatarUrl ? 'Cập nhật ảnh' : 'Tải ảnh'}
                   </span>
                 </div>
@@ -270,19 +273,21 @@ export function UserInfo({ user }: UserInfoTabProps) {
         {/* Form Section - Right Side */}
         <div className="flex-1">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                 <FormField
                   control={form.control}
                   name="firstName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Họ</FormLabel>
+                      <FormLabel className="text-muted-foreground">
+                        Họ
+                      </FormLabel>
                       <FormControl>
                         <Input
                           type="text"
                           placeholder="Nhập họ"
-                          className="h-10"
+                          className="h-12 rounded-xl border-border/50 focus-visible:border-terracotta focus-visible:ring-terracotta/20"
                           {...field}
                         />
                       </FormControl>
@@ -296,12 +301,14 @@ export function UserInfo({ user }: UserInfoTabProps) {
                   name="lastName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Tên</FormLabel>
+                      <FormLabel className="text-muted-foreground">
+                        Tên
+                      </FormLabel>
                       <FormControl>
                         <Input
                           type="text"
                           placeholder="Nhập tên"
-                          className="h-10"
+                          className="h-12 rounded-xl border-border/50 focus-visible:border-terracotta focus-visible:ring-terracotta/20"
                           {...field}
                         />
                       </FormControl>
@@ -311,18 +318,20 @@ export function UserInfo({ user }: UserInfoTabProps) {
                 />
               </div>
 
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                 <FormField
                   control={form.control}
                   name="phone"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Số điện thoại</FormLabel>
+                      <FormLabel className="text-muted-foreground">
+                        Số điện thoại
+                      </FormLabel>
                       <FormControl>
                         <Input
                           type="tel"
                           placeholder="Nhập số điện thoại"
-                          className="h-10"
+                          className="h-12 rounded-xl border-border/50 focus-visible:border-terracotta focus-visible:ring-terracotta/20"
                           {...field}
                           value={field.value || ''}
                         />
@@ -342,7 +351,9 @@ export function UserInfo({ user }: UserInfoTabProps) {
 
                     return (
                       <FormItem>
-                        <FormLabel>Ngày sinh</FormLabel>
+                        <FormLabel className="text-muted-foreground">
+                          Ngày sinh
+                        </FormLabel>
                         <Popover
                           open={datePickerOpen}
                           onOpenChange={setDatePickerOpen}
@@ -352,7 +363,7 @@ export function UserInfo({ user }: UserInfoTabProps) {
                               <Button
                                 type="button"
                                 variant="outline"
-                                className="flex h-10 w-full justify-between px-3 text-left font-normal"
+                                className="flex h-12 w-full justify-between rounded-xl border-border/50 px-4 text-left font-normal hover:border-terracotta"
                               >
                                 {selectedDate
                                   ? selectedDate.toLocaleDateString('vi-VN')
@@ -387,13 +398,15 @@ export function UserInfo({ user }: UserInfoTabProps) {
                 />
               </div>
 
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                 <FormField
                   control={form.control}
                   name="gender"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Giới tính</FormLabel>
+                      <FormLabel className="text-muted-foreground">
+                        Giới tính
+                      </FormLabel>
                       <Select
                         onValueChange={(value) =>
                           field.onChange(value === '' ? null : value)
@@ -401,7 +414,7 @@ export function UserInfo({ user }: UserInfoTabProps) {
                         value={field.value || undefined}
                       >
                         <FormControl>
-                          <SelectTrigger className="h-10 w-full data-[size=default]:h-10">
+                          <SelectTrigger className="h-12 w-full rounded-xl border-border/50 data-[size=default]:h-12">
                             <SelectValue placeholder="Chọn giới tính" />
                           </SelectTrigger>
                         </FormControl>
@@ -420,21 +433,22 @@ export function UserInfo({ user }: UserInfoTabProps) {
                 />
 
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel className="text-muted-foreground">Email</FormLabel>
                   <FormControl>
                     <Input
                       type="email"
                       value={user.email}
                       readOnly
-                      className="h-10 bg-gray-50 cursor-not-allowed"
+                      className="h-12 cursor-not-allowed rounded-xl border-border/50 bg-muted"
                     />
                   </FormControl>
                 </FormItem>
               </div>
-              <div className="flex gap-3 pt-4">
+
+              <div className="flex gap-3 pt-6">
                 <Button
                   type="submit"
-                  className="bg-orange-500 hover:bg-orange-600"
+                  className="h-12 rounded-xl bg-terracotta px-8 text-sm font-medium hover:bg-terracotta-dark"
                   disabled={isLoading}
                 >
                   <Save className="mr-2 h-4 w-4" />

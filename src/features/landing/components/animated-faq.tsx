@@ -1,143 +1,128 @@
-"use client";
+'use client';
 
-import { motion, type Variants } from "motion/react";
-import { useInView } from "motion/react";
-import { useRef } from "react";
-import Link from "next/link";
+import { motion } from 'motion/react';
+import { useInView } from 'motion/react';
+import { useRef } from 'react';
+import Link from 'next/link';
+import { SectionHeader } from './shared';
+import { fadeInUp, staggerContainer, premiumEase } from './shared';
 
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
+const faqs = [
+  {
+    question: 'Cogie là gì?',
+    answer:
+      'Cogie là nền tảng kết nối những người cần trò chuyện, chia sẻ với những người sẵn sàng lắng nghe - gặp mặt trực tiếp (face-to-face). Chúng tôi tin rằng những cuộc trò chuyện thực sự có thể thay đổi cuộc sống.',
   },
-};
-
-const fadeInUpVariants: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: [0.22, 1, 0.36, 1],
-    },
+  {
+    question: 'Làm sao để trở thành Partner?',
+    answer:
+      'Bạn có thể đăng ký trở thành Partner bằng cách tạo tài khoản và hoàn thành quy trình xác minh danh tính. Sau khi được duyệt, bạn có thể bắt đầu nhận booking và tự đặt mức giá cho mình.',
   },
-};
-
-const faqItemVariants: Variants = {
-  hidden: { opacity: 0, x: 30 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: {
-      duration: 0.6,
-      ease: [0.22, 1, 0.36, 1],
-    },
+  {
+    question: 'Cogie có an toàn không?',
+    answer:
+      'Tuyệt đối! Tất cả Partner đều được xác minh danh tính qua CCCD/CMND. Chúng tôi có hệ thống đánh giá, review và hỗ trợ 24/7 để đảm bảo an toàn cho cả hai bên.',
   },
-};
+  {
+    question: 'Chi phí sử dụng Cogie như thế nào?',
+    answer:
+      'Đăng ký tài khoản hoàn toàn miễn phí. Chi phí mỗi cuộc hẹn sẽ tùy thuộc vào Partner bạn chọn, được hiển thị rõ ràng trên hồ sơ của họ. Không có phí ẩn.',
+  },
+  {
+    question: 'Tôi có thể hủy lịch hẹn không?',
+    answer:
+      'Có, bạn có thể hủy lịch hẹn trước 24 giờ mà không mất phí. Hủy muộn hơn có thể bị tính phí tùy theo chính sách của Partner.',
+  },
+];
 
 export function AnimatedFAQ() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-
-  const faqs = [
-    {
-      question: "1. Cogie là gì?",
-      answer:
-        "Cogie là nền tảng kết nối những người cần trò chuyện, chia sẻ với những người sẵn sàng lắng nghe - gặp mặt trực tiếp (face-to-face).",
-    },
-    {
-      question: "2. Làm sao để trở thành Partner?",
-      answer:
-        "Bạn có thể đăng ký trở thành Partner bằng cách tạo tài khoản và hoàn thành quy trình xác minh danh tính. Sau khi được duyệt, bạn có thể bắt đầu nhận booking.",
-    },
-    {
-      question: "3. Cogie có an toàn không?",
-      answer:
-        "Có! Tất cả Partner đều được xác minh danh tính. Chúng tôi có hệ thống đánh giá và review để đảm bảo chất lượng dịch vụ.",
-    },
-    {
-      question: "4. Chi phí sử dụng Cogie như thế nào?",
-      answer:
-        "Đăng ký tài khoản hoàn toàn miễn phí. Chi phí mỗi cuộc hẹn sẽ tùy thuộc vào Partner bạn chọn, được hiển thị rõ ràng trên hồ sơ của họ.",
-    },
-  ];
+  const isInView = useInView(ref, { once: true, margin: '-100px' });
 
   return (
-    <section ref={ref} className="bg-gray-50 py-20">
+    <section ref={ref} className="bg-background py-20 lg:py-28">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
           {/* Left - Header */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
-          >
-            <motion.div
-              variants={fadeInUpVariants}
-              className="mb-4 inline-flex items-center gap-2 text-sm font-medium text-orange-500"
-            >
-              <span className="h-1.5 w-1.5 rounded-full bg-orange-500"></span>
-              FAQ
-            </motion.div>
-            <motion.h2
-              variants={fadeInUpVariants}
-              className="mb-6 text-3xl font-bold text-gray-900 sm:text-4xl"
-            >
-              Cần Trợ Giúp?
-              <br />
-              Bắt Đầu Với Những Câu Hỏi Này
-            </motion.h2>
-            <motion.p variants={fadeInUpVariants} className="mb-8 text-gray-600">
-              Cần thêm hỗ trợ?
-            </motion.p>
-            <motion.div variants={fadeInUpVariants} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Link
-                href="/contact"
-                className="inline-flex h-12 items-center justify-center rounded-full border border-gray-300 bg-white px-8 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
-              >
-                Liên hệ chúng tôi
-              </Link>
-            </motion.div>
-          </motion.div>
+          <div className="lg:sticky lg:top-24 lg:self-start">
+            <SectionHeader
+              label="FAQ"
+              title="Câu Hỏi"
+              subtitle="Thường Gặp"
+              description="Tìm câu trả lời cho những thắc mắc phổ biến về Cogie."
+            />
 
-          {/* Right - FAQ Items */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
-            className="space-y-4"
-          >
-            {faqs.map((faq, index) => (
-              <motion.details
-                key={index}
-                variants={faqItemVariants}
-                whileHover={{ scale: 1.01 }}
-                className="group rounded-2xl border border-gray-200 bg-white"
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: 0.4, duration: 0.6, ease: premiumEase }}
+              className="mt-8"
+            >
+              <p className="mb-4 text-muted-foreground">
+                Không tìm thấy câu trả lời?
+              </p>
+              <motion.div
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ duration: 0.2, ease: premiumEase }}
               >
-                <summary className="flex cursor-pointer items-center justify-between p-5 font-medium text-gray-900">
-                  <span>{faq.question}</span>
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center gap-2 text-base font-medium text-terracotta transition-colors hover:text-terracotta-dark"
+                >
+                  Liên hệ hỗ trợ
                   <svg
-                    className="h-5 w-5 shrink-0 text-gray-500 transition-transform group-open:rotate-180"
+                    className="h-4 w-4"
                     fill="none"
                     viewBox="0 0 24 24"
                     strokeWidth={2}
                     stroke="currentColor"
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+                    />
                   </svg>
+                </Link>
+              </motion.div>
+            </motion.div>
+          </div>
+
+          {/* Right - FAQ Items */}
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            animate={isInView ? 'visible' : 'hidden'}
+            className="space-y-4"
+          >
+            {faqs.map((faq, index) => (
+              <motion.details
+                key={index}
+                variants={fadeInUp}
+                className="group rounded-2xl border border-border/50 bg-card transition-shadow hover:shadow-md"
+              >
+                <summary className="flex cursor-pointer items-center justify-between p-6 text-foreground">
+                  <span className="pr-4 font-medium">{faq.question}</span>
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-terracotta-light transition-colors group-open:bg-terracotta group-open:text-white">
+                    <svg
+                      className="h-4 w-4 transition-transform group-open:rotate-45"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={2}
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 4.5v15m7.5-7.5h-15"
+                      />
+                    </svg>
+                  </span>
                 </summary>
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.3 }}
-                  className="px-5 pb-5 text-gray-600"
-                >
+                <div className="px-6 pb-6 text-muted-foreground">
                   {faq.answer}
-                </motion.div>
+                </div>
               </motion.details>
             ))}
           </motion.div>

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono, Playfair_Display } from 'next/font/google';
+import { Geist, Geist_Mono, DM_Serif_Display } from 'next/font/google';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { QueryProvider, AuthInitializer } from '@/providers';
 import { Toaster } from '@/shared/components/ui';
@@ -15,9 +15,10 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
-const playfairDisplay = Playfair_Display({
-  variable: '--font-playfair',
-  subsets: ['latin'],
+const dmSerifDisplay = DM_Serif_Display({
+  variable: '--font-display',
+  subsets: ['latin', 'latin-ext'],
+  weight: '400',
 });
 
 export const metadata: Metadata = {
@@ -33,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${playfairDisplay.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${dmSerifDisplay.variable} antialiased`}
       >
         <NuqsAdapter>
           <QueryProvider>
