@@ -11,14 +11,25 @@ import {
   PopoverTrigger,
 } from '@/shared/components/ui/popover';
 import { Button } from '@/shared/components/ui/button';
-import { LogOut, User, Shield, Menu, X } from 'lucide-react';
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+} from '@/shared/components/ui/sheet';
+import { LogOut, User, Shield, Menu, X, ChevronRight } from 'lucide-react';
 import { ROUTES } from '@/shared/constants/routes';
+import { cn } from '@/shared/lib/utils';
+import {
+  aescapeEase,
+  menuItemStagger,
+  scaleDownHover,
+} from '@/features/landing/components/shared';
 
 const navLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/search', label: 'Explore' },
+  { href: '/search', label: 'Discover' },
+  { href: '/#how-it-works', label: 'How It Works' },
   { href: '/#about', label: 'About' },
-  { href: '/#features', label: 'Features' },
+  { href: '/blog', label: 'Blog' },
 ];
 
 export function MarketingHeader() {
@@ -28,10 +39,6 @@ export function MarketingHeader() {
   const isAdmin = user?.roles?.some((role) =>
     role.name.toLowerCase().includes('admin')
   );
-
-  const partnerHref = isAuthenticated
-    ? '/become-partner'
-    : '/sign-in?callbackUrl=/become-partner';
 
   const getUserInitials = () => {
     if (user?.firstName && user?.lastName) {
@@ -52,80 +59,78 @@ export function MarketingHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:h-20 lg:px-8">
+    <header className="sticky top-0 z-50 w-full bg-aescape-cream/95 backdrop-blur-md supports-backdrop-filter:bg-aescape-cream/80">
+      <div className="container mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-terracotta">
-            <svg
-              className="h-5 w-5 text-white"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"
-                fill="currentColor"
-              />
-            </svg>
-          </div>
-          <span className="font-display text-xl tracking-tight text-foreground">
+        <Link href="/" className="group flex items-center gap-2">
+          <motion.span
+            className="font-display text-2xl font-medium tracking-tight text-aescape-charcoal"
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.2, ease: aescapeEase }}
+          >
             Cogie
-          </span>
+          </motion.span>
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-10 lg:flex">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              className="group relative text-sm font-medium text-aescape-charcoal-light transition-colors duration-300 hover:text-aescape-charcoal"
             >
               {link.label}
+              {/* Animated underline */}
+              <span className="absolute -bottom-1 left-0 h-[1.5px] w-0 bg-aescape-charcoal transition-all duration-300 group-hover:w-full" />
             </Link>
           ))}
         </nav>
 
-        {/* Desktop Auth Buttons */}
-        <div className="hidden items-center gap-3 md:flex">
+        {/* Desktop Actions */}
+        <div className="hidden items-center gap-4 lg:flex">
           <Link
-            href={partnerHref}
-            className="flex h-10 items-center rounded-full border border-terracotta px-5 text-sm font-medium text-terracotta transition-colors hover:bg-terracotta-light"
+            href={isAuthenticated ? '/become-partner' : '/sign-in?callbackUrl=/become-partner'}
+            className="text-sm font-medium text-aescape-charcoal-light transition-colors duration-300 hover:text-aescape-charcoal"
           >
             Become a Partner
           </Link>
+
           {isAuthenticated && user ? (
             <Popover>
               <PopoverTrigger asChild>
-                <button
-                  className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-terracotta text-sm font-medium text-white transition-colors hover:bg-terracotta-dark focus:outline-none focus:ring-2 focus:ring-terracotta focus:ring-offset-2"
+                <motion.button
+                  className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full border-2 border-aescape-lavender/30 bg-aescape-cream-dark text-sm font-medium text-aescape-charcoal transition-all duration-300 hover:border-aescape-lavender focus:outline-none focus:ring-2 focus:ring-aescape-lavender focus:ring-offset-2"
+                  whileHover={scaleDownHover}
                   aria-label="User menu"
                 >
                   {user.avatarUrl ? (
                     <Image
                       src={user.avatarUrl}
                       alt={user.firstName || 'User avatar'}
-                      width={40}
-                      height={40}
+                      width={44}
+                      height={44}
                       className="h-full w-full object-cover"
                       unoptimized
                     />
                   ) : (
                     getUserInitials()
                   )}
-                </button>
+                </motion.button>
               </PopoverTrigger>
-              <PopoverContent align="end" className="w-64 p-0">
-                <div className="p-4">
+              <PopoverContent
+                align="end"
+                className="w-72 rounded-2xl border-aescape-cream-dark bg-white/95 p-0 shadow-xl backdrop-blur-lg"
+              >
+                <div className="p-5">
                   <div className="mb-4 flex items-center gap-3">
-                    <div className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-terracotta text-sm font-medium text-white">
+                    <div className="relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-aescape-cream-dark text-sm font-medium text-aescape-charcoal">
                       {user.avatarUrl ? (
                         <Image
                           src={user.avatarUrl}
                           alt={user.firstName || 'User avatar'}
-                          width={40}
-                          height={40}
+                          width={48}
+                          height={48}
                           className="h-full w-full object-cover"
                           unoptimized
                         />
@@ -134,31 +139,31 @@ export function MarketingHeader() {
                       )}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-semibold text-foreground">
+                      <p className="truncate text-sm font-semibold text-aescape-charcoal">
                         {user.firstName && user.lastName
                           ? `${user.firstName} ${user.lastName}`
                           : user.firstName || 'User'}
                       </p>
-                      <p className="truncate text-xs text-muted-foreground">
+                      <p className="truncate text-xs text-aescape-charcoal-light">
                         {user.email}
                       </p>
                     </div>
                   </div>
-                  <div className="space-y-1 border-t border-border pt-3">
-                    <Link href="/profile">
+                  <div className="space-y-1 border-t border-aescape-cream-dark pt-3">
+                    <Link href="/dashboard">
                       <Button
                         variant="ghost"
-                        className="w-full justify-start text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
+                        className="w-full justify-start text-sm text-aescape-charcoal-light hover:bg-aescape-cream hover:text-aescape-charcoal"
                       >
                         <User className="mr-2 h-4 w-4" />
-                        Profile
+                        Dashboard
                       </Button>
                     </Link>
                     {isAdmin && (
                       <Link href={ROUTES.ADMIN.HOME}>
                         <Button
                           variant="ghost"
-                          className="w-full justify-start text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
+                          className="w-full justify-start text-sm text-aescape-charcoal-light hover:bg-aescape-cream hover:text-aescape-charcoal"
                         >
                           <Shield className="mr-2 h-4 w-4" />
                           Admin Panel
@@ -167,82 +172,104 @@ export function MarketingHeader() {
                     )}
                     <Button
                       variant="ghost"
-                      className="w-full justify-start text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
+                      className="w-full justify-start text-sm text-aescape-charcoal-light hover:bg-aescape-cream hover:text-aescape-charcoal"
                       onClick={handleLogout}
                     >
                       <LogOut className="mr-2 h-4 w-4" />
-                      Logout
+                      Sign Out
                     </Button>
                   </div>
                 </div>
               </PopoverContent>
             </Popover>
           ) : (
-            <Link
-              href="/sign-in"
-              className="flex h-10 items-center rounded-full bg-terracotta px-6 text-sm font-medium text-white transition-colors hover:bg-terracotta-dark"
-            >
-              Sign In
-            </Link>
+            <motion.div whileHover={scaleDownHover} whileTap={{ scale: 0.92 }}>
+              <Link
+                href="/sign-in"
+                className="flex h-11 items-center justify-center rounded-full bg-aescape-charcoal px-7 text-sm font-medium text-white transition-colors duration-300 hover:bg-aescape-charcoal/90"
+              >
+                Sign In
+              </Link>
+            </motion.div>
           )}
         </div>
 
         {/* Mobile Menu Button */}
-        <button
-          type="button"
-          className="p-2 text-muted-foreground md:hidden"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          aria-label="Toggle menu"
-        >
-          {isMobileMenuOpen ? (
-            <X className="h-6 w-6" />
-          ) : (
-            <Menu className="h-6 w-6" />
-          )}
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.2 }}
-            className="overflow-hidden border-t border-border bg-background md:hidden"
+        <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+          <SheetTrigger asChild>
+            <button
+              className="flex h-10 w-10 items-center justify-center rounded-full text-aescape-charcoal transition-colors hover:bg-aescape-cream-dark lg:hidden"
+              aria-label="Open menu"
+            >
+              <Menu className="h-5 w-5" />
+            </button>
+          </SheetTrigger>
+          <SheetContent
+            side="right"
+            className="w-full border-none bg-aescape-cream p-0 sm:max-w-md"
           >
-            <nav className="flex flex-col space-y-1 px-4 py-4">
-              {navLinks.map((link) => (
+            <div className="flex h-full flex-col px-6 py-6">
+              {/* Mobile Header */}
+              <div className="flex items-center justify-between">
                 <Link
-                  key={link.href}
-                  href={link.href}
-                  className="rounded-lg px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                  href="/"
+                  className="font-display text-2xl font-medium tracking-tight text-aescape-charcoal"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  {link.label}
+                  Cogie
                 </Link>
-              ))}
+                <button
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex h-10 w-10 items-center justify-center rounded-full text-aescape-charcoal transition-colors hover:bg-aescape-cream-dark"
+                  aria-label="Close menu"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
 
-              <div className="flex flex-col gap-3 border-t border-border pt-4">
+              {/* Mobile Navigation */}
+              <nav className="mt-10 flex flex-col gap-2">
+                {navLinks.map((link, index) => (
+                  <motion.div
+                    key={link.href}
+                    custom={index}
+                    initial="hidden"
+                    animate="visible"
+                    variants={menuItemStagger}
+                  >
+                    <Link
+                      href={link.href}
+                      className="group flex items-center justify-between rounded-xl px-4 py-4 text-lg font-medium text-aescape-charcoal transition-colors hover:bg-aescape-cream-dark"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      {link.label}
+                      <ChevronRight className="h-5 w-5 text-aescape-charcoal-light transition-transform group-hover:translate-x-1" />
+                    </Link>
+                  </motion.div>
+                ))}
+              </nav>
+
+              {/* Mobile Actions */}
+              <div className="mt-auto space-y-4 border-t border-aescape-cream-dark pt-6">
                 <Link
-                  href={partnerHref}
-                  className="flex h-12 items-center justify-center rounded-full border border-terracotta text-sm font-medium text-terracotta transition-colors hover:bg-terracotta-light"
+                  href={isAuthenticated ? '/become-partner' : '/sign-in?callbackUrl=/become-partner'}
+                  className="flex items-center justify-center rounded-full border-2 border-aescape-charcoal py-4 text-sm font-medium text-aescape-charcoal transition-colors hover:bg-aescape-charcoal hover:text-white"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Become a Partner
                 </Link>
+
                 {isAuthenticated && user ? (
-                  <div className="rounded-xl bg-muted p-4">
-                    <div className="mb-3 flex items-center gap-3">
-                      <div className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-terracotta text-sm font-medium text-white">
+                  <div className="rounded-2xl bg-aescape-cream-dark p-5">
+                    <div className="mb-4 flex items-center gap-3">
+                      <div className="relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-white text-sm font-medium text-aescape-charcoal">
                         {user.avatarUrl ? (
                           <Image
                             src={user.avatarUrl}
                             alt={user.firstName || 'User avatar'}
                             fill
                             className="object-cover"
-                            sizes="40px"
+                            sizes="48px"
                             unoptimized
                           />
                         ) : (
@@ -250,65 +277,67 @@ export function MarketingHeader() {
                         )}
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className="truncate text-sm font-semibold text-foreground">
+                        <p className="truncate text-sm font-semibold text-aescape-charcoal">
                           {user.firstName && user.lastName
                             ? `${user.firstName} ${user.lastName}`
                             : user.firstName || 'User'}
                         </p>
-                        <p className="truncate text-xs text-muted-foreground">
+                        <p className="truncate text-xs text-aescape-charcoal-light">
                           {user.email}
                         </p>
                       </div>
                     </div>
-                    <Link
-                      href="/account/profile"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      <Button
-                        variant="ghost"
-                        className="w-full justify-start text-sm text-muted-foreground hover:bg-background hover:text-foreground"
-                      >
-                        <User className="mr-2 h-4 w-4" />
-                        Profile
-                      </Button>
-                    </Link>
-                    {isAdmin && (
+                    <div className="space-y-1">
                       <Link
-                        href={ROUTES.ADMIN.HOME}
+                        href="/dashboard"
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
                         <Button
                           variant="ghost"
-                          className="w-full justify-start text-sm text-muted-foreground hover:bg-background hover:text-foreground"
+                          className="w-full justify-start text-sm text-aescape-charcoal-light hover:bg-white hover:text-aescape-charcoal"
                         >
-                          <Shield className="mr-2 h-4 w-4" />
-                          Admin Panel
+                          <User className="mr-2 h-4 w-4" />
+                          Dashboard
                         </Button>
                       </Link>
-                    )}
-                    <Button
-                      variant="ghost"
-                      className="w-full justify-start text-sm text-muted-foreground hover:bg-background hover:text-foreground"
-                      onClick={handleLogout}
-                    >
-                      <LogOut className="mr-2 h-4 w-4" />
-                      Logout
-                    </Button>
+                      {isAdmin && (
+                        <Link
+                          href={ROUTES.ADMIN.HOME}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                          <Button
+                            variant="ghost"
+                            className="w-full justify-start text-sm text-aescape-charcoal-light hover:bg-white hover:text-aescape-charcoal"
+                          >
+                            <Shield className="mr-2 h-4 w-4" />
+                            Admin Panel
+                          </Button>
+                        </Link>
+                      )}
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-start text-sm text-aescape-charcoal-light hover:bg-white hover:text-aescape-charcoal"
+                        onClick={handleLogout}
+                      >
+                        <LogOut className="mr-2 h-4 w-4" />
+                        Sign Out
+                      </Button>
+                    </div>
                   </div>
                 ) : (
                   <Link
                     href="/sign-in"
-                    className="flex h-12 items-center justify-center rounded-full bg-terracotta text-sm font-medium text-white transition-colors hover:bg-terracotta-dark"
+                    className="flex items-center justify-center rounded-full bg-aescape-charcoal py-4 text-sm font-medium text-white transition-colors hover:bg-aescape-charcoal/90"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Sign In
                   </Link>
                 )}
               </div>
-            </nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            </div>
+          </SheetContent>
+        </Sheet>
+      </div>
     </header>
   );
 }

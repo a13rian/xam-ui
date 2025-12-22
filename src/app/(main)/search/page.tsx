@@ -1,5 +1,4 @@
 import { SearchPageClient } from '@/features/search';
-import { mockCompanions } from '@/shared/mock-data';
 
 export const metadata = {
   title: 'Tìm kiếm người đồng hành | Cogie',
@@ -8,5 +7,5 @@ export const metadata = {
 };
 
 export default function SearchPage() {
-  return <SearchPageClient initialCompanions={mockCompanions} />;
+  return <SearchPageClient />;
 }

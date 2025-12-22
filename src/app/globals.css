@@ -16,6 +16,16 @@
   --color-terracotta-dark: var(--terracotta-dark);
   --color-cream: var(--cream);
   --color-sage: var(--sage);
+
+  /* Aescape-Inspired Premium Palette */
+  --color-aescape-cream: var(--aescape-cream);
+  --color-aescape-cream-dark: var(--aescape-cream-dark);
+  --color-aescape-charcoal: var(--aescape-charcoal);
+  --color-aescape-charcoal-light: var(--aescape-charcoal-light);
+  --color-aescape-lavender: var(--aescape-lavender);
+  --color-aescape-lavender-dark: var(--aescape-lavender-dark);
+  --color-aescape-footer-bg: var(--aescape-footer-bg);
+  --color-aescape-footer-text: var(--aescape-footer-text);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -63,6 +73,16 @@
   --terracotta-dark: oklch(0.50 0.16 45);
   --cream: oklch(0.98 0.012 85);
   --sage: oklch(0.72 0.06 160);
+
+  /* Aescape-Inspired Premium Palette */
+  --aescape-cream: oklch(0.955 0.012 85);         /* #f2f0e9 - Warm cream background */
+  --aescape-cream-dark: oklch(0.925 0.015 85);    /* Slightly darker for hover states */
+  --aescape-charcoal: oklch(0.22 0 0);            /* Deep charcoal - TRUE GRAY */
+  --aescape-charcoal-light: oklch(0.45 0 0);      /* Light charcoal - TRUE GRAY */
+  --aescape-lavender: oklch(0.75 0.08 290);       /* Soft lavender accent */
+  --aescape-lavender-dark: oklch(0.65 0.10 290);  /* Darker lavender for hover */
+  --aescape-footer-bg: oklch(0.18 0 0);           /* Dark footer - TRUE DARK GRAY */
+  --aescape-footer-text: oklch(0.92 0 0);         /* Light text for footer */
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);

@@ -1,18 +1,24 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import dynamic from 'next/dynamic';
-import { Map as MapIcon, List } from 'lucide-react';
+import { Map as MapIcon, List, Loader2, AlertCircle, MapPin } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
 import { Button } from '@/shared/components/ui/button';
 import { SearchProvider, useSearch } from './search-context';
 import { SearchFilters } from './search-filters';
 import { CompanionList } from '@/features/companions/components/companion-list';
-import type { Companion } from '@/features/companions';
+import { useGeolocation } from '@/shared/hooks';
+import { useAccountSearch } from '../api';
+import { mapAccountsToCompanions } from '../utils';
+import type { AccountSearchParams } from '../api';
 
 // Dynamically import map to avoid SSR issues with Leaflet
 const CompanionMap = dynamic(
-  () => import('@/features/companions/components/companion-map').then((mod) => mod.CompanionMap),
+  () =>
+    import('@/features/companions/components/companion-map').then(
+      (mod) => mod.CompanionMap
+    ),
   {
     ssr: false,
     loading: () => (
@@ -23,13 +29,119 @@ const CompanionMap = dynamic(
   }
 );
 
-interface SearchPageClientProps {
-  initialCompanions: Companion[];
+// Loading skeleton component
+function LoadingState() {
+  return (
+    <div className="flex flex-col items-center justify-center min-h-[400px] gap-3">
+      <Loader2 className="size-8 animate-spin text-primary" />
+      <p className="text-gray-500">Đang tìm kiếm...</p>
+    </div>
+  );
+}
+
+// Error state component
+function ErrorState({
+  message,
+  onRetry,
+}: {
+  message?: string;
+  onRetry?: () => void;
+}) {
+  return (
+    <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
+      <AlertCircle className="size-12 text-red-500" />
+      <div className="text-center">
+        <p className="text-red-500 font-medium">Không thể tải kết quả</p>
+        <p className="text-gray-500 text-sm mt-1">
+          {message || 'Vui lòng thử lại sau'}
+        </p>
+      </div>
+      {onRetry && (
+        <Button variant="outline" onClick={onRetry}>
+          Thử lại
+        </Button>
+      )}
+    </div>
+  );
+}
+
+// Empty state component
+function EmptyState() {
+  return (
+    <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
+      <MapPin className="size-12 text-gray-300" />
+      <div className="text-center">
+        <p className="text-gray-500 font-medium">Không tìm thấy kết quả</p>
+        <p className="text-gray-400 text-sm mt-1">
+          Thử thay đổi vị trí hoặc mở rộng phạm vi tìm kiếm
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// Location notice component
+function LocationNotice({ isUsingDefault }: { isUsingDefault: boolean }) {
+  if (!isUsingDefault) return null;
+
+  return (
+    <div className="bg-yellow-50 border border-yellow-200 rounded-lg px-4 py-2 mb-4 text-sm text-yellow-800">
+      <span className="font-medium">Lưu ý:</span> Đang sử dụng vị trí mặc định
+      (TP. Hồ Chí Minh). Cho phép truy cập vị trí để có kết quả chính xác hơn.
+    </div>
+  );
 }
 
 function SearchContent() {
   const { state, dispatch } = useSearch();
   const [showMobileMap, setShowMobileMap] = useState(false);
+
+  // Get user's geolocation
+  const {
+    latitude,
+    longitude,
+    isLoading: geoLoading,
+    isUsingDefault,
+  } = useGeolocation();
+
+  // Build search params from state and geolocation
+  const searchParams: AccountSearchParams | null = useMemo(() => {
+    if (!latitude || !longitude) return null;
+
+    return {
+      latitude,
+      longitude,
+      radiusKm: state.filters.radiusKm || 10,
+      search: state.filters.search || undefined,
+      city: state.filters.city || undefined,
+      district: state.filters.district || undefined,
+      ward: state.filters.ward || undefined,
+      page: state.filters.page || 1,
+      limit: state.filters.limit || 20,
+    };
+  }, [latitude, longitude, state.filters]);
+
+  // Fetch accounts from API
+  const {
+    data,
+    isLoading: searchLoading,
+    isError,
+    error,
+    refetch,
+  } = useAccountSearch(searchParams);
+
+  // Map accounts to companions when data changes
+  useEffect(() => {
+    if (data?.items) {
+      const companions = mapAccountsToCompanions(data.items);
+      dispatch({ type: 'SET_COMPANIONS', payload: companions });
+    }
+  }, [data, dispatch]);
+
+  // Update loading state in context
+  useEffect(() => {
+    dispatch({ type: 'SET_LOADING', payload: geoLoading || searchLoading });
+  }, [geoLoading, searchLoading, dispatch]);
 
   const handleCompanionHover = (id: string | null) => {
     dispatch({ type: 'SET_HOVERED_COMPANION', payload: id });
@@ -41,6 +153,40 @@ function SearchContent() {
 
   const handleMapViewChange = (viewState: typeof state.mapViewState) => {
     dispatch({ type: 'SET_MAP_VIEW_STATE', payload: viewState });
+  };
+
+  const handleRetry = () => {
+    refetch();
+  };
+
+  // Determine what to render in the list area
+  const renderListContent = () => {
+    if (geoLoading || searchLoading) {
+      return <LoadingState />;
+    }
+
+    if (isError) {
+      return (
+        <ErrorState
+          message={(error as Error)?.message}
+          onRetry={handleRetry}
+        />
+      );
+    }
+
+    if (state.companions.length === 0) {
+      return <EmptyState />;
+    }
+
+    return (
+      <CompanionList
+        companions={state.companions}
+        selectedId={state.selectedCompanionId}
+        hoveredId={state.hoveredCompanionId}
+        onCompanionHover={handleCompanionHover}
+        onCompanionSelect={handleCompanionSelect}
+      />
+    );
   };
 
   return (
@@ -62,13 +208,15 @@ function SearchContent() {
           )}
         >
           <div className="max-w-3xl mx-auto lg:max-w-none">
-            <CompanionList
-              companions={state.companions}
-              selectedId={state.selectedCompanionId}
-              hoveredId={state.hoveredCompanionId}
-              onCompanionHover={handleCompanionHover}
-              onCompanionSelect={handleCompanionSelect}
-            />
+            <LocationNotice isUsingDefault={isUsingDefault} />
+            {data && !isError && (
+              <p className="text-sm text-gray-500 mb-4">
+                Tìm thấy {data.total} kết quả
+                {data.totalPages > 1 &&
+                  ` (trang ${data.page}/${data.totalPages})`}
+              </p>
+            )}
+            {renderListContent()}
           </div>
         </div>
 
@@ -126,9 +274,9 @@ function SearchContent() {
   );
 }
 
-export function SearchPageClient({ initialCompanions }: SearchPageClientProps) {
+export function SearchPageClient() {
   return (
-    <SearchProvider initialCompanions={initialCompanions}>
+    <SearchProvider>
       <SearchContent />
     </SearchProvider>
   );

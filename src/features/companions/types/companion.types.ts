@@ -52,6 +52,8 @@ export interface Companion {
   languages?: string[];
   age: number;
   gender?: string;
+  /** Distance from search point in kilometers (from account search API) */
+  distanceKm?: number;
 }
 
 // Map types

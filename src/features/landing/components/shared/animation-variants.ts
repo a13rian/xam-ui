@@ -109,3 +109,136 @@ export const scaleUp: Variants = {
     },
   },
 };
+
+// ========================================
+// Aescape-Inspired Animations
+// ========================================
+
+// Aescape-style easing (smooth ease-out)
+export const aescapeEase = [0.0, 0.0, 0.2, 1] as const;
+
+// Signature scale-down hover effect (Aescape's tactile press-in)
+export const scaleDownHover = {
+  scale: 0.95,
+  transition: { duration: 0.3, ease: aescapeEase },
+};
+
+// Section reveal with refined timing
+export const sectionReveal: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: aescapeEase,
+    },
+  },
+};
+
+// Video fade in (slower for cinematic effect)
+export const videoFadeIn: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      duration: 1.2,
+      ease: aescapeEase,
+    },
+  },
+};
+
+// Underline reveal animation for nav links
+export const underlineReveal: Variants = {
+  rest: { scaleX: 0, originX: 0 },
+  hover: {
+    scaleX: 1,
+    transition: { duration: 0.4, ease: aescapeEase },
+  },
+};
+
+// Hero text stagger (slower, more dramatic)
+export const heroStagger: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.3,
+    },
+  },
+};
+
+// Hero text item animation
+export const heroTextItem: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: aescapeEase,
+    },
+  },
+};
+
+// Card press effect (scale down on hover - Aescape signature)
+export const cardPress = {
+  rest: { scale: 1 },
+  hover: {
+    scale: 0.95,
+    transition: { duration: 0.3, ease: aescapeEase },
+  },
+};
+
+// Scroll indicator bounce
+export const scrollBounce: Variants = {
+  initial: { y: 0 },
+  animate: {
+    y: [0, 8, 0],
+    transition: {
+      duration: 1.5,
+      repeat: Infinity,
+      ease: 'easeInOut',
+    },
+  },
+};
+
+// Counter animation (for stats)
+export const counterReveal: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: aescapeEase,
+    },
+  },
+};
+
+// Timeline line draw animation
+export const lineGrow: Variants = {
+  hidden: { scaleY: 0, originY: 0 },
+  visible: {
+    scaleY: 1,
+    transition: {
+      duration: 1.2,
+      ease: aescapeEase,
+    },
+  },
+};
+
+// Mobile menu item stagger
+export const menuItemStagger: Variants = {
+  hidden: { opacity: 0, x: 20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    x: 0,
+    transition: {
+      delay: i * 0.1,
+      duration: 0.3,
+      ease: aescapeEase,
+    },
+  }),
+};

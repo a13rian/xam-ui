@@ -5,7 +5,8 @@ import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { ChevronDown, ArrowUp } from 'lucide-react';
+import { motion } from 'motion/react';
+import { ChevronDown, ArrowUp, Check, Loader2 } from 'lucide-react';
 import { Button } from '@/shared/components/ui/button';
 import { Input } from '@/shared/components/ui/input';
 import {
@@ -15,7 +16,14 @@ import {
   FormItem,
   FormMessage,
 } from '@/shared/components/ui/form';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/shared/components/ui/accordion';
 import { cn } from '@/shared/lib/utils';
+import { scaleDownHover } from '@/features/landing/components/shared';
 
 const newsletterSchema = z.object({
   email: z.string().min(1, 'Email is required').email('Please enter a valid email'),
@@ -30,19 +38,29 @@ interface FooterSection {
 
 const footerSections: FooterSection[] = [
   {
-    title: 'Product',
+    title: 'Experience',
     links: [
-      { label: 'Features', href: '/#features' },
-      { label: 'Pricing', href: '/#pricing' },
-      { label: 'About', href: '/#about' },
+      { label: 'Discover Partners', href: '/search' },
+      { label: 'How It Works', href: '/#how-it-works' },
+      { label: 'Pricing', href: '/#services' },
+      { label: 'Gift Cards', href: '/gifts' },
     ],
   },
   {
-    title: 'Resources',
+    title: 'Partners',
     links: [
-      { label: 'Documentation', href: '/docs' },
+      { label: 'Become a Partner', href: '/become-partner' },
+      { label: 'Partner Resources', href: '/partner-resources' },
+      { label: 'Success Stories', href: '/success-stories' },
+    ],
+  },
+  {
+    title: 'Company',
+    links: [
+      { label: 'About Us', href: '/about' },
       { label: 'Blog', href: '/blog' },
-      { label: 'FAQs', href: '/#faq' },
+      { label: 'Careers', href: '/careers' },
+      { label: 'Press', href: '/press' },
     ],
   },
   {
@@ -50,13 +68,7 @@ const footerSections: FooterSection[] = [
     links: [
       { label: 'Help Center', href: '/help' },
       { label: 'Contact Us', href: '/contact' },
-    ],
-  },
-  {
-    title: 'Legal',
-    links: [
-      { label: 'Privacy Policy', href: '/privacy' },
-      { label: 'Terms of Service', href: '/terms' },
+      { label: 'FAQ', href: '/#faq' },
     ],
   },
 ];
@@ -72,11 +84,11 @@ const socialLinks = [
     ),
   },
   {
-    label: 'Twitter',
-    href: 'https://twitter.com',
+    label: 'TikTok',
+    href: 'https://tiktok.com',
     icon: (
       <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
       </svg>
     ),
   },
@@ -89,66 +101,12 @@ const socialLinks = [
       </svg>
     ),
   },
-  {
-    label: 'GitHub',
-    href: 'https://github.com',
-    icon: (
-      <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-        <path
-          fillRule="evenodd"
-          d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
-          clipRule="evenodd"
-        />
-      </svg>
-    ),
-  },
 ];
-
-function FooterAccordion({ section }: { section: FooterSection }) {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <div className="border-b border-background/10 py-4 md:border-none md:py-0">
-      <h3 className="text-sm font-medium text-background">
-        <button
-          className="flex w-full items-center justify-between gap-5 md:pointer-events-none"
-          onClick={() => setIsOpen(!isOpen)}
-          aria-expanded={isOpen}
-        >
-          <span className="text-left">{section.title}</span>
-          <ChevronDown
-            className={cn(
-              'h-4 w-4 transition-transform duration-200 md:hidden',
-              isOpen && 'rotate-180'
-            )}
-          />
-        </button>
-      </h3>
-      <div
-        className={cn(
-          'overflow-hidden transition-all duration-300 md:overflow-visible',
-          isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 md:max-h-none md:opacity-100'
-        )}
-      >
-        <ul className="mt-4 space-y-2.5 pb-2 text-sm text-background/70">
-          {section.links.map((link) => (
-            <li key={link.href}>
-              <Link
-                href={link.href}
-                className="inline-flex items-center transition-colors hover:text-background"
-              >
-                {link.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  );
-}
 
 export function MarketingFooter() {
   const currentYear = new Date().getFullYear();
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<NewsletterFormValues>({
     resolver: zodResolver(newsletterSchema),
@@ -157,9 +115,14 @@ export function MarketingFooter() {
     },
   });
 
-  function onSubmit(data: NewsletterFormValues) {
+  async function onSubmit(data: NewsletterFormValues) {
+    setIsLoading(true);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     console.log(data);
+    setIsLoading(false);
+    setIsSubmitted(true);
     form.reset();
+    setTimeout(() => setIsSubmitted(false), 5000);
   }
 
   const scrollToTop = () => {
@@ -167,24 +130,37 @@ export function MarketingFooter() {
   };
 
   return (
-    <footer className="relative bg-foreground py-12 text-background md:py-16">
-      <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Top Section */}
-        <div className="grid gap-10 md:grid-cols-12 md:gap-8">
-          {/* Newsletter Section */}
-          <div className="md:col-span-6 lg:col-span-5">
-            <h2 className="font-display text-2xl tracking-tight text-background">
-              Nhận thông tin mới nhất
-            </h2>
-            <p className="mt-2 text-sm text-background/70">
-              Đăng ký để nhận tin tức về tính năng mới và ưu đãi đặc biệt.
-            </p>
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="mt-6"
+    <footer className="relative bg-aescape-footer-bg text-aescape-footer-text">
+      {/* Newsletter Section */}
+      <div className="border-b border-white/10 py-16">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
+            {/* Headline */}
+            <div>
+              <h2 className="font-display text-2xl font-medium tracking-tight text-white md:text-3xl lg:text-4xl">
+                Stay in the Loop
+              </h2>
+              <p className="mt-4 text-base text-white/60 lg:text-lg">
+                Get updates on new partners, features, and exclusive offers.
+              </p>
+            </div>
+
+            {/* Form */}
+            {isSubmitted ? (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex items-center gap-2 rounded-full bg-white/10 px-6 py-4 text-sm font-medium text-white"
               >
-                <div className="flex flex-col gap-3 sm:flex-row">
+                <Check className="h-5 w-5 text-green-400" />
+                Thanks for subscribing!
+              </motion.div>
+            ) : (
+              <Form {...form}>
+                <form
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  className="flex flex-col gap-3 sm:flex-row"
+                >
                   <FormField
                     control={form.control}
                     name="email"
@@ -193,118 +169,156 @@ export function MarketingFooter() {
                         <FormControl>
                           <Input
                             type="email"
-                            placeholder="Enter your email address"
-                            className="h-12 border-background/20 bg-background/10 text-background placeholder:text-background/50 focus:border-terracotta"
+                            placeholder="Your email"
+                            className="h-14 rounded-full border-white/20 bg-white/10 px-6 text-white placeholder:text-white/50 focus:border-aescape-lavender focus:ring-aescape-lavender"
                             {...field}
                           />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="ml-4 text-xs text-red-400" />
                       </FormItem>
                     )}
                   />
-                  <Button
+                  <motion.button
                     type="submit"
-                    className="h-12 rounded-lg bg-terracotta px-8 font-medium text-white transition-colors hover:bg-terracotta-dark"
+                    disabled={isLoading}
+                    className="flex h-14 items-center justify-center rounded-full bg-aescape-lavender px-8 text-sm font-medium text-aescape-charcoal transition-colors hover:bg-aescape-lavender-dark disabled:cursor-not-allowed disabled:opacity-50"
+                    whileHover={scaleDownHover}
+                    whileTap={{ scale: 0.92 }}
                   >
-                    Subscribe
-                  </Button>
-                </div>
-              </form>
-            </Form>
-          </div>
-
-          {/* Social Links Section */}
-          <div className="flex flex-col justify-end md:col-span-6 md:pl-8 lg:col-span-7">
-            <h3 className="hidden text-sm font-medium text-background md:block">
-              Follow us
-            </h3>
-            <ul className="mt-4 flex flex-wrap gap-3">
-              {socialLinks.map((social) => (
-                <li key={social.label}>
-                  <a
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`Go to ${social.label}`}
-                    className="group flex h-12 w-12 items-center justify-center rounded-xl bg-background/10 transition-all duration-300 hover:bg-terracotta"
-                  >
-                    <span className="text-background/70 transition-colors group-hover:text-white">
-                      {social.icon}
-                    </span>
-                  </a>
-                </li>
-              ))}
-            </ul>
+                    {isLoading ? (
+                      <Loader2 className="h-5 w-5 animate-spin" />
+                    ) : (
+                      'Subscribe'
+                    )}
+                  </motion.button>
+                </form>
+              </Form>
+            )}
           </div>
         </div>
+      </div>
 
-        {/* Navigation */}
-        <nav
-          aria-label="Footer Navigation"
-          className="mt-12 overflow-hidden border-t border-background/10 pt-10 md:grid md:grid-cols-4 md:gap-8"
-        >
+      {/* Main Footer Content */}
+      <div className="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
+        {/* Navigation - Desktop */}
+        <div className="hidden gap-8 md:grid md:grid-cols-4">
           {footerSections.map((section) => (
-            <FooterAccordion key={section.title} section={section} />
+            <div key={section.title}>
+              <h3 className="text-sm font-medium text-white">{section.title}</h3>
+              <ul className="mt-4 space-y-3 text-sm">
+                {section.links.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-white/60 transition-colors hover:text-white"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           ))}
-        </nav>
+        </div>
+
+        {/* Navigation - Mobile Accordion */}
+        <Accordion type="single" collapsible className="md:hidden">
+          {footerSections.map((section) => (
+            <AccordionItem
+              key={section.title}
+              value={section.title}
+              className="border-white/10"
+            >
+              <AccordionTrigger className="py-4 text-sm font-medium text-white hover:no-underline">
+                {section.title}
+              </AccordionTrigger>
+              <AccordionContent>
+                <ul className="space-y-3 pb-4 text-sm">
+                  {section.links.map((link) => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        className="text-white/60 transition-colors hover:text-white"
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+
+        {/* Social Links */}
+        <div className="mt-12 flex flex-col items-center justify-between gap-8 border-t border-white/10 pt-10 md:flex-row">
+          <ul className="flex gap-4">
+            {socialLinks.map((social) => (
+              <li key={social.label}>
+                <motion.a
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Follow us on ${social.label}`}
+                  className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white/60 transition-all duration-300 hover:bg-aescape-lavender hover:text-aescape-charcoal"
+                  whileHover={scaleDownHover}
+                >
+                  {social.icon}
+                </motion.a>
+              </li>
+            ))}
+          </ul>
+        </div>
 
         {/* Bottom Bar */}
-        <div className="mt-10 flex flex-col items-center justify-between gap-6 border-t border-background/10 pt-8 md:flex-row">
+        <div className="mt-10 flex flex-col items-center justify-between gap-6 border-t border-white/10 pt-8 md:flex-row">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-terracotta">
-              <svg
-                className="h-4 w-4 text-white"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"
-                  fill="currentColor"
-                />
-              </svg>
-            </div>
-            <span className="font-display text-lg tracking-tight text-background">
-              Cogie
-            </span>
+          <Link
+            href="/"
+            className="font-display text-xl font-medium tracking-tight text-white"
+          >
+            Cogie
           </Link>
 
           {/* Legal Links */}
-          <ul className="flex items-center gap-6 text-sm text-background/60">
+          <ul className="flex items-center gap-6 text-sm text-white/50">
             <li>
-              <Link
-                href="/privacy"
-                className="transition-colors hover:text-background"
-              >
+              <Link href="/privacy" className="transition-colors hover:text-white">
                 Privacy Policy
               </Link>
             </li>
             <li>
-              <Link
-                href="/terms"
-                className="transition-colors hover:text-background"
-              >
+              <Link href="/terms" className="transition-colors hover:text-white">
                 Terms of Service
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/accessibility"
+                className="transition-colors hover:text-white"
+              >
+                Accessibility
               </Link>
             </li>
           </ul>
 
           {/* Copyright */}
-          <p className="text-sm text-background/60">
-            Copyright &copy; Cogie Inc. {currentYear}
+          <p className="text-sm text-white/50">
+            &copy; {currentYear} Cogie Inc. All rights reserved.
           </p>
         </div>
-
-        {/* Back to Top Button */}
-        <button
-          onClick={scrollToTop}
-          aria-label="Back to top"
-          className="absolute -top-6 right-4 flex h-12 w-12 items-center justify-center rounded-xl bg-terracotta text-white shadow-lg transition-all duration-300 hover:bg-terracotta-dark md:right-8"
-        >
-          <ArrowUp className="h-5 w-5" />
-        </button>
       </div>
+
+      {/* Back to Top Button */}
+      <motion.button
+        onClick={scrollToTop}
+        aria-label="Back to top"
+        className="absolute -top-6 right-4 flex h-12 w-12 items-center justify-center rounded-full bg-aescape-lavender text-aescape-charcoal shadow-lg transition-colors hover:bg-aescape-lavender-dark md:right-8"
+        whileHover={scaleDownHover}
+        whileTap={{ scale: 0.9 }}
+      >
+        <ArrowUp className="h-5 w-5" />
+      </motion.button>
     </footer>
   );
 }

@@ -24,3 +24,9 @@ export {
   SearchFilters as SearchFiltersComponent,
   SearchPageClient,
 } from './components';
+
+// API
+export * from './api';
+
+// Utils
+export * from './utils';

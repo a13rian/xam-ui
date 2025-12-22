@@ -15,6 +15,18 @@ import { defaultMapCenter, defaultMapZoom } from '@/shared/mock-data';
 
 // Local types for search state
 interface SearchFilters {
+  // Text search on display name
+  search: string;
+  // Geolocation search radius in km
+  radiusKm: number;
+  // Address filters
+  city: string;
+  district: string;
+  ward: string;
+  // Pagination
+  page: number;
+  limit: number;
+  // Legacy fields (kept for UI compatibility)
   location: string;
   dateFrom: Date | null;
   dateTo: Date | null;
@@ -32,6 +44,14 @@ interface SearchState {
 
 // Default values
 const defaultFilters: SearchFilters = {
+  search: '',
+  radiusKm: 10,
+  city: '',
+  district: '',
+  ward: '',
+  page: 1,
+  limit: 20,
+  // Legacy fields
   location: '',
   dateFrom: null,
   dateTo: null,
