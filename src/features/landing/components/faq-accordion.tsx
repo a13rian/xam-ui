@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { motion } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
-import { SectionContainer, PremiumButton } from './shared';
+import { SectionContainer } from './shared';
 import {
   Accordion,
   AccordionContent,
@@ -14,34 +14,34 @@ import { staggerContainer, fadeInUp } from './shared/animation-variants';
 
 const faqs = [
   {
-    question: 'How does Cogie work?',
+    question: 'Cogie hoạt động như thế nào?',
     answer:
-      'Cogie connects you with verified companions for meaningful conversations and experiences. Simply create an account, browse partners by interests and availability, book a session, and meet at your preferred location. All payments are handled securely through our platform.',
+      'Cogie kết nối bạn với các đối tác đã xác minh để có những cuộc trò chuyện và trải nghiệm ý nghĩa. Chỉ cần tạo tài khoản, duyệt đối tác theo sở thích và lịch trình, đặt buổi hẹn và gặp tại địa điểm bạn chọn. Tất cả thanh toán được xử lý an toàn qua nền tảng của chúng tôi.',
   },
   {
-    question: 'Are all partners verified?',
+    question: 'Tất cả đối tác đều được xác minh?',
     answer:
-      'Yes, every partner on Cogie goes through a rigorous verification process including identity verification, background checks, and personal interviews. We also collect ongoing feedback to ensure quality and safety.',
+      'Đúng vậy, mọi đối tác trên Cogie đều trải qua quy trình xác minh nghiêm ngặt bao gồm xác minh danh tính, kiểm tra lý lịch và phỏng vấn cá nhân. Chúng tôi cũng thu thập phản hồi liên tục để đảm bảo chất lượng và an toàn.',
   },
   {
-    question: 'How much does it cost?',
+    question: 'Chi phí như thế nào?',
     answer:
-      'Prices vary by partner and type of experience. Casual conversations start from 100,000 VND per hour. Each partner sets their own rates based on their experience and specialties. You can see exact pricing on each partner profile.',
+      'Giá cả thay đổi theo đối tác và loại trải nghiệm. Trò chuyện nhẹ nhàng bắt đầu từ 100,000 VND mỗi giờ. Mỗi đối tác tự đặt mức giá dựa trên kinh nghiệm và chuyên môn của họ. Bạn có thể xem giá chính xác trên hồ sơ của từng đối tác.',
   },
   {
-    question: 'How do I book a session?',
+    question: 'Làm thế nào để đặt lịch hẹn?',
     answer:
-      'Browse partners, select one you like, choose an available time slot, and confirm your booking. You will pay through our secure payment system. The partner will confirm the booking, and you will receive all the details for your meeting.',
+      'Duyệt đối tác, chọn người bạn thích, chọn khung giờ trống và xác nhận đặt lịch. Bạn sẽ thanh toán qua hệ thống thanh toán an toàn của chúng tôi. Đối tác sẽ xác nhận đặt lịch và bạn sẽ nhận được mọi chi tiết cho buổi gặp.',
   },
   {
-    question: 'What safety measures are in place?',
+    question: 'Có những biện pháp an toàn nào?',
     answer:
-      'Safety is our top priority. All partners are verified, meetings can be in public places, we have a 24/7 support team, and all communications are logged. You can also rate and review partners after each session.',
+      'An toàn là ưu tiên hàng đầu của chúng tôi. Tất cả đối tác đều được xác minh, các buổi gặp có thể ở nơi công cộng, chúng tôi có đội ngũ hỗ trợ 24/7 và tất cả liên lạc đều được ghi nhận. Bạn cũng có thể đánh giá và nhận xét đối tác sau mỗi buổi.',
   },
   {
-    question: 'Can I become a partner?',
+    question: 'Tôi có thể trở thành đối tác không?',
     answer:
-      'Yes! We are always looking for thoughtful, engaging individuals to join our partner network. Click "Become a Partner" to start the application process. You will go through verification and training before being listed.',
+      'Được! Chúng tôi luôn tìm kiếm những cá nhân chu đáo, hấp dẫn để tham gia mạng lưới đối tác. Nhấn "Trở Thành Đối Tác" để bắt đầu quy trình đăng ký. Bạn sẽ trải qua xác minh và đào tạo trước khi được liệt kê.',
   },
 ];
 
@@ -57,21 +57,21 @@ export function FAQAccordion() {
           variants={fadeInUp}
           className="lg:col-span-4"
         >
-          <p className="mb-4 text-xs font-medium uppercase tracking-[0.3em] text-aescape-charcoal-light">
-            FAQ
+          <p className="mb-4 text-xs font-medium uppercase tracking-[0.3em] text-charcoal-light">
+            Câu Hỏi Thường Gặp
           </p>
-          <h2 className="font-display text-3xl font-medium tracking-tight text-aescape-charcoal md:text-4xl">
-            Common Questions
+          <h2 className="font-display text-3xl font-medium tracking-tight text-charcoal md:text-4xl">
+            Những Thắc Mắc Phổ Biến
           </h2>
-          <p className="mt-4 text-base text-aescape-charcoal-light">
-            Everything you need to know about finding meaningful connections.
+          <p className="mt-4 text-base text-charcoal-light">
+            Tất cả những gì bạn cần biết về việc tìm kiếm kết nối ý nghĩa.
           </p>
           <div className="mt-8">
             <Link
               href="/contact"
-              className="group inline-flex items-center gap-2 text-sm font-medium text-aescape-charcoal transition-colors hover:text-aescape-lavender-dark"
+              className="group inline-flex items-center gap-2 text-sm font-medium text-charcoal transition-colors hover:text-lavender-dark"
             >
-              Still have questions? Contact us
+              Còn thắc mắc? Liên hệ chúng tôi
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
@@ -90,12 +90,12 @@ export function FAQAccordion() {
               <motion.div key={index} variants={fadeInUp}>
                 <AccordionItem
                   value={`item-${index}`}
-                  className="rounded-xl border border-aescape-charcoal/10 bg-white px-6 py-1"
+                  className="rounded-xl border border-charcoal/10 bg-white px-6 py-1"
                 >
-                  <AccordionTrigger className="text-left text-base font-medium text-aescape-charcoal hover:no-underline [&[data-state=open]>svg]:text-aescape-lavender-dark">
+                  <AccordionTrigger className="text-left text-base font-medium text-charcoal hover:no-underline [&[data-state=open]>svg]:text-lavender-dark">
                     {faq.question}
                   </AccordionTrigger>
-                  <AccordionContent className="text-sm leading-relaxed text-aescape-charcoal-light">
+                  <AccordionContent className="text-sm leading-relaxed text-charcoal-light">
                     {faq.answer}
                   </AccordionContent>
                 </AccordionItem>

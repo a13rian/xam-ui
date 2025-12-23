@@ -2,7 +2,7 @@ import { api } from '@/shared/lib/api';
 import type {
   AccountSearchParams,
   AccountSearchResponse,
-  PublicAccountDetail,
+  IAccount,
 } from './account-search.types';
 
 /**
@@ -52,10 +52,8 @@ export async function searchAccounts(
  * Public endpoint - no authentication required
  * For use in Server Components with SSR
  */
-export async function getPublicAccount(
-  accountId: string
-): Promise<PublicAccountDetail> {
-  return api.get<PublicAccountDetail>(`/accounts/${accountId}`, {
+export async function getPublicAccount(accountId: string): Promise<IAccount> {
+  return api.get<IAccount>(`/accounts/${accountId}`, {
     skipAuth: true,
   });
 }
@@ -67,7 +65,7 @@ export async function getPublicAccount(
  */
 export async function fetchAccountForSSR(
   accountId: string
-): Promise<PublicAccountDetail | null> {
+): Promise<IAccount | null> {
   try {
     const baseUrl = process.env.SERVER_URL || 'http://localhost:3001';
     const response = await fetch(`${baseUrl}/api/v1/accounts/${accountId}`, {

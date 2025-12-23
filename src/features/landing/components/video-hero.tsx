@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { motion } from 'motion/react';
 import { ChevronDown } from 'lucide-react';
 import { VideoBackground, PremiumButton } from './shared';
@@ -8,7 +7,6 @@ import {
   heroStagger,
   heroTextItem,
   scrollBounce,
-  aescapeEase,
 } from './shared/animation-variants';
 
 export function VideoHero() {
@@ -33,7 +31,7 @@ export function VideoHero() {
               variants={heroTextItem}
               className="mb-6 text-xs font-medium uppercase tracking-[0.3em] text-white/80"
             >
-              Companion Booking
+              Đặt Lịch Đồng Hành
             </motion.p>
 
             {/* Headline */}
@@ -41,10 +39,10 @@ export function VideoHero() {
               variants={heroTextItem}
               className="font-display text-4xl font-medium leading-tight tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl"
             >
-              Live and feel your best
+              Sống trọn vẹn mỗi ngày
               <br />
-              <span className="italic text-aescape-lavender">
-                every connection, every moment
+              <span className="italic text-lavender">
+                mọi kết nối, mọi khoảnh khắc
               </span>
             </motion.h1>
 
@@ -53,8 +51,8 @@ export function VideoHero() {
               variants={heroTextItem}
               className="mx-auto mt-6 max-w-xl text-base text-white/80 sm:text-lg md:mt-8"
             >
-              Discover meaningful conversations and genuine connections with
-              verified partners who understand the art of companionship.
+              Khám phá những cuộc trò chuyện ý nghĩa và kết nối chân thực với
+              các đối tác đã được xác minh, thấu hiểu nghệ thuật đồng hành.
             </motion.p>
 
             {/* CTAs */}
@@ -66,16 +64,16 @@ export function VideoHero() {
                 href="/search"
                 variant="primary"
                 size="large"
-                className="bg-aescape-cream text-aescape-charcoal hover:bg-white"
+                className="bg-cream text-charcoal hover:bg-white"
               >
-                Book a Session
+                Đặt Lịch Ngay
               </PremiumButton>
               <PremiumButton
                 href="/become-partner"
                 variant="outline"
                 size="large"
               >
-                Become a Partner
+                Trở Thành Đối Tác
               </PremiumButton>
             </motion.div>
 
@@ -84,7 +82,7 @@ export function VideoHero() {
               variants={heroTextItem}
               className="mt-10 text-sm text-white/60"
             >
-              Join 10,000+ people finding meaningful connections
+              Tham gia cùng 10,000+ người tìm kiếm kết nối ý nghĩa
             </motion.p>
           </motion.div>
 
@@ -102,7 +100,7 @@ export function VideoHero() {
               className="flex flex-col items-center gap-2 text-white/60 transition-colors hover:text-white"
               aria-label="Scroll down"
             >
-              <span className="text-xs uppercase tracking-widest">Scroll</span>
+              <span className="text-xs uppercase tracking-widest">Cuộn</span>
               <ChevronDown className="h-5 w-5" />
             </button>
           </motion.div>

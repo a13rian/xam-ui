@@ -25,15 +25,19 @@ import {
   CardTitle,
 } from '@/shared/components/ui/card';
 import { Badge } from '@/shared/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/ui/avatar';
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from '@/shared/components/ui/avatar';
 import { Separator } from '@/shared/components/ui/separator';
 import { ROUTES } from '@/shared/constants/routes';
-import type { User } from '@/features/user-management';
+import type { User } from '@/features/admin/user';
 import {
   useDeleteUser,
   useUpdateUser,
   DeleteConfirmDialog,
-} from '@/features/user-management';
+} from '@/features/admin/user';
 
 interface UserDetailViewProps {
   user: User;
@@ -45,7 +49,9 @@ export function UserDetailView({ user }: UserDetailViewProps) {
   const deleteMutation = useDeleteUser();
   const updateMutation = useUpdateUser();
 
-  const initials = `${user.firstName?.[0] || ''}${user.lastName?.[0] || ''}`.toUpperCase();
+  const initials = `${user.firstName?.[0] || ''}${
+    user.lastName?.[0] || ''
+  }`.toUpperCase();
 
   const handleToggleStatus = () => {
     updateMutation.mutate({
@@ -137,7 +143,9 @@ export function UserDetailView({ user }: UserDetailViewProps) {
         <Card className="md:col-span-2">
           <CardHeader>
             <CardTitle>User Information</CardTitle>
-            <CardDescription>Personal details and contact information</CardDescription>
+            <CardDescription>
+              Personal details and contact information
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
@@ -189,7 +197,9 @@ export function UserDetailView({ user }: UserDetailViewProps) {
                     </Badge>
                   ))
                 ) : (
-                  <span className="text-muted-foreground">No roles assigned</span>
+                  <span className="text-muted-foreground">
+                    No roles assigned
+                  </span>
                 )}
               </div>
             </div>

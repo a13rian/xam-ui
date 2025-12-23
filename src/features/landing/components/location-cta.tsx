@@ -17,7 +17,7 @@ export function LocationCTA() {
           className="object-cover"
         />
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-aescape-charcoal/80 via-aescape-charcoal/60 to-aescape-charcoal/40" />
+        <div className="absolute inset-0 bg-gradient-to-r from-charcoal/80 via-charcoal/60 to-charcoal/40" />
       </div>
 
       {/* Content */}
@@ -33,24 +33,24 @@ export function LocationCTA() {
             variants={heroTextItem}
             className="mb-4 text-xs font-medium uppercase tracking-[0.3em] text-white/60"
           >
-            Ready to Start?
+            Sẵn Sàng Bắt Đầu?
           </motion.p>
 
           <motion.h2
             variants={heroTextItem}
             className="font-display text-3xl font-medium tracking-tight text-white md:text-4xl lg:text-5xl"
           >
-            Ready for Your First
+            Sẵn Sàng Cho Kết Nối
             <br />
-            Meaningful Connection?
+            Ý Nghĩa Đầu Tiên?
           </motion.h2>
 
           <motion.p
             variants={heroTextItem}
             className="mt-6 text-base text-white/80 md:text-lg"
           >
-            Join thousands of people who have found genuine companionship,
-            stimulating conversations, and unforgettable experiences.
+            Tham gia cùng hàng nghìn người đã tìm thấy sự đồng hành chân thực,
+            những cuộc trò chuyện thú vị và trải nghiệm khó quên.
           </motion.p>
 
           <motion.div
@@ -61,16 +61,16 @@ export function LocationCTA() {
               href="/sign-up"
               variant="primary"
               size="large"
-              className="bg-aescape-cream text-aescape-charcoal hover:bg-white"
+              className="bg-cream text-charcoal hover:bg-white"
             >
-              Get Started Free
+              Bắt Đầu Miễn Phí
             </PremiumButton>
             <PremiumButton
               href="/search"
               variant="outline"
               size="large"
             >
-              Browse Partners
+              Duyệt Đối Tác
             </PremiumButton>
           </motion.div>
         </motion.div>

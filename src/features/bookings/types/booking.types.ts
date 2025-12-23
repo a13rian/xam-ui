@@ -23,6 +23,8 @@ export interface Booking {
   startTime: string;
   endTime: string;
   customerAddress?: string;
+  customerPhone?: string;
+  customerName?: string;
   totalAmount: number;
   currency: string;
   services: BookingService[];
@@ -43,8 +45,16 @@ export interface ListBookingsParams {
 }
 
 export interface CreateBookingInput {
-  companionId: string;
-  date: string;
-  services: string[];
-  address?: string;
+  organizationId: string;
+  locationId: string;
+  staffId?: string;
+  scheduledDate: string; // ISO date string
+  startTime: string; // HH:mm format
+  services: Array<{ serviceId: string }>;
+  isHomeService?: boolean;
+  customerAddress?: string;
+  customerPhone: string;
+  customerName: string;
+  notes?: string;
 }
+

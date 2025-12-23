@@ -1,5 +1,10 @@
-import { get } from '@/shared/lib/api';
-import type { BookingsListResponse, ListBookingsParams, Booking } from '../types';
+import { get, post } from '@/shared/lib/api';
+import type {
+  BookingsListResponse,
+  ListBookingsParams,
+  Booking,
+  CreateBookingInput,
+} from '../types';
 
 /**
  * Get my bookings
@@ -23,4 +28,13 @@ export async function getMyBookings(
  */
 export async function getBooking(id: string): Promise<Booking> {
   return get<Booking>(`/bookings/${id}`);
+}
+
+/**
+ * Create a new booking
+ */
+export async function createBooking(
+  input: CreateBookingInput
+): Promise<Booking> {
+  return post<Booking>('/bookings', input);
 }

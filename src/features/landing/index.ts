@@ -1,6 +1,3 @@
-// =============================================
-// Aescape-Inspired Redesign Components (NEW)
-// =============================================
 export {
   VideoHero,
   TrustBar,
@@ -13,30 +10,30 @@ export {
   TestimonialsCarousel,
   FAQAccordion,
   NewsletterCTA,
-} from './components';
-
-// Shared utilities and components
-export {
+  // Shared
   PremiumButton,
   SectionContainer,
   VideoBackground,
-} from './components';
-
-// =============================================
-// Legacy Components (kept for backward compatibility)
-// =============================================
-export {
-  PremiumHero,
-  TrustIndicators,
-  FeaturedPartners,
-  ValueProposition,
-  Testimonials,
-  PricingPreview,
-  PremiumCTA,
-  AnimatedHowItWorks,
-  AnimatedFeatures,
-  AnimatedFAQ,
-  AnimatedHero,
-  AnimatedAbout,
-  AnimatedCTA,
+  // Animation variants
+  premiumEase,
+  fadeInUp,
+  fadeIn,
+  imageReveal,
+  staggerContainer,
+  staggerContainerFast,
+  cardHover,
+  slideInLeft,
+  slideInRight,
+  scaleUp,
+  scaleDownHover,
+  sectionReveal,
+  videoFadeIn,
+  underlineReveal,
+  heroStagger,
+  heroTextItem,
+  cardPress,
+  scrollBounce,
+  counterReveal,
+  lineGrow,
+  menuItemStagger,
 } from './components';

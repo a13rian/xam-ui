@@ -6,8 +6,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { motion } from 'motion/react';
-import { ChevronDown, ArrowUp, Check, Loader2 } from 'lucide-react';
-import { Button } from '@/shared/components/ui/button';
+import { ArrowUp, Check, Loader2 } from 'lucide-react';
 import { Input } from '@/shared/components/ui/input';
 import {
   Form,
@@ -22,11 +21,11 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/shared/components/ui/accordion';
-import { cn } from '@/shared/lib/utils';
 import { scaleDownHover } from '@/features/landing/components/shared';
+import { Logo } from '@/shared/components/brand';
 
 const newsletterSchema = z.object({
-  email: z.string().min(1, 'Email is required').email('Please enter a valid email'),
+  email: z.string().min(1, 'Vui lòng nhập email').email('Vui lòng nhập email hợp lệ'),
 });
 
 type NewsletterFormValues = z.infer<typeof newsletterSchema>;
@@ -38,37 +37,37 @@ interface FooterSection {
 
 const footerSections: FooterSection[] = [
   {
-    title: 'Experience',
+    title: 'Trải Nghiệm',
     links: [
-      { label: 'Discover Partners', href: '/search' },
-      { label: 'How It Works', href: '/#how-it-works' },
-      { label: 'Pricing', href: '/#services' },
-      { label: 'Gift Cards', href: '/gifts' },
+      { label: 'Khám Phá Đối Tác', href: '/search' },
+      { label: 'Cách Hoạt Động', href: '/#how-it-works' },
+      { label: 'Bảng Giá', href: '/#services' },
+      { label: 'Thẻ Quà Tặng', href: '/gifts' },
     ],
   },
   {
-    title: 'Partners',
+    title: 'Đối Tác',
     links: [
-      { label: 'Become a Partner', href: '/become-partner' },
-      { label: 'Partner Resources', href: '/partner-resources' },
-      { label: 'Success Stories', href: '/success-stories' },
+      { label: 'Trở Thành Đối Tác', href: '/become-partner' },
+      { label: 'Tài Nguyên Đối Tác', href: '/partner-resources' },
+      { label: 'Câu Chuyện Thành Công', href: '/success-stories' },
     ],
   },
   {
-    title: 'Company',
+    title: 'Công Ty',
     links: [
-      { label: 'About Us', href: '/about' },
+      { label: 'Về Chúng Tôi', href: '/about' },
       { label: 'Blog', href: '/blog' },
-      { label: 'Careers', href: '/careers' },
-      { label: 'Press', href: '/press' },
+      { label: 'Tuyển Dụng', href: '/careers' },
+      { label: 'Báo Chí', href: '/press' },
     ],
   },
   {
-    title: 'Support',
+    title: 'Hỗ Trợ',
     links: [
-      { label: 'Help Center', href: '/help' },
-      { label: 'Contact Us', href: '/contact' },
-      { label: 'FAQ', href: '/#faq' },
+      { label: 'Trung Tâm Trợ Giúp', href: '/help' },
+      { label: 'Liên Hệ', href: '/contact' },
+      { label: 'Câu Hỏi Thường Gặp', href: '/#faq' },
     ],
   },
 ];
@@ -130,7 +129,7 @@ export function MarketingFooter() {
   };
 
   return (
-    <footer className="relative bg-aescape-footer-bg text-aescape-footer-text">
+    <footer className="relative bg-footer-bg text-footer-text">
       {/* Newsletter Section */}
       <div className="border-b border-white/10 py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -138,10 +137,10 @@ export function MarketingFooter() {
             {/* Headline */}
             <div>
               <h2 className="font-display text-2xl font-medium tracking-tight text-white md:text-3xl lg:text-4xl">
-                Stay in the Loop
+                Cập Nhật Mới Nhất
               </h2>
               <p className="mt-4 text-base text-white/60 lg:text-lg">
-                Get updates on new partners, features, and exclusive offers.
+                Nhận thông tin về đối tác mới, tính năng và ưu đãi độc quyền.
               </p>
             </div>
 
@@ -153,7 +152,7 @@ export function MarketingFooter() {
                 className="flex items-center gap-2 rounded-full bg-white/10 px-6 py-4 text-sm font-medium text-white"
               >
                 <Check className="h-5 w-5 text-green-400" />
-                Thanks for subscribing!
+                Cảm ơn bạn đã đăng ký!
               </motion.div>
             ) : (
               <Form {...form}>
@@ -169,8 +168,8 @@ export function MarketingFooter() {
                         <FormControl>
                           <Input
                             type="email"
-                            placeholder="Your email"
-                            className="h-14 rounded-full border-white/20 bg-white/10 px-6 text-white placeholder:text-white/50 focus:border-aescape-lavender focus:ring-aescape-lavender"
+                            placeholder="Email của bạn"
+                            className="h-14 rounded-full border-white/20 bg-white/10 px-6 text-white placeholder:text-white/50 focus:border-lavender focus:ring-lavender"
                             {...field}
                           />
                         </FormControl>
@@ -181,14 +180,14 @@ export function MarketingFooter() {
                   <motion.button
                     type="submit"
                     disabled={isLoading}
-                    className="flex h-14 items-center justify-center rounded-full bg-aescape-lavender px-8 text-sm font-medium text-aescape-charcoal transition-colors hover:bg-aescape-lavender-dark disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex h-14 items-center justify-center rounded-full bg-lavender px-8 text-sm font-medium text-charcoal transition-colors hover:bg-lavender-dark disabled:cursor-not-allowed disabled:opacity-50"
                     whileHover={scaleDownHover}
                     whileTap={{ scale: 0.92 }}
                   >
                     {isLoading ? (
                       <Loader2 className="h-5 w-5 animate-spin" />
                     ) : (
-                      'Subscribe'
+                      'Đăng Ký'
                     )}
                   </motion.button>
                 </form>
@@ -260,7 +259,7 @@ export function MarketingFooter() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Follow us on ${social.label}`}
-                  className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white/60 transition-all duration-300 hover:bg-aescape-lavender hover:text-aescape-charcoal"
+                  className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white/60 transition-all duration-300 hover:bg-lavender hover:text-charcoal"
                   whileHover={scaleDownHover}
                 >
                   {social.icon}
@@ -273,23 +272,20 @@ export function MarketingFooter() {
         {/* Bottom Bar */}
         <div className="mt-10 flex flex-col items-center justify-between gap-6 border-t border-white/10 pt-8 md:flex-row">
           {/* Logo */}
-          <Link
-            href="/"
-            className="font-display text-xl font-medium tracking-tight text-white"
-          >
-            Cogie
+          <Link href="/">
+            <Logo size="lg" variant="withTagline" inverted />
           </Link>
 
           {/* Legal Links */}
           <ul className="flex items-center gap-6 text-sm text-white/50">
             <li>
               <Link href="/privacy" className="transition-colors hover:text-white">
-                Privacy Policy
+                Chính Sách Bảo Mật
               </Link>
             </li>
             <li>
               <Link href="/terms" className="transition-colors hover:text-white">
-                Terms of Service
+                Điều Khoản Dịch Vụ
               </Link>
             </li>
             <li>
@@ -297,14 +293,14 @@ export function MarketingFooter() {
                 href="/accessibility"
                 className="transition-colors hover:text-white"
               >
-                Accessibility
+                Hỗ Trợ Tiếp Cận
               </Link>
             </li>
           </ul>
 
           {/* Copyright */}
           <p className="text-sm text-white/50">
-            &copy; {currentYear} Cogie Inc. All rights reserved.
+            &copy; {currentYear} Chuyện Xàm. Đã đăng ký bản quyền.
           </p>
         </div>
       </div>
@@ -313,7 +309,7 @@ export function MarketingFooter() {
       <motion.button
         onClick={scrollToTop}
         aria-label="Back to top"
-        className="absolute -top-6 right-4 flex h-12 w-12 items-center justify-center rounded-full bg-aescape-lavender text-aescape-charcoal shadow-lg transition-colors hover:bg-aescape-lavender-dark md:right-8"
+        className="absolute -top-6 right-4 flex h-12 w-12 items-center justify-center rounded-full bg-lavender text-charcoal shadow-lg transition-colors hover:bg-lavender-dark md:right-8"
         whileHover={scaleDownHover}
         whileTap={{ scale: 0.9 }}
       >

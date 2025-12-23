@@ -49,6 +49,10 @@ export const queryKeys = {
     list: (params: { page?: number; limit?: number; status?: BookingStatus }) =>
       [...queryKeys.bookings.all, 'list', params] as const,
     detail: (id: string) => [...queryKeys.bookings.all, 'detail', id] as const,
+    locations: (accountId: string) =>
+      [...queryKeys.bookings.all, 'locations', accountId] as const,
+    services: (accountId: string) =>
+      [...queryKeys.bookings.all, 'services', accountId] as const,
   },
 
   // Favorites

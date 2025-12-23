@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { motion } from 'motion/react';
 import { cn } from '@/shared/lib/utils';
-import { scaleDownHover, aescapeEase } from './animation-variants';
+import { scaleDownHover, premiumEase } from './animation-variants';
 
 interface PremiumButtonProps {
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
@@ -18,18 +18,18 @@ interface PremiumButtonProps {
 
 const variants = {
   primary:
-    'bg-aescape-charcoal text-white hover:bg-aescape-charcoal/90',
+    'bg-charcoal text-white hover:bg-charcoal/90',
   secondary:
-    'bg-aescape-lavender text-aescape-charcoal hover:bg-aescape-lavender-dark',
+    'bg-lavender text-charcoal hover:bg-lavender-dark',
   outline:
-    'border-2 border-aescape-cream bg-transparent text-aescape-cream hover:bg-aescape-cream/10',
+    'border-2 border-cream bg-transparent text-cream hover:bg-cream/10',
   ghost:
-    'bg-transparent text-aescape-charcoal hover:bg-aescape-cream-dark',
+    'bg-transparent text-charcoal hover:bg-cream-dark',
 };
 
 const sizes = {
   default: 'h-12 px-8 text-sm',
-  large: 'h-14 px-10 text-base',
+  large: 'h-14 px-12 text-base', // hero CTAs 56px height
 };
 
 export function PremiumButton({
@@ -43,9 +43,9 @@ export function PremiumButton({
   disabled = false,
 }: PremiumButtonProps) {
   const baseClasses = cn(
-    'inline-flex items-center justify-center rounded-full font-medium',
+    'inline-flex items-center justify-center rounded-[16px] font-medium',
     'transition-colors duration-300',
-    'focus:outline-none focus:ring-2 focus:ring-aescape-lavender focus:ring-offset-2',
+    'focus:outline-none focus:ring-2 focus:ring-lavender focus:ring-offset-2',
     'disabled:opacity-50 disabled:cursor-not-allowed',
     variants[variant],
     sizes[size],
@@ -57,7 +57,7 @@ export function PremiumButton({
       <motion.div
         whileHover={disabled ? undefined : scaleDownHover}
         whileTap={disabled ? undefined : { scale: 0.92 }}
-        transition={{ duration: 0.3, ease: aescapeEase }}
+        transition={{ duration: 0.3, ease: premiumEase }}
       >
         <Link href={href} className={baseClasses}>
           {children}
@@ -74,7 +74,7 @@ export function PremiumButton({
       className={baseClasses}
       whileHover={disabled ? undefined : scaleDownHover}
       whileTap={disabled ? undefined : { scale: 0.92 }}
-      transition={{ duration: 0.3, ease: aescapeEase }}
+      transition={{ duration: 0.3, ease: premiumEase }}
     >
       {children}
     </motion.button>

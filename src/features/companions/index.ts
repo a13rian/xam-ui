@@ -1,7 +1,7 @@
 // Types
 export type {
   CompanionLocation,
-  CompanionProfile,
+  CompanionProfile as CompanionProfileType,
   CompanionPricing,
   CompanionRating,
   CompanionBadge,
@@ -20,6 +20,10 @@ export {
   type CompanionSearchParams,
 } from './api';
 
+// Utils
+export { formatPrice } from './utils/format-price';
+export { LANGUAGE_NAMES, getLanguageName } from './utils/language-names';
+
 // Components
 export {
   CompanionCard,
@@ -27,4 +31,10 @@ export {
   CompanionCardCarousel,
   CompanionList,
   CompanionMap,
+  CompanionDetailClient,
+  CompanionHeader,
+  CompanionHero,
+  CompanionProfile,
+  CompanionGallery,
+  CompanionBio,
 } from './components';

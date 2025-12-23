@@ -1,8 +1,7 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { fetchAccountForSSR } from '@/features/search/api';
-import { mapPublicAccountToCompanion } from '@/features/search/utils';
-import { CompanionDetailClient } from '../../../../features/companions/components/companion-detail-client';
+import { CompanionDetailClient } from '@/features/companions/components/companion-detail-client';
 
 interface CompanionPageProps {
   params: Promise<{ id: string }>;
@@ -35,7 +34,7 @@ export async function generateMetadata({
   const ogImage =
     account.coverImageUrl ||
     account.avatarUrl ||
-    (account.gallery.length > 0 ? account.gallery[0].imageUrl : null);
+    (account.galleries.length > 0 ? account.galleries[0].imageUrl : null);
 
   return {
     title,
@@ -69,8 +68,5 @@ export default async function CompanionDetailPage({
     notFound();
   }
 
-  // Map account to companion format for the client component
-  const companion = mapPublicAccountToCompanion(account);
-
-  return <CompanionDetailClient companion={companion} />;
+  return <CompanionDetailClient account={account} />;
 }

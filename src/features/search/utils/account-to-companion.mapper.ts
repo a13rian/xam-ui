@@ -1,5 +1,5 @@
 import type { Companion, CompanionBadge } from '@/features/companions';
-import type { AccountSearchItem, PublicAccountDetail } from '../api/account-search.types';
+import type { AccountSearchItem, IAccount } from '../api/account-search.types';
 
 // Placeholder image for accounts without images
 const PLACEHOLDER_IMAGE =
@@ -94,14 +94,12 @@ export function mapAccountsToCompanions(
  * Maps a PublicAccountDetail (from detail API) to frontend Companion format
  * Used for the companion detail page
  */
-export function mapPublicAccountToCompanion(
-  account: PublicAccountDetail
-): Companion {
-  // Build images array: gallery first, then avatar, then placeholder
+export function mapPublicAccountToCompanion(account: IAccount): Companion {
+  // Build images array: galleries first, then avatar, then placeholder
   const images: string[] = [];
-  if (account.gallery && account.gallery.length > 0) {
+  if (account.galleries && account.galleries.length > 0) {
     // Sort by sortOrder and extract imageUrl
-    const sortedGallery = [...account.gallery].sort(
+    const sortedGallery = [...account.galleries].sort(
       (a, b) => a.sortOrder - b.sortOrder
     );
     images.push(...sortedGallery.map((g) => g.imageUrl));
@@ -126,10 +124,8 @@ export function mapPublicAccountToCompanion(
     }
   }
 
-  // Build specialties from certifications
-  const specialties = account.specialization
-    ? [account.specialization, ...account.certifications]
-    : account.certifications;
+  // Build specialties from specialization
+  const specialties = account.specialization ? [account.specialization] : [];
 
   return {
     id: account.id,
@@ -160,6 +156,6 @@ export function mapPublicAccountToCompanion(
     badges,
     specialties: specialties.length > 0 ? specialties : undefined,
     languages: account.languages.length > 0 ? account.languages : undefined,
-    age: account.yearsExperience ?? 0,
+    age: 0,
   };
 }

@@ -1,4 +1,4 @@
-import { AccountListing } from '@/features/account-management/components/account-listing';
+import { AccountListing } from '@/features/admin/account/components/account-listing';
 
 export const metadata = {
   title: 'Accounts | Admin',

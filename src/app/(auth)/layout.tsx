@@ -1,5 +1,9 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
+import { motion } from 'motion/react';
+import { premiumEase, fadeInUp, staggerContainer } from '@/features/landing';
 
 export default function AuthLayout({
   children,
@@ -9,7 +13,7 @@ export default function AuthLayout({
   return (
     <div className="flex min-h-screen">
       {/* Left Panel - Brand Section */}
-      <div className="relative hidden w-1/2 overflow-hidden bg-foreground lg:flex lg:flex-col lg:justify-between p-12">
+      <div className="relative hidden w-1/2 overflow-hidden bg-charcoal lg:flex lg:flex-col lg:justify-between p-12">
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
@@ -20,17 +24,22 @@ export default function AuthLayout({
             priority
             quality={90}
           />
-          {/* Premium overlay with terracotta tint */}
-          <div className="absolute inset-0 bg-gradient-to-br from-foreground/90 via-foreground/70 to-foreground/90" />
-          <div className="absolute inset-0 bg-gradient-to-t from-terracotta/20 via-transparent to-transparent" />
+          {/* Premium overlay with lavender tint */}
+          <div className="absolute inset-0 bg-gradient-to-br from-charcoal/90 via-charcoal/70 to-charcoal/90" />
+          <div className="absolute inset-0 bg-gradient-to-t from-lavender/10 via-transparent to-transparent" />
         </div>
 
         {/* Top - Logo */}
-        <div className="relative z-10">
+        <motion.div
+          className="relative z-10"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: premiumEase }}
+        >
           <Link href="/" className="flex items-center gap-2.5">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-terracotta">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-lavender">
               <svg
-                className="h-5 w-5 text-white"
+                className="h-5 w-5 text-charcoal"
                 viewBox="0 0 24 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -41,47 +50,64 @@ export default function AuthLayout({
                 />
               </svg>
             </div>
-            <span className="font-display text-xl tracking-tight text-background">
+            <span className="font-display text-xl tracking-tight text-cream">
               Cogie
             </span>
           </Link>
-        </div>
+        </motion.div>
 
         {/* Bottom - Quote */}
-        <div className="relative z-10">
-          <p className="mb-6 inline-flex items-center gap-4 text-xs font-medium uppercase tracking-[0.2em] text-background/60">
+        <motion.div
+          className="relative z-10"
+          variants={staggerContainer}
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.p
+            variants={fadeInUp}
+            className="mb-6 inline-flex items-center gap-4 text-xs font-medium uppercase tracking-[0.2em] text-cream/60"
+          >
             Câu nói hay
-            <span className="h-px w-12 bg-terracotta/60" />
-          </p>
-          <h1 className="font-display text-5xl leading-tight tracking-tight text-background xl:text-6xl">
+            <span className="h-px w-12 bg-lavender/60" />
+          </motion.p>
+          <motion.h1
+            variants={fadeInUp}
+            className="font-display text-5xl leading-tight tracking-tight text-cream xl:text-6xl"
+          >
             Kết Nối
             <br />
             Những Tâm Hồn
             <br />
-            <span className="text-terracotta">Đồng Điệu</span>
-          </h1>
-          <p className="mt-6 max-w-sm text-sm leading-relaxed text-background/60">
+            <span className="text-lavender">Đồng Điệu</span>
+          </motion.h1>
+          <motion.p
+            variants={fadeInUp}
+            className="mt-6 max-w-sm text-sm leading-relaxed text-cream/60"
+          >
             Cogie là nơi những cuộc trò chuyện ý nghĩa bắt đầu. Chia sẻ, lắng nghe, và tìm thấy sự đồng cảm.
-          </p>
+          </motion.p>
 
           {/* Trust indicators */}
-          <div className="mt-10 flex items-center gap-6">
+          <motion.div
+            variants={fadeInUp}
+            className="mt-10 flex items-center gap-6"
+          >
             <div className="flex flex-col">
-              <span className="font-display text-2xl text-terracotta">10,000+</span>
-              <span className="text-xs text-background/50">Cuộc trò chuyện</span>
+              <span className="font-display text-2xl text-lavender">10,000+</span>
+              <span className="text-xs text-cream/50">Cuộc trò chuyện</span>
             </div>
-            <div className="h-8 w-px bg-background/20" />
+            <div className="h-8 w-px bg-cream/20" />
             <div className="flex flex-col">
-              <span className="font-display text-2xl text-terracotta">500+</span>
-              <span className="text-xs text-background/50">Partners</span>
+              <span className="font-display text-2xl text-lavender">500+</span>
+              <span className="text-xs text-cream/50">Partners</span>
             </div>
-            <div className="h-8 w-px bg-background/20" />
+            <div className="h-8 w-px bg-cream/20" />
             <div className="flex flex-col">
-              <span className="font-display text-2xl text-terracotta">4.9/5</span>
-              <span className="text-xs text-background/50">Đánh giá</span>
+              <span className="font-display text-2xl text-lavender">4.9/5</span>
+              <span className="text-xs text-cream/50">Đánh giá</span>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
 
       {/* Right Panel - Form Section */}

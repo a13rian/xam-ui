@@ -14,7 +14,7 @@ import {
 
 export default function Home() {
   return (
-    <main className="bg-aescape-cream">
+    <main className="bg-cream">
       <VideoHero />
       <TrustBar />
       <ServiceCards />

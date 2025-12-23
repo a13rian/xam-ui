@@ -13,30 +13,30 @@ const steps = [
   {
     icon: UserPlus,
     number: '01',
-    title: 'Create Your Account',
+    title: 'Tạo Tài Khoản',
     description:
-      'Sign up for free in just a few minutes. Tell us about yourself and what you are looking for in a companion.',
+      'Đăng ký miễn phí chỉ trong vài phút. Hãy cho chúng tôi biết về bạn và những gì bạn tìm kiếm ở một người đồng hành.',
   },
   {
     icon: Search,
     number: '02',
-    title: 'Browse Partners',
+    title: 'Duyệt Đối Tác',
     description:
-      'Explore our verified partners. Filter by interests, availability, location, and specialty to find your perfect match.',
+      'Khám phá các đối tác đã xác minh. Lọc theo sở thích, lịch trình, địa điểm và chuyên môn để tìm người phù hợp.',
   },
   {
     icon: Calendar,
     number: '03',
-    title: 'Book a Session',
+    title: 'Đặt Lịch Hẹn',
     description:
-      'Choose a convenient time and place. Secure your booking with our safe payment system.',
+      'Chọn thời gian và địa điểm thuận tiện. Xác nhận đặt lịch với hệ thống thanh toán an toàn của chúng tôi.',
   },
   {
     icon: Heart,
     number: '04',
-    title: 'Connect & Enjoy',
+    title: 'Kết Nối & Tận Hưởng',
     description:
-      'Meet your companion and enjoy meaningful conversations. Rate your experience to help others find great partners.',
+      'Gặp gỡ người đồng hành và tận hưởng những cuộc trò chuyện ý nghĩa. Đánh giá trải nghiệm để giúp người khác tìm đối tác tuyệt vời.',
   },
 ];
 
@@ -46,20 +46,20 @@ export function HowItWorksTimeline() {
       <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
         {/* Left - Sticky Header */}
         <div className="lg:col-span-4 lg:sticky lg:top-32 lg:self-start">
-          <p className="mb-4 text-xs font-medium uppercase tracking-[0.3em] text-aescape-charcoal-light">
-            How It Works
+          <p className="mb-4 text-xs font-medium uppercase tracking-[0.3em] text-charcoal-light">
+            Cách Thức Hoạt Động
           </p>
-          <h2 className="font-display text-3xl font-medium tracking-tight text-aescape-charcoal md:text-4xl lg:text-5xl">
-            Getting Started
+          <h2 className="font-display text-3xl font-medium tracking-tight text-charcoal md:text-4xl lg:text-5xl">
+            Bắt Đầu
             <br />
-            is Simple
+            Thật Đơn Giản
           </h2>
-          <p className="mt-4 text-base text-aescape-charcoal-light lg:text-lg">
-            Four easy steps to meaningful connections.
+          <p className="mt-4 text-base text-charcoal-light lg:text-lg">
+            Bốn bước đơn giản đến những kết nối ý nghĩa.
           </p>
           <div className="mt-8">
             <PremiumButton href="/sign-up" variant="primary" size="default">
-              Get Started Free
+              Bắt Đầu Miễn Phí
             </PremiumButton>
           </div>
         </div>
@@ -72,7 +72,7 @@ export function HowItWorksTimeline() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="absolute left-6 top-0 h-full w-[2px] origin-top bg-aescape-charcoal/10 md:left-8"
+            className="absolute left-6 top-0 h-full w-[2px] origin-top bg-charcoal/10 md:left-8"
           />
 
           {/* Steps */}
@@ -83,26 +83,26 @@ export function HowItWorksTimeline() {
             viewport={{ once: true }}
             className="space-y-10 md:space-y-12"
           >
-            {steps.map((step, index) => (
+            {steps.map((step) => (
               <motion.div
                 key={step.number}
                 variants={fadeInUp}
                 className="relative flex gap-6 md:gap-8"
               >
                 {/* Number Circle */}
-                <div className="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-aescape-cream text-sm font-medium text-aescape-charcoal ring-4 ring-aescape-cream-dark md:h-16 md:w-16 md:text-base">
+                <div className="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-cream text-sm font-medium text-charcoal ring-4 ring-cream-dark md:h-16 md:w-16 md:text-base">
                   <step.icon className="h-5 w-5 md:h-6 md:w-6" />
                 </div>
 
                 {/* Content */}
                 <div className="pb-2 pt-1">
-                  <span className="text-xs font-medium text-aescape-lavender-dark">
-                    Step {step.number}
+                  <span className="text-xs font-medium text-lavender-dark">
+                    Bước {step.number}
                   </span>
-                  <h3 className="mt-1 font-display text-xl font-medium text-aescape-charcoal md:text-2xl">
+                  <h3 className="mt-1 font-display text-xl font-medium text-charcoal md:text-2xl">
                     {step.title}
                   </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-aescape-charcoal-light md:text-base">
+                  <p className="mt-2 text-sm leading-relaxed text-charcoal-light md:text-base">
                     {step.description}
                   </p>
                 </div>

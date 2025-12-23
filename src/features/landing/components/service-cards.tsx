@@ -4,39 +4,38 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
-import { SectionContainer, PremiumButton } from './shared';
+import { SectionContainer } from './shared';
 import {
   staggerContainer,
   fadeInUp,
   cardPress,
-  aescapeEase,
 } from './shared/animation-variants';
 
 const services = [
   {
-    title: 'Casual Conversations',
-    duration: 'From 1 hour',
-    price: 'From 100,000 VND',
+    title: 'Trò Chuyện Nhẹ Nhàng',
+    duration: 'Từ 1 giờ',
+    price: 'Từ 100,000 VND',
     description:
-      'Light-hearted chats and genuine connections. Perfect for coffee dates or evening walks.',
+      'Những cuộc trò chuyện thoải mái và kết nối chân thực. Hoàn hảo cho buổi cà phê hoặc đi dạo buổi tối.',
     image: '/images/service-casual.jpg',
     href: '/search?type=casual',
   },
   {
-    title: 'Deep Discussions',
-    duration: 'From 2 hours',
-    price: 'From 180,000 VND',
+    title: 'Trò Chuyện Sâu Sắc',
+    duration: 'Từ 2 giờ',
+    price: 'Từ 180,000 VND',
     description:
-      'Meaningful conversations about life, goals, and aspirations. For those seeking depth.',
+      'Những cuộc đối thoại ý nghĩa về cuộc sống, mục tiêu và khát vọng. Dành cho những ai tìm kiếm chiều sâu.',
     image: '/images/service-deep.jpg',
     href: '/search?type=deep',
   },
   {
-    title: 'Activity Partners',
-    duration: 'Flexible',
-    price: 'From 150,000 VND',
+    title: 'Đồng Hành Hoạt Động',
+    duration: 'Linh hoạt',
+    price: 'Từ 150,000 VND',
     description:
-      'Shared experiences and adventures together. Dining, events, sports, or travel.',
+      'Những trải nghiệm và cuộc phiêu lưu cùng nhau. Ăn uống, sự kiện, thể thao hoặc du lịch.',
     image: '/images/service-activity.jpg',
     href: '/search?type=activity',
   },
@@ -47,11 +46,11 @@ export function ServiceCards() {
     <SectionContainer background="cream" id="services">
       {/* Section Header */}
       <div className="mb-12 text-center lg:mb-16">
-        <p className="mb-4 text-xs font-medium uppercase tracking-[0.3em] text-aescape-charcoal-light">
-          Our Experience
+        <p className="mb-4 text-xs font-medium uppercase tracking-[0.3em] text-charcoal-light">
+          Trải Nghiệm Của Chúng Tôi
         </p>
-        <h2 className="font-display text-3xl font-medium tracking-tight text-aescape-charcoal md:text-4xl lg:text-5xl">
-          Find Your Perfect Companion
+        <h2 className="font-display text-3xl font-medium tracking-tight text-charcoal md:text-4xl lg:text-5xl">
+          Tìm Người Đồng Hành Hoàn Hảo
         </h2>
       </div>
 
@@ -76,7 +75,7 @@ export function ServiceCards() {
               className="group overflow-hidden rounded-2xl bg-white shadow-sm transition-shadow duration-300 hover:shadow-lg"
             >
               {/* Image */}
-              <div className="relative aspect-[4/3] overflow-hidden bg-aescape-cream-dark">
+              <div className="relative aspect-[4/3] overflow-hidden bg-cream-dark">
                 <Image
                   src={service.image}
                   alt={service.title}
@@ -88,29 +87,29 @@ export function ServiceCards() {
               {/* Content */}
               <div className="p-6">
                 {/* Duration & Price */}
-                <div className="mb-3 flex items-center justify-between text-sm text-aescape-charcoal-light">
+                <div className="mb-3 flex items-center justify-between text-sm text-charcoal-light">
                   <span>{service.duration}</span>
-                  <span className="font-medium text-aescape-charcoal">
+                  <span className="font-medium text-charcoal">
                     {service.price}
                   </span>
                 </div>
 
                 {/* Title */}
-                <h3 className="font-display text-xl font-medium text-aescape-charcoal">
+                <h3 className="font-display text-xl font-medium text-charcoal">
                   {service.title}
                 </h3>
 
                 {/* Description */}
-                <p className="mt-2 text-sm leading-relaxed text-aescape-charcoal-light">
+                <p className="mt-2 text-sm leading-relaxed text-charcoal-light">
                   {service.description}
                 </p>
 
                 {/* CTA */}
                 <Link
                   href={service.href}
-                  className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-aescape-charcoal transition-colors hover:text-aescape-lavender-dark"
+                  className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-charcoal transition-colors hover:text-lavender-dark"
                 >
-                  Book Now
+                  Đặt Lịch
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </div>

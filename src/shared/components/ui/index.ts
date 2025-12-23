@@ -23,6 +23,7 @@ export {
 } from './form';
 export { Popover, PopoverAnchor, PopoverContent, PopoverTrigger } from './popover';
 export { Calendar } from './calendar';
+export { DateTimePicker, type DateTimePickerProps } from './date-time-picker';
 export {
   Pagination,
   PaginationContent,

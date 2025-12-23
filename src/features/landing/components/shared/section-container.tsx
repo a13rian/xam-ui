@@ -14,10 +14,10 @@ interface SectionContainerProps {
 }
 
 const backgrounds = {
-  cream: 'bg-aescape-cream',
-  'cream-dark': 'bg-aescape-cream-dark',
+  cream: 'bg-cream',
+  'cream-dark': 'bg-cream-dark',
   white: 'bg-white',
-  dark: 'bg-aescape-footer-bg',
+  dark: 'bg-footer-bg',
   transparent: 'bg-transparent',
 };
 

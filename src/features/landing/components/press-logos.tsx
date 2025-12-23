@@ -16,8 +16,8 @@ export function PressLogos() {
   return (
     <SectionContainer background="cream" spacing="small">
       <div className="text-center">
-        <p className="mb-8 text-xs font-medium uppercase tracking-[0.3em] text-aescape-charcoal-light">
-          As Featured In
+        <p className="mb-8 text-xs font-medium uppercase tracking-[0.3em] text-charcoal-light">
+          Được Đưa Tin Bởi
         </p>
 
         <motion.div
@@ -35,7 +35,7 @@ export function PressLogos() {
             >
               {/* Placeholder for actual logo */}
               <div className="flex h-8 items-center justify-center px-4">
-                <span className="text-lg font-medium text-aescape-charcoal">
+                <span className="text-lg font-medium text-charcoal">
                   {press.name}
                 </span>
               </div>

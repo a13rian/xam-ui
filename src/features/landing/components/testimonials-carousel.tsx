@@ -5,39 +5,39 @@ import Image from 'next/image';
 import { motion, AnimatePresence } from 'motion/react';
 import { Quote } from 'lucide-react';
 import { SectionContainer } from './shared';
-import { aescapeEase } from './shared/animation-variants';
+import { premiumEase } from './shared/animation-variants';
 
 const testimonials = [
   {
     id: 1,
     quote:
-      'Cogie helped me find genuine conversations when I needed them most. The partners are thoughtful, engaged, and truly care about creating meaningful connections.',
-    author: 'Thanh Nguyen',
-    role: 'Marketing Manager',
+      'Cogie đã giúp tôi tìm được những cuộc trò chuyện chân thực khi tôi cần nhất. Các đối tác rất chu đáo, nhiệt tình và thực sự quan tâm đến việc tạo ra những kết nối ý nghĩa.',
+    author: 'Thanh Nguyễn',
+    role: 'Quản Lý Marketing',
     avatar: '/images/testimonial-1.jpg',
   },
   {
     id: 2,
     quote:
-      'As someone who travels frequently for work, having reliable companions in different cities has been invaluable. The quality of partners on this platform is exceptional.',
-    author: 'Minh Le',
-    role: 'Business Consultant',
+      'Là người thường xuyên đi công tác, việc có những người đồng hành đáng tin cậy ở các thành phố khác nhau thực sự vô giá. Chất lượng đối tác trên nền tảng này rất xuất sắc.',
+    author: 'Minh Lê',
+    role: 'Tư Vấn Kinh Doanh',
     avatar: '/images/testimonial-2.jpg',
   },
   {
     id: 3,
     quote:
-      'I was skeptical at first, but the verification process gave me confidence. Every session has been professional, enjoyable, and exactly what I was looking for.',
-    author: 'Hoa Tran',
-    role: 'Software Engineer',
+      'Tôi đã hoài nghi lúc đầu, nhưng quy trình xác minh đã cho tôi sự tự tin. Mọi buổi gặp đều chuyên nghiệp, thú vị và đúng như những gì tôi tìm kiếm.',
+    author: 'Hoa Trần',
+    role: 'Kỹ Sư Phần Mềm',
     avatar: '/images/testimonial-3.jpg',
   },
   {
     id: 4,
     quote:
-      'The platform is beautifully designed and easy to use. Finding partners who share my interests in art and culture has never been easier.',
-    author: 'Duc Pham',
-    role: 'Art Director',
+      'Nền tảng được thiết kế đẹp và dễ sử dụng. Tìm kiếm đối tác cùng sở thích về nghệ thuật và văn hóa chưa bao giờ dễ dàng đến thế.',
+    author: 'Đức Phạm',
+    role: 'Giám Đốc Nghệ Thuật',
     avatar: '/images/testimonial-4.jpg',
   },
 ];
@@ -65,10 +65,10 @@ export function TestimonialsCarousel() {
           initial={{ opacity: 0, scale: 0.8 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, ease: aescapeEase }}
-          className="mb-8 inline-flex h-16 w-16 items-center justify-center rounded-full bg-aescape-lavender/20"
+          transition={{ duration: 0.5, ease: premiumEase }}
+          className="mb-8 inline-flex h-16 w-16 items-center justify-center rounded-full bg-lavender/20"
         >
-          <Quote className="h-8 w-8 text-aescape-lavender-dark" />
+          <Quote className="h-8 w-8 text-lavender-dark" />
         </motion.div>
 
         {/* Testimonial Content */}
@@ -79,14 +79,14 @@ export function TestimonialsCarousel() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5, ease: aescapeEase }}
+              transition={{ duration: 0.5, ease: premiumEase }}
             >
-              <blockquote className="font-display text-xl font-medium leading-relaxed text-aescape-charcoal md:text-2xl lg:text-3xl">
+              <blockquote className="font-display text-xl font-medium leading-relaxed text-charcoal md:text-2xl lg:text-3xl">
                 &ldquo;{currentTestimonial.quote}&rdquo;
               </blockquote>
 
               <div className="mt-8 flex flex-col items-center gap-4">
-                <div className="relative h-14 w-14 overflow-hidden rounded-full bg-aescape-cream">
+                <div className="relative h-14 w-14 overflow-hidden rounded-full bg-cream">
                   <Image
                     src={currentTestimonial.avatar}
                     alt={currentTestimonial.author}
@@ -95,10 +95,10 @@ export function TestimonialsCarousel() {
                   />
                 </div>
                 <div>
-                  <p className="font-medium text-aescape-charcoal">
+                  <p className="font-medium text-charcoal">
                     {currentTestimonial.author}
                   </p>
-                  <p className="text-sm text-aescape-charcoal-light">
+                  <p className="text-sm text-charcoal-light">
                     {currentTestimonial.role}
                   </p>
                 </div>
@@ -115,8 +115,8 @@ export function TestimonialsCarousel() {
               onClick={() => setCurrentIndex(index)}
               className={`h-2 rounded-full transition-all duration-300 ${
                 index === currentIndex
-                  ? 'w-8 bg-aescape-charcoal'
-                  : 'w-2 bg-aescape-charcoal/20 hover:bg-aescape-charcoal/40'
+                  ? 'w-8 bg-charcoal'
+                  : 'w-2 bg-charcoal/20 hover:bg-charcoal/40'
               }`}
               aria-label={`Go to testimonial ${index + 1}`}
             />

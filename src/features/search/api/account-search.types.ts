@@ -96,7 +96,7 @@ export interface AccountSearchParams {
 /**
  * Gallery image with sort order for account detail
  */
-export interface AccountDetailGalleryImage {
+export interface IAccountGallery {
   id: string;
   imageUrl: string;
   caption: string | null;
@@ -104,10 +104,23 @@ export interface AccountDetailGalleryImage {
 }
 
 /**
+ * Service offered by an account
+ */
+export interface IAccountService {
+  id: string;
+  name: string;
+  description: string | null;
+  price: number;
+  currency: string;
+  durationMinutes: number;
+  categoryId: string;
+}
+
+/**
  * Full public account details for profile pages
  * Matches backend PublicAccountResponseDto
  */
-export interface PublicAccountDetail {
+export interface IAccount {
   id: string;
   displayName: string;
   type: 'individual' | 'business';
@@ -119,8 +132,6 @@ export interface PublicAccountDetail {
   tagline: string | null;
   personalBio: string | null;
   specialization: string | null;
-  yearsExperience: number | null;
-  certifications: string[];
   // Trust & rating
   isVerified: boolean;
   rating: number | null;
@@ -130,6 +141,11 @@ export interface PublicAccountDetail {
   // Additional info
   languages: string[];
   priceRange: AccountPriceRange | null;
-  // Gallery
-  gallery: AccountDetailGalleryImage[];
+  // Organization info (for booking)
+  organizationId?: string | null;
+  primaryLocationId?: string | null;
+  // Galleries
+  galleries: IAccountGallery[];
+  // Services
+  services: IAccountService[];
 }

@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { Button } from '@/shared/components/ui/button';
 import { Skeleton } from '@/shared/components/ui/skeleton';
 import { ROUTES } from '@/shared/constants/routes';
-import { UserForm, useUser } from '@/features/user-management';
+import { UserForm, useUser } from '@/features/admin/user';
 import { UserDetailView } from './user-detail-view';
 
 interface PageProps {

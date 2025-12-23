@@ -111,16 +111,13 @@ export const scaleUp: Variants = {
 };
 
 // ========================================
-// Aescape-Inspired Animations
+// Additional Premium Animations
 // ========================================
 
-// Aescape-style easing (smooth ease-out)
-export const aescapeEase = [0.0, 0.0, 0.2, 1] as const;
-
-// Signature scale-down hover effect (Aescape's tactile press-in)
+// Signature scale-down hover effect (tactile press-in)
 export const scaleDownHover = {
   scale: 0.95,
-  transition: { duration: 0.3, ease: aescapeEase },
+  transition: { duration: 0.3, ease: premiumEase },
 };
 
 // Section reveal with refined timing
@@ -131,7 +128,7 @@ export const sectionReveal: Variants = {
     y: 0,
     transition: {
       duration: 0.6,
-      ease: aescapeEase,
+      ease: premiumEase,
     },
   },
 };
@@ -143,7 +140,7 @@ export const videoFadeIn: Variants = {
     opacity: 1,
     transition: {
       duration: 1.2,
-      ease: aescapeEase,
+      ease: premiumEase,
     },
   },
 };
@@ -153,7 +150,7 @@ export const underlineReveal: Variants = {
   rest: { scaleX: 0, originX: 0 },
   hover: {
     scaleX: 1,
-    transition: { duration: 0.4, ease: aescapeEase },
+    transition: { duration: 0.4, ease: premiumEase },
   },
 };
 
@@ -177,17 +174,17 @@ export const heroTextItem: Variants = {
     y: 0,
     transition: {
       duration: 0.8,
-      ease: aescapeEase,
+      ease: premiumEase,
     },
   },
 };
 
-// Card press effect (scale down on hover - Aescape signature)
+// Card press effect (scale down on hover - tactile press)
 export const cardPress = {
   rest: { scale: 1 },
   hover: {
     scale: 0.95,
-    transition: { duration: 0.3, ease: aescapeEase },
+    transition: { duration: 0.3, ease: premiumEase },
   },
 };
 
@@ -212,7 +209,7 @@ export const counterReveal: Variants = {
     y: 0,
     transition: {
       duration: 0.5,
-      ease: aescapeEase,
+      ease: premiumEase,
     },
   },
 };
@@ -224,7 +221,7 @@ export const lineGrow: Variants = {
     scaleY: 1,
     transition: {
       duration: 1.2,
-      ease: aescapeEase,
+      ease: premiumEase,
     },
   },
 };
@@ -238,7 +235,7 @@ export const menuItemStagger: Variants = {
     transition: {
       delay: i * 0.1,
       duration: 0.3,
-      ease: aescapeEase,
+      ease: premiumEase,
     },
   }),
 };
