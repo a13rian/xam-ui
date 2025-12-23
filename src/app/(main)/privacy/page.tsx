@@ -1,239 +1,220 @@
+import {
+  LegalPageLayout,
+  LegalSection,
+  LegalSubsection,
+  LegalList,
+  LegalLink,
+} from '@/shared/components';
+
 export default function PrivacyPolicyPage() {
   return (
-    <div className="container mx-auto max-w-4xl py-12 px-6 lg:py-16">
-      <h1 className="font-[family-name:var(--font-playfair)] text-4xl font-semibold text-gray-900 mb-8">
-        Privacy Policy
-      </h1>
+    <LegalPageLayout title="Privacy Policy" lastUpdated="9 tháng 12, 2024">
+      <LegalSection title="1. Giới thiệu">
+        <p>
+          Chào mừng bạn đến với Cogie (&quot;chúng tôi&quot;). Chúng tôi cam kết
+          bảo vệ quyền riêng tư và thông tin cá nhân của bạn. Chính sách Bảo mật
+          này giải thích cách chúng tôi thu thập, sử dụng, tiết lộ và bảo vệ
+          thông tin của bạn khi bạn sử dụng Dịch vụ của chúng tôi.
+        </p>
+      </LegalSection>
 
-      <p className="text-muted-foreground mb-8">
-        Last updated: December 9, 2024
-      </p>
+      <LegalSection title="2. Thông tin chúng tôi thu thập">
+        <LegalSubsection title="2.1 Thông tin bạn cung cấp">
+          <LegalList
+            items={[
+              'Thông tin tài khoản (tên, địa chỉ email, mật khẩu)',
+              'Thông tin hồ sơ bạn chọn cung cấp',
+              'Các liên lạc bạn gửi cho chúng tôi',
+              'Nội dung bạn tạo, tải lên hoặc chia sẻ qua Dịch vụ',
+              'Thông tin thanh toán (được xử lý an toàn bởi các nhà cung cấp bên thứ ba)',
+            ]}
+          />
+        </LegalSubsection>
 
-      <div className="prose prose-gray max-w-none space-y-8">
-        <section>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            1. Introduction
-          </h2>
-          <p className="text-muted-foreground leading-relaxed">
-            Welcome to Cogie (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;). We are committed to protecting your
-            privacy and personal information. This Privacy Policy explains how we collect, use,
-            disclose, and safeguard your information when you use our Service.
-          </p>
-        </section>
+        <LegalSubsection title="2.2 Thông tin thu thập tự động">
+          <LegalList
+            items={[
+              'Thông tin thiết bị (loại trình duyệt, hệ điều hành, mã định danh thiết bị)',
+              'Dữ liệu nhật ký (địa chỉ IP, thời gian truy cập, trang đã xem)',
+              'Thông tin sử dụng (các tính năng đã sử dụng, tương tác với Dịch vụ)',
+              'Cookie và công nghệ theo dõi tương tự',
+            ]}
+          />
+        </LegalSubsection>
+      </LegalSection>
 
-        <section>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            2. Information We Collect
-          </h2>
+      <LegalSection title="3. Cách chúng tôi sử dụng thông tin">
+        <p className="mb-4">
+          Chúng tôi sử dụng thông tin thu thập được để:
+        </p>
+        <LegalList
+          items={[
+            'Cung cấp, duy trì và cải thiện Dịch vụ của chúng tôi',
+            'Xử lý giao dịch và gửi thông tin liên quan',
+            'Gửi cho bạn thông báo kỹ thuật, cập nhật và tin nhắn hỗ trợ',
+            'Phản hồi nhận xét, câu hỏi và yêu cầu của bạn',
+            'Liên lạc với bạn về sản phẩm, dịch vụ và sự kiện',
+            'Theo dõi và phân tích xu hướng, mức sử dụng và hoạt động',
+            'Phát hiện, điều tra và ngăn chặn các hoạt động gian lận hoặc trái phép',
+            'Cá nhân hóa và cải thiện trải nghiệm của bạn',
+          ]}
+        />
+      </LegalSection>
 
-          <h3 className="text-xl font-medium text-gray-900 mb-3 mt-6">
-            2.1 Information You Provide
-          </h3>
-          <ul className="list-disc list-inside text-muted-foreground space-y-2 ml-4">
-            <li>Account information (name, email address, password)</li>
-            <li>Profile information you choose to provide</li>
-            <li>Communications you send to us</li>
-            <li>Content you create, upload, or share through the Service</li>
-            <li>Payment information (processed securely by third-party providers)</li>
-          </ul>
+      <LegalSection title="4. Chia sẻ thông tin">
+        <p className="mb-4">
+          Chúng tôi có thể chia sẻ thông tin của bạn trong các trường hợp sau:
+        </p>
+        <LegalList
+          items={[
+            <span key="providers">
+              <strong>Nhà cung cấp dịch vụ:</strong> Với các nhà cung cấp bên
+              thứ ba thực hiện dịch vụ thay mặt chúng tôi
+            </span>,
+            <span key="legal">
+              <strong>Yêu cầu pháp lý:</strong> Khi được yêu cầu theo luật hoặc
+              để phản hồi quy trình pháp lý
+            </span>,
+            <span key="rights">
+              <strong>Bảo vệ quyền lợi:</strong> Để bảo vệ quyền lợi, tài sản và
+              sự an toàn của Cogie, người dùng hoặc những người khác
+            </span>,
+            <span key="business">
+              <strong>Chuyển nhượng kinh doanh:</strong> Liên quan đến sáp nhập,
+              mua lại hoặc bán tài sản
+            </span>,
+            <span key="consent">
+              <strong>Với sự đồng ý của bạn:</strong> Khi bạn đã cho phép chúng
+              tôi chia sẻ thông tin của bạn
+            </span>,
+          ]}
+        />
+      </LegalSection>
 
-          <h3 className="text-xl font-medium text-gray-900 mb-3 mt-6">
-            2.2 Information Collected Automatically
-          </h3>
-          <ul className="list-disc list-inside text-muted-foreground space-y-2 ml-4">
-            <li>Device information (browser type, operating system, device identifiers)</li>
-            <li>Log data (IP address, access times, pages viewed)</li>
-            <li>Usage information (features used, interactions with the Service)</li>
-            <li>Cookies and similar tracking technologies</li>
-          </ul>
-        </section>
+      <LegalSection title="5. Bảo mật dữ liệu">
+        <p>
+          Chúng tôi thực hiện các biện pháp kỹ thuật và tổ chức phù hợp để bảo
+          vệ thông tin cá nhân của bạn khỏi truy cập, thay đổi, tiết lộ hoặc phá
+          hủy trái phép. Tuy nhiên, không có phương thức truyền tải qua Internet
+          hoặc lưu trữ điện tử nào hoàn toàn an toàn, và chúng tôi không thể đảm
+          bảo an ninh tuyệt đối.
+        </p>
+      </LegalSection>
 
-        <section>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            3. How We Use Your Information
-          </h2>
-          <p className="text-muted-foreground leading-relaxed mb-4">
-            We use the information we collect to:
-          </p>
-          <ul className="list-disc list-inside text-muted-foreground space-y-2 ml-4">
-            <li>Provide, maintain, and improve our Service</li>
-            <li>Process transactions and send related information</li>
-            <li>Send you technical notices, updates, and support messages</li>
-            <li>Respond to your comments, questions, and requests</li>
-            <li>Communicate with you about products, services, and events</li>
-            <li>Monitor and analyze trends, usage, and activities</li>
-            <li>Detect, investigate, and prevent fraudulent or unauthorized activities</li>
-            <li>Personalize and improve your experience</li>
-          </ul>
-        </section>
+      <LegalSection title="6. Lưu giữ dữ liệu">
+        <p>
+          Chúng tôi lưu giữ thông tin cá nhân của bạn trong thời gian cần thiết
+          để thực hiện các mục đích mà thông tin được thu thập, bao gồm để đáp
+          ứng các yêu cầu pháp lý, kế toán hoặc báo cáo. Khi chúng tôi không còn
+          cần thông tin của bạn, chúng tôi sẽ xóa hoặc ẩn danh hóa một cách an
+          toàn.
+        </p>
+      </LegalSection>
 
-        <section>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            4. Information Sharing
-          </h2>
-          <p className="text-muted-foreground leading-relaxed mb-4">
-            We may share your information in the following circumstances:
-          </p>
-          <ul className="list-disc list-inside text-muted-foreground space-y-2 ml-4">
-            <li>
-              <strong>Service Providers:</strong> With third-party vendors who perform services
-              on our behalf
-            </li>
-            <li>
-              <strong>Legal Requirements:</strong> When required by law or to respond to legal
-              process
-            </li>
-            <li>
-              <strong>Protection of Rights:</strong> To protect the rights, property, and safety
-              of Cogie, our users, or others
-            </li>
-            <li>
-              <strong>Business Transfers:</strong> In connection with a merger, acquisition, or
-              sale of assets
-            </li>
-            <li>
-              <strong>With Your Consent:</strong> When you have given us permission to share
-              your information
-            </li>
-          </ul>
-        </section>
+      <LegalSection title="7. Quyền và lựa chọn của bạn">
+        <p className="mb-4">
+          Tùy thuộc vào vị trí của bạn, bạn có thể có một số quyền nhất định
+          liên quan đến thông tin cá nhân của mình:
+        </p>
+        <LegalList
+          items={[
+            <span key="access">
+              <strong>Truy cập:</strong> Yêu cầu truy cập thông tin cá nhân của
+              bạn
+            </span>,
+            <span key="correction">
+              <strong>Chỉnh sửa:</strong> Yêu cầu chỉnh sửa thông tin không
+              chính xác
+            </span>,
+            <span key="deletion">
+              <strong>Xóa:</strong> Yêu cầu xóa thông tin cá nhân của bạn
+            </span>,
+            <span key="portability">
+              <strong>Di chuyển:</strong> Yêu cầu bản sao dữ liệu ở định dạng có
+              thể di chuyển
+            </span>,
+            <span key="optout">
+              <strong>Từ chối:</strong> Từ chối nhận thông tin tiếp thị
+            </span>,
+            <span key="withdraw">
+              <strong>Rút lại đồng ý:</strong> Rút lại sự đồng ý khi việc xử lý
+              dựa trên sự đồng ý
+            </span>,
+          ]}
+        />
+      </LegalSection>
 
-        <section>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            5. Data Security
-          </h2>
-          <p className="text-muted-foreground leading-relaxed">
-            We implement appropriate technical and organizational measures to protect your
-            personal information against unauthorized access, alteration, disclosure, or
-            destruction. However, no method of transmission over the Internet or electronic
-            storage is completely secure, and we cannot guarantee absolute security.
-          </p>
-        </section>
+      <LegalSection title="8. Cookie và công nghệ theo dõi">
+        <p className="mb-4">
+          Chúng tôi sử dụng cookie và công nghệ theo dõi tương tự để thu thập và
+          theo dõi thông tin về việc sử dụng Dịch vụ của bạn. Bạn có thể kiểm
+          soát cookie thông qua cài đặt trình duyệt. Các loại cookie chúng tôi
+          sử dụng:
+        </p>
+        <LegalList
+          items={[
+            <span key="essential">
+              <strong>Cookie thiết yếu:</strong> Cần thiết để Dịch vụ hoạt động
+              đúng cách
+            </span>,
+            <span key="analytics">
+              <strong>Cookie phân tích:</strong> Giúp chúng tôi hiểu cách khách
+              truy cập tương tác với Dịch vụ
+            </span>,
+            <span key="preference">
+              <strong>Cookie tùy chọn:</strong> Ghi nhớ cài đặt và tùy chọn của
+              bạn
+            </span>,
+          ]}
+        />
+      </LegalSection>
 
-        <section>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            6. Data Retention
-          </h2>
-          <p className="text-muted-foreground leading-relaxed">
-            We retain your personal information for as long as necessary to fulfill the purposes
-            for which it was collected, including to satisfy legal, accounting, or reporting
-            requirements. When we no longer need your information, we will securely delete or
-            anonymize it.
-          </p>
-        </section>
+      <LegalSection title="9. Liên kết bên thứ ba">
+        <p>
+          Dịch vụ của chúng tôi có thể chứa liên kết đến các trang web hoặc dịch
+          vụ của bên thứ ba. Chúng tôi không chịu trách nhiệm về các hoạt động
+          bảo mật của các bên thứ ba này. Chúng tôi khuyến khích bạn đọc chính
+          sách bảo mật của bất kỳ trang web bên thứ ba nào bạn truy cập.
+        </p>
+      </LegalSection>
 
-        <section>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            7. Your Rights and Choices
-          </h2>
-          <p className="text-muted-foreground leading-relaxed mb-4">
-            Depending on your location, you may have certain rights regarding your personal
-            information:
-          </p>
-          <ul className="list-disc list-inside text-muted-foreground space-y-2 ml-4">
-            <li>
-              <strong>Access:</strong> Request access to your personal information
-            </li>
-            <li>
-              <strong>Correction:</strong> Request correction of inaccurate information
-            </li>
-            <li>
-              <strong>Deletion:</strong> Request deletion of your personal information
-            </li>
-            <li>
-              <strong>Portability:</strong> Request a copy of your data in a portable format
-            </li>
-            <li>
-              <strong>Opt-out:</strong> Opt out of marketing communications
-            </li>
-            <li>
-              <strong>Withdraw Consent:</strong> Withdraw consent where processing is based on
-              consent
-            </li>
-          </ul>
-        </section>
+      <LegalSection title="10. Quyền riêng tư của trẻ em">
+        <p>
+          Dịch vụ của chúng tôi không dành cho trẻ em dưới 13 tuổi. Chúng tôi
+          không cố ý thu thập thông tin cá nhân từ trẻ em dưới 13 tuổi. Nếu bạn
+          là phụ huynh hoặc người giám hộ và tin rằng con bạn đã cung cấp thông
+          tin cá nhân cho chúng tôi, vui lòng liên hệ với chúng tôi.
+        </p>
+      </LegalSection>
 
-        <section>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            8. Cookies and Tracking Technologies
-          </h2>
-          <p className="text-muted-foreground leading-relaxed mb-4">
-            We use cookies and similar tracking technologies to collect and track information
-            about your use of our Service. You can control cookies through your browser settings.
-            Types of cookies we use:
-          </p>
-          <ul className="list-disc list-inside text-muted-foreground space-y-2 ml-4">
-            <li>
-              <strong>Essential Cookies:</strong> Required for the Service to function properly
-            </li>
-            <li>
-              <strong>Analytics Cookies:</strong> Help us understand how visitors interact with
-              our Service
-            </li>
-            <li>
-              <strong>Preference Cookies:</strong> Remember your settings and preferences
-            </li>
-          </ul>
-        </section>
+      <LegalSection title="11. Chuyển giao dữ liệu quốc tế">
+        <p>
+          Thông tin của bạn có thể được chuyển đến và xử lý tại các quốc gia
+          khác với quốc gia cư trú của bạn. Các quốc gia này có thể có luật bảo
+          vệ dữ liệu khác với luật của quốc gia bạn. Chúng tôi thực hiện các
+          biện pháp bảo vệ phù hợp để đảm bảo thông tin của bạn được bảo vệ.
+        </p>
+      </LegalSection>
 
-        <section>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            9. Third-Party Links
-          </h2>
-          <p className="text-muted-foreground leading-relaxed">
-            Our Service may contain links to third-party websites or services. We are not
-            responsible for the privacy practices of these third parties. We encourage you to
-            read the privacy policies of any third-party sites you visit.
-          </p>
-        </section>
+      <LegalSection title="12. Thay đổi chính sách">
+        <p>
+          Chúng tôi có thể cập nhật Chính sách Bảo mật này theo thời gian. Chúng
+          tôi sẽ thông báo cho bạn về bất kỳ thay đổi nào bằng cách đăng Chính
+          sách Bảo mật mới trên trang này và cập nhật ngày &quot;Cập nhật lần
+          cuối&quot;. Chúng tôi khuyến khích bạn xem lại Chính sách Bảo mật này
+          định kỳ.
+        </p>
+      </LegalSection>
 
-        <section>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            10. Children&apos;s Privacy
-          </h2>
-          <p className="text-muted-foreground leading-relaxed">
-            Our Service is not intended for children under the age of 13. We do not knowingly
-            collect personal information from children under 13. If you are a parent or guardian
-            and believe your child has provided us with personal information, please contact us.
-          </p>
-        </section>
-
-        <section>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            11. International Data Transfers
-          </h2>
-          <p className="text-muted-foreground leading-relaxed">
-            Your information may be transferred to and processed in countries other than your
-            country of residence. These countries may have data protection laws that are
-            different from the laws of your country. We take appropriate safeguards to ensure
-            your information remains protected.
-          </p>
-        </section>
-
-        <section>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            12. Changes to This Policy
-          </h2>
-          <p className="text-muted-foreground leading-relaxed">
-            We may update this Privacy Policy from time to time. We will notify you of any
-            changes by posting the new Privacy Policy on this page and updating the &quot;Last
-            updated&quot; date. We encourage you to review this Privacy Policy periodically.
-          </p>
-        </section>
-
-        <section>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            13. Contact Us
-          </h2>
-          <p className="text-muted-foreground leading-relaxed">
-            If you have any questions about this Privacy Policy or our privacy practices, please
-            contact us at{" "}
-            <a href="mailto:privacy@cogie.com" className="text-foreground font-medium hover:underline">
-              privacy@cogie.com
-            </a>
-          </p>
-        </section>
-      </div>
-    </div>
+      <LegalSection title="13. Liên hệ">
+        <p>
+          Nếu bạn có bất kỳ câu hỏi nào về Chính sách Bảo mật này hoặc các hoạt
+          động bảo mật của chúng tôi, vui lòng liên hệ với chúng tôi tại{' '}
+          <LegalLink href="mailto:privacy@cogie.com">
+            privacy@cogie.com
+          </LegalLink>
+        </p>
+      </LegalSection>
+    </LegalPageLayout>
   );
 }

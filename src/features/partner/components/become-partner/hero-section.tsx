@@ -1,8 +1,16 @@
 'use client';
 
+import Image from 'next/image';
 import { motion } from 'motion/react';
-import { Users, CheckCircle } from 'lucide-react';
-import { containerVariants, itemVariants } from '../../lib/animations';
+import { ChevronDown } from 'lucide-react';
+import {
+  PremiumButton,
+  heroStagger,
+  heroTextItem,
+  scrollBounce,
+  staggerContainerFast,
+  counterReveal,
+} from '@/features/landing/components/shared';
 import { stats } from '../../constants';
 
 interface HeroSectionProps {
@@ -11,75 +19,112 @@ interface HeroSectionProps {
 
 export function HeroSection({ onScrollToForm }: HeroSectionProps) {
   return (
-    <section className="relative overflow-hidden bg-cream py-20 lg:py-28">
-      {/* Subtle background gradient */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-terracotta/[0.03] to-transparent" />
+    <section className="relative min-h-[90vh] w-full overflow-hidden">
+      {/* Background Image with Overlay */}
+      <div className="absolute inset-0">
+        <Image
+          src="/images/partner-hero.jpg"
+          alt="Become a Partner"
+          fill
+          priority
+          className="object-cover"
+        />
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-charcoal/70 via-charcoal/50 to-charcoal/80" />
+      </div>
 
-      <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Content */}
+      <div className="relative flex min-h-[90vh] flex-col items-center justify-center px-4 text-center">
         <motion.div
-          variants={containerVariants}
+          variants={heroStagger}
           initial="hidden"
           animate="visible"
-          className="mx-auto max-w-4xl text-center"
+          className="max-w-4xl"
         >
-          {/* Badge */}
-          <motion.div variants={itemVariants} className="mb-8">
-            <span className="inline-flex items-center gap-2.5 rounded-full border border-terracotta/20 bg-terracotta-light px-5 py-2.5 text-sm font-medium text-terracotta">
-              <Users className="h-4 w-4" />
-              Cộng đồng Partner Cogie
-            </span>
-          </motion.div>
-
-          {/* Headline with serif font */}
-          <motion.h1
-            variants={itemVariants}
-            className="mb-6 font-display text-4xl tracking-tight text-foreground sm:text-5xl lg:text-6xl"
+          {/* Eyebrow */}
+          <motion.p
+            variants={heroTextItem}
+            className="mb-6 text-xs font-medium uppercase tracking-[0.3em] text-white/80"
           >
-            Trở Thành Partner,
+            Trở Thành Đối Tác
+          </motion.p>
+
+          {/* Headline */}
+          <motion.h1
+            variants={heroTextItem}
+            className="font-display text-4xl font-medium leading-tight tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl"
+          >
+            Chia sẻ thời gian,
             <br />
-            <span className="text-terracotta">Lan Tỏa Giá Trị</span>
+            <span className="italic text-lavender">tạo nên giá trị</span>
           </motion.h1>
 
           {/* Subheadline */}
           <motion.p
-            variants={itemVariants}
-            className="mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-muted-foreground"
+            variants={heroTextItem}
+            className="mx-auto mt-6 max-w-xl text-base text-white/80 sm:text-lg md:mt-8"
           >
-            Gia nhập cộng đồng những người lắng nghe tại Cogie. Thu nhập linh hoạt,
-            thời gian tự do, và cơ hội tạo ra những cuộc trò chuyện ý nghĩa.
+            Gia nhập cộng đồng những người đồng hành tại Cogie. Thu nhập linh
+            hoạt, thời gian tự do, và cơ hội tạo ra những kết nối ý nghĩa.
           </motion.p>
 
-          {/* Single CTA Button */}
-          <motion.div variants={itemVariants} className="mb-16">
-            <button
+          {/* CTAs */}
+          <motion.div
+            variants={heroTextItem}
+            className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row md:mt-12"
+          >
+            <PremiumButton
               onClick={onScrollToForm}
-              className="inline-flex h-14 items-center justify-center gap-2.5 rounded-full bg-terracotta px-10 text-base font-medium text-white transition-colors hover:bg-terracotta-dark"
+              variant="primary"
+              size="large"
+              className="bg-cream text-charcoal hover:bg-white"
             >
-              <CheckCircle className="h-5 w-5" />
-              Đăng ký trở thành Partner
-            </button>
+              Đăng Ký Ngay
+            </PremiumButton>
+            <PremiumButton href="#benefits" variant="outline" size="large">
+              Tìm Hiểu Thêm
+            </PremiumButton>
           </motion.div>
 
           {/* Stats */}
           <motion.div
-            variants={itemVariants}
-            className="grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-6"
+            variants={staggerContainerFast}
+            initial="hidden"
+            animate="visible"
+            className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-8"
           >
-            {stats.map((stat, i) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 + i * 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                className="rounded-2xl border border-border/50 bg-background p-5"
-              >
-                <div className="font-display text-2xl text-terracotta sm:text-3xl">
+            {stats.map((stat) => (
+              <motion.div key={stat.label} variants={counterReveal}>
+                <p className="font-display text-2xl text-white md:text-3xl">
                   {stat.value}
-                </div>
-                <div className="mt-1 text-sm text-muted-foreground">{stat.label}</div>
+                </p>
+                <p className="mt-1 text-xs text-white/60 md:text-sm">
+                  {stat.label}
+                </p>
               </motion.div>
             ))}
           </motion.div>
+        </motion.div>
+
+        {/* Scroll Indicator */}
+        <motion.div
+          className="absolute bottom-10 left-1/2 -translate-x-1/2"
+          variants={scrollBounce}
+          initial="initial"
+          animate="animate"
+        >
+          <button
+            onClick={() =>
+              document
+                .getElementById('benefits')
+                ?.scrollIntoView({ behavior: 'smooth' })
+            }
+            className="flex flex-col items-center gap-2 text-white/60 transition-colors hover:text-white"
+            aria-label="Scroll down"
+          >
+            <span className="text-xs uppercase tracking-widest">Cuộn</span>
+            <ChevronDown className="h-5 w-5" />
+          </button>
         </motion.div>
       </div>
     </section>

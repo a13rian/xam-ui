@@ -7,10 +7,18 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   reporter: "html",
+
+  // Global setup to check backend is ready
+  globalSetup: "./tests/e2e/global-setup.ts",
+
   use: {
-    baseURL: "http://localhost:3100",
+    // Frontend runs on port 8100, backend on 3100
+    baseURL: "http://localhost:8100",
     trace: "on-first-retry",
+    // Screenshot on failure
+    screenshot: "only-on-failure",
   },
+
   projects: [
     {
       name: "chromium",
@@ -25,9 +33,10 @@ export default defineConfig({
       use: { ...devices["Desktop Safari"] },
     },
   ],
+
   webServer: {
-    command: "bun run dev --port 3100",
-    url: "http://localhost:3100",
+    command: "bun run dev",
+    url: "http://localhost:8100",
     reuseExistingServer: !process.env.CI,
     timeout: 120000,
   },

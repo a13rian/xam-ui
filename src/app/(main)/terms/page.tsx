@@ -1,155 +1,130 @@
+import {
+  LegalPageLayout,
+  LegalSection,
+  LegalList,
+  LegalLink,
+} from '@/shared/components';
+
 export default function TermsOfServicePage() {
   return (
-    <div className="container mx-auto max-w-4xl py-12 px-6 lg:py-16">
-      <h1 className="font-[family-name:var(--font-playfair)] text-4xl font-semibold text-gray-900 mb-8">
-        Terms of Service
-      </h1>
+    <LegalPageLayout title="Terms of Service" lastUpdated="9 tháng 12, 2024">
+      <LegalSection title="1. Chấp nhận điều khoản">
+        <p>
+          Bằng việc truy cập và sử dụng Cogie (&quot;Dịch vụ&quot;), bạn đồng ý
+          tuân theo các Điều khoản Dịch vụ này (&quot;Điều khoản&quot;). Nếu bạn
+          không đồng ý với các Điều khoản này, vui lòng không sử dụng Dịch vụ.
+          Chúng tôi có quyền sửa đổi các Điều khoản này bất cứ lúc nào, và việc
+          bạn tiếp tục sử dụng Dịch vụ đồng nghĩa với việc chấp nhận mọi sửa
+          đổi.
+        </p>
+      </LegalSection>
 
-      <p className="text-muted-foreground mb-8">
-        Last updated: December 9, 2024
-      </p>
+      <LegalSection title="2. Mô tả dịch vụ">
+        <p>
+          Cogie cung cấp nền tảng kết nối người dùng với các đối tác đồng hành
+          cho các cuộc trò chuyện và hoạt động. Dịch vụ có thể bao gồm các tính
+          năng, công cụ và chức năng khác nhau có thể được cập nhật, sửa đổi
+          hoặc ngừng cung cấp theo quyết định của chúng tôi.
+        </p>
+      </LegalSection>
 
-      <div className="prose prose-gray max-w-none space-y-8">
-        <section>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            1. Acceptance of Terms
-          </h2>
-          <p className="text-muted-foreground leading-relaxed">
-            By accessing and using Cogie (&quot;the Service&quot;), you agree to be bound by these
-            Terms of Service (&quot;Terms&quot;). If you do not agree to these Terms, please do not
-            use the Service. We reserve the right to modify these Terms at any time, and your
-            continued use of the Service constitutes acceptance of any modifications.
-          </p>
-        </section>
+      <LegalSection title="3. Tài khoản người dùng">
+        <p className="mb-4">
+          Để truy cập một số tính năng của Dịch vụ, bạn có thể cần tạo tài
+          khoản. Bạn đồng ý:
+        </p>
+        <LegalList
+          items={[
+            'Cung cấp thông tin chính xác, đầy đủ và cập nhật khi đăng ký',
+            'Duy trì và cập nhật thông tin tài khoản kịp thời',
+            'Bảo mật mật khẩu của bạn',
+            'Chịu trách nhiệm về mọi hoạt động xảy ra dưới tài khoản của bạn',
+            'Thông báo cho chúng tôi ngay lập tức về bất kỳ việc sử dụng trái phép tài khoản của bạn',
+          ]}
+        />
+      </LegalSection>
 
-        <section>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            2. Description of Service
-          </h2>
-          <p className="text-muted-foreground leading-relaxed">
-            Cogie provides an AI-powered platform for conversation and assistance. The Service
-            may include various features, tools, and functionalities that may be updated,
-            modified, or discontinued at our discretion.
-          </p>
-        </section>
+      <LegalSection title="4. Sử dụng chấp nhận được">
+        <p className="mb-4">Bạn đồng ý không sử dụng Dịch vụ để:</p>
+        <LegalList
+          items={[
+            'Vi phạm bất kỳ luật pháp hoặc quy định nào',
+            'Xâm phạm quyền của người khác',
+            'Truyền tải nội dung có hại, xúc phạm hoặc không phù hợp',
+            'Cố gắng truy cập trái phép vào Dịch vụ hoặc hệ thống của nó',
+            'Can thiệp hoặc làm gián đoạn Dịch vụ hoặc máy chủ',
+            'Sử dụng Dịch vụ cho bất kỳ mục đích bất hợp pháp hoặc trái phép nào',
+            'Thu thập hoặc lấy dữ liệu người dùng mà không có sự đồng ý',
+          ]}
+        />
+      </LegalSection>
 
-        <section>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            3. User Accounts
-          </h2>
-          <p className="text-muted-foreground leading-relaxed mb-4">
-            To access certain features of the Service, you may be required to create an account.
-            You agree to:
-          </p>
-          <ul className="list-disc list-inside text-muted-foreground space-y-2 ml-4">
-            <li>Provide accurate, current, and complete information during registration</li>
-            <li>Maintain and promptly update your account information</li>
-            <li>Keep your password secure and confidential</li>
-            <li>Be responsible for all activities that occur under your account</li>
-            <li>Notify us immediately of any unauthorized use of your account</li>
-          </ul>
-        </section>
+      <LegalSection title="5. Sở hữu trí tuệ">
+        <p>
+          Dịch vụ và nội dung gốc, tính năng và chức năng của nó thuộc sở hữu
+          của Cogie và được bảo vệ bởi luật bản quyền, thương hiệu, bằng sáng
+          chế, bí mật thương mại quốc tế và các luật sở hữu trí tuệ khác. Bạn
+          không được sao chép, sửa đổi, phân phối, bán hoặc cho thuê bất kỳ phần
+          nào của Dịch vụ mà không có sự đồng ý bằng văn bản trước của chúng
+          tôi.
+        </p>
+      </LegalSection>
 
-        <section>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            4. Acceptable Use
-          </h2>
-          <p className="text-muted-foreground leading-relaxed mb-4">
-            You agree not to use the Service to:
-          </p>
-          <ul className="list-disc list-inside text-muted-foreground space-y-2 ml-4">
-            <li>Violate any applicable laws or regulations</li>
-            <li>Infringe upon the rights of others</li>
-            <li>Transmit harmful, offensive, or inappropriate content</li>
-            <li>Attempt to gain unauthorized access to the Service or its systems</li>
-            <li>Interfere with or disrupt the Service or servers</li>
-            <li>Use the Service for any illegal or unauthorized purpose</li>
-            <li>Collect or harvest user data without consent</li>
-          </ul>
-        </section>
+      <LegalSection title="6. Nội dung người dùng">
+        <p>
+          Bạn giữ quyền sở hữu bất kỳ nội dung nào bạn gửi đến Dịch vụ. Bằng
+          việc gửi nội dung, bạn cấp cho chúng tôi giấy phép toàn cầu, không độc
+          quyền, miễn phí bản quyền để sử dụng, sao chép, sửa đổi và hiển thị
+          nội dung đó liên quan đến việc cung cấp Dịch vụ. Bạn hoàn toàn chịu
+          trách nhiệm về nội dung bạn gửi và phải đảm bảo nó không vi phạm bất
+          kỳ quyền của bên thứ ba nào.
+        </p>
+      </LegalSection>
 
-        <section>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            5. Intellectual Property
-          </h2>
-          <p className="text-muted-foreground leading-relaxed">
-            The Service and its original content, features, and functionality are owned by Cogie
-            and are protected by international copyright, trademark, patent, trade secret, and
-            other intellectual property laws. You may not copy, modify, distribute, sell, or
-            lease any part of our Service without prior written consent.
-          </p>
-        </section>
+      <LegalSection title="7. Miễn trừ bảo hành">
+        <p>
+          DỊCH VỤ ĐƯỢC CUNG CẤP &quot;NGUYÊN TRẠNG&quot; VÀ &quot;NHƯ CÓ
+          SẴN&quot; MÀ KHÔNG CÓ BẤT KỲ BẢO ĐẢM NÀO, DÙ LÀ RÕ RÀNG HAY NGỤ Ý.
+          CHÚNG TÔI KHÔNG BẢO ĐẢM RẰNG DỊCH VỤ SẼ KHÔNG BỊ GIÁN ĐOẠN, AN TOÀN
+          HOẶC KHÔNG CÓ LỖI. VIỆC BẠN SỬ DỤNG DỊCH VỤ LÀ RỦI RO CỦA RIÊNG BẠN.
+        </p>
+      </LegalSection>
 
-        <section>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            6. User Content
-          </h2>
-          <p className="text-muted-foreground leading-relaxed">
-            You retain ownership of any content you submit to the Service. By submitting content,
-            you grant us a worldwide, non-exclusive, royalty-free license to use, reproduce,
-            modify, and display such content in connection with providing the Service. You are
-            solely responsible for the content you submit and must ensure it does not violate
-            any third-party rights.
-          </p>
-        </section>
+      <LegalSection title="8. Giới hạn trách nhiệm">
+        <p>
+          TRONG PHẠM VI TỐI ĐA ĐƯỢC PHÁP LUẬT CHO PHÉP, COGIE SẼ KHÔNG CHỊU
+          TRÁCH NHIỆM VỀ BẤT KỲ THIỆT HẠI GIÁN TIẾP, NGẪU NHIÊN, ĐẶC BIỆT, HỆ
+          QUẢ HOẶC MANG TÍNH TRỪNG PHẠT NÀO, HOẶC BẤT KỲ MẤT MÁT LỢI NHUẬN HOẶC
+          DOANH THU NÀO, DÙ PHÁT SINH TRỰC TIẾP HAY GIÁN TIẾP, HOẶC BẤT KỲ MẤT
+          MÁT DỮ LIỆU, SỬ DỤNG, UY TÍN HOẶC CÁC THIỆT HẠI VÔ HÌNH KHÁC.
+        </p>
+      </LegalSection>
 
-        <section>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            7. Disclaimer of Warranties
-          </h2>
-          <p className="text-muted-foreground leading-relaxed">
-            THE SERVICE IS PROVIDED &quot;AS IS&quot; AND &quot;AS AVAILABLE&quot; WITHOUT WARRANTIES OF ANY
-            KIND, EITHER EXPRESS OR IMPLIED. WE DO NOT WARRANT THAT THE SERVICE WILL BE
-            UNINTERRUPTED, SECURE, OR ERROR-FREE. YOUR USE OF THE SERVICE IS AT YOUR OWN RISK.
-          </p>
-        </section>
+      <LegalSection title="9. Chấm dứt">
+        <p>
+          Chúng tôi có thể chấm dứt hoặc đình chỉ tài khoản và quyền truy cập
+          Dịch vụ của bạn ngay lập tức, không cần thông báo trước hoặc chịu
+          trách nhiệm, vì bất kỳ lý do gì, bao gồm nếu bạn vi phạm các Điều
+          khoản này. Khi chấm dứt, quyền sử dụng Dịch vụ của bạn sẽ ngay lập tức
+          hết hiệu lực.
+        </p>
+      </LegalSection>
 
-        <section>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            8. Limitation of Liability
-          </h2>
-          <p className="text-muted-foreground leading-relaxed">
-            TO THE MAXIMUM EXTENT PERMITTED BY LAW, COGIE SHALL NOT BE LIABLE FOR ANY INDIRECT,
-            INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR ANY LOSS OF PROFITS OR
-            REVENUES, WHETHER INCURRED DIRECTLY OR INDIRECTLY, OR ANY LOSS OF DATA, USE,
-            GOODWILL, OR OTHER INTANGIBLE LOSSES.
-          </p>
-        </section>
+      <LegalSection title="10. Luật điều chỉnh">
+        <p>
+          Các Điều khoản này sẽ được điều chỉnh và giải thích theo luật pháp của
+          quốc gia nơi Cogie hoạt động, không tính đến các quy định về xung đột
+          pháp luật.
+        </p>
+      </LegalSection>
 
-        <section>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            9. Termination
-          </h2>
-          <p className="text-muted-foreground leading-relaxed">
-            We may terminate or suspend your account and access to the Service immediately,
-            without prior notice or liability, for any reason, including if you breach these
-            Terms. Upon termination, your right to use the Service will immediately cease.
-          </p>
-        </section>
-
-        <section>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            10. Governing Law
-          </h2>
-          <p className="text-muted-foreground leading-relaxed">
-            These Terms shall be governed by and construed in accordance with the laws of the
-            jurisdiction in which Cogie operates, without regard to its conflict of law
-            provisions.
-          </p>
-        </section>
-
-        <section>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            11. Contact Us
-          </h2>
-          <p className="text-muted-foreground leading-relaxed">
-            If you have any questions about these Terms, please contact us at{" "}
-            <a href="mailto:legal@cogie.com" className="text-foreground font-medium hover:underline">
-              legal@cogie.com
-            </a>
-          </p>
-        </section>
-      </div>
-    </div>
+      <LegalSection title="11. Liên hệ">
+        <p>
+          Nếu bạn có bất kỳ câu hỏi nào về các Điều khoản này, vui lòng liên hệ
+          với chúng tôi tại{' '}
+          <LegalLink href="mailto:legal@cogie.com">legal@cogie.com</LegalLink>
+        </p>
+      </LegalSection>
+    </LegalPageLayout>
   );
 }

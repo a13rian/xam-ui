@@ -1,24 +1,33 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono, DM_Serif_Display } from 'next/font/google';
+import {
+  Be_Vietnam_Pro,
+  Playfair_Display,
+  Geist_Mono,
+} from 'next/font/google';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { QueryProvider, AuthInitializer } from '@/providers';
 import { Toaster } from '@/shared/components/ui';
 import './globals.css';
 
-const geistSans = Geist({
+// Body font - Vietnamese-optimized sans-serif
+const beVietnamPro = Be_Vietnam_Pro({
   variable: '--font-geist-sans',
-  subsets: ['latin'],
+  subsets: ['latin', 'vietnamese'],
+  weight: ['300', '400', '500', '600', '700'],
 });
 
+// Monospace font
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
 });
 
-const dmSerifDisplay = DM_Serif_Display({
+// Display font - High-contrast serif matching Aescape aesthetic
+const playfairDisplay = Playfair_Display({
   variable: '--font-display',
-  subsets: ['latin', 'latin-ext'],
-  weight: '400',
+  subsets: ['latin', 'vietnamese'],
+  weight: ['400', '500', '600', '700'],
+  style: ['normal', 'italic'],
 });
 
 export const metadata: Metadata = {
@@ -37,7 +46,7 @@ export default function RootLayout({
   return (
     <html lang="vi">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${dmSerifDisplay.variable} antialiased`}
+        className={`${beVietnamPro.variable} ${geistMono.variable} ${playfairDisplay.variable} antialiased`}
       >
         <NuqsAdapter>
           <QueryProvider>

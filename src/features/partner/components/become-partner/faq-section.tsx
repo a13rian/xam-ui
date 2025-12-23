@@ -1,100 +1,81 @@
 'use client';
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
 import Link from 'next/link';
-import { ChevronDown, ArrowRight } from 'lucide-react';
+import { motion } from 'motion/react';
+import { ArrowRight } from 'lucide-react';
+import {
+  SectionContainer,
+  staggerContainer,
+  fadeInUp,
+} from '@/features/landing/components/shared';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/shared/components/ui/accordion';
 import { faqs } from '../../constants';
-import { containerVariants, itemVariants, slideInLeft, premiumEase } from '../../lib/animations';
-
-interface FAQItemProps {
-  question: string;
-  answer: string;
-}
-
-function FAQItem({ question, answer }: FAQItemProps) {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <motion.div variants={itemVariants} className="group">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex w-full items-center justify-between rounded-2xl border border-border/50 bg-background p-5 text-left transition-all hover:border-terracotta/30 hover:shadow-md"
-      >
-        <span className="pr-4 font-medium text-foreground">{question}</span>
-        <motion.div
-          animate={{ rotate: isOpen ? 180 : 0 }}
-          transition={{ duration: 0.3, ease: premiumEase }}
-          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-terracotta-light"
-        >
-          <ChevronDown className="h-4 w-4 text-terracotta" />
-        </motion.div>
-      </button>
-      <AnimatePresence initial={false}>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: premiumEase }}
-            className="overflow-hidden"
-          >
-            <div className="px-5 pb-5 pt-4 leading-relaxed text-muted-foreground">
-              {answer}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
-  );
-}
 
 export function FAQSection() {
   return (
-    <section className="bg-cream py-20 lg:py-24">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid gap-12 lg:grid-cols-5">
-          {/* Left - Header */}
-          <motion.div
-            variants={slideInLeft}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="lg:col-span-2"
-          >
-            <span className="mb-4 inline-flex items-center gap-2 text-sm font-medium uppercase tracking-wider text-terracotta">
-              <span className="h-px w-8 bg-terracotta/40" />
-              FAQ
-            </span>
-            <h2 className="mb-4 font-display text-3xl tracking-tight text-foreground sm:text-4xl">
-              Câu Hỏi Thường Gặp
-            </h2>
-            <p className="mb-8 leading-relaxed text-muted-foreground">
-              Tìm câu trả lời cho những thắc mắc phổ biến về việc trở thành Partner Cogie.
-            </p>
+    <SectionContainer background="cream" id="faq">
+      <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+        {/* Left - Header */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeInUp}
+          className="lg:col-span-4"
+        >
+          <p className="mb-4 text-xs font-medium uppercase tracking-[0.3em] text-charcoal-light">
+            Câu Hỏi Thường Gặp
+          </p>
+          <h2 className="font-display text-3xl font-medium tracking-tight text-charcoal md:text-4xl">
+            Thắc Mắc Về Việc Trở Thành Đối Tác
+          </h2>
+          <p className="mt-4 text-base text-charcoal-light">
+            Tìm câu trả lời cho những câu hỏi phổ biến về quy trình đăng ký và
+            làm việc cùng Cogie.
+          </p>
+          <div className="mt-8">
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 font-medium text-terracotta transition-colors hover:text-terracotta-dark"
+              className="group inline-flex items-center gap-2 text-sm font-medium text-charcoal transition-colors hover:text-lavender-dark"
             >
-              Cần hỗ trợ thêm?
-              <ArrowRight className="h-4 w-4" />
+              Cần hỗ trợ thêm? Liên hệ chúng tôi
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
-          </motion.div>
+          </div>
+        </motion.div>
 
-          {/* Right - FAQ Items */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="space-y-4 lg:col-span-3"
-          >
-            {faqs.map((faq) => (
-              <FAQItem key={faq.question} question={faq.question} answer={faq.answer} />
+        {/* Right - Accordion */}
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="lg:col-span-7 lg:col-start-6"
+        >
+          <Accordion type="single" collapsible className="space-y-4">
+            {faqs.map((faq, index) => (
+              <motion.div key={faq.question} variants={fadeInUp}>
+                <AccordionItem
+                  value={`item-${index}`}
+                  className="rounded-xl border border-charcoal/10 bg-white px-6 py-1"
+                >
+                  <AccordionTrigger className="text-left text-base font-medium text-charcoal hover:no-underline [&[data-state=open]>svg]:text-lavender-dark">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-sm leading-relaxed text-charcoal-light">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              </motion.div>
             ))}
-          </motion.div>
-        </div>
+          </Accordion>
+        </motion.div>
       </div>
-    </section>
+    </SectionContainer>
   );
 }

@@ -41,3 +41,7 @@ export {
   CarouselNext,
   CarouselPrevious,
 } from './carousel';
+export { Badge, badgeVariants } from './badge';
+export { Avatar, AvatarImage, AvatarFallback } from './avatar';
+export { Progress } from './progress';
+export { Textarea } from './textarea';

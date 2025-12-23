@@ -1,78 +1,82 @@
 'use client';
 
-import { useRef } from 'react';
-import { motion, useInView } from 'motion/react';
+import { motion } from 'motion/react';
+import {
+  SectionContainer,
+  PremiumButton,
+  staggerContainer,
+  fadeInUp,
+  lineGrow,
+} from '@/features/landing/components/shared';
 import { steps } from '../../constants';
-import { containerVariants, itemVariants } from '../../lib/animations';
 
-export function StepsSection() {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
+interface StepsSectionProps {
+  onScrollToForm: () => void;
+}
 
+export function StepsSection({ onScrollToForm }: StepsSectionProps) {
   return (
-    <section ref={ref} className="bg-cream py-20 lg:py-24">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
-          className="mb-14 text-center"
-        >
-          <motion.span
-            variants={itemVariants}
-            className="mb-4 inline-flex items-center gap-2 text-sm font-medium uppercase tracking-wider text-terracotta"
-          >
-            <span className="h-px w-8 bg-terracotta/40" />
-            Quy trình đăng ký
-            <span className="h-px w-8 bg-terracotta/40" />
-          </motion.span>
-          <motion.h2
-            variants={itemVariants}
-            className="mb-4 font-display text-3xl tracking-tight text-foreground sm:text-4xl"
-          >
-            4 Bước Để Bắt Đầu
-          </motion.h2>
-          <motion.p
-            variants={itemVariants}
-            className="mx-auto max-w-2xl text-muted-foreground"
-          >
-            Quy trình đơn giản, nhanh chóng để bạn trở thành Partner Cogie.
-          </motion.p>
-        </motion.div>
+    <SectionContainer background="cream-dark" id="steps">
+      <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+        {/* Left - Sticky Header */}
+        <div className="lg:col-span-4 lg:sticky lg:top-32 lg:self-start">
+          <p className="mb-4 text-xs font-medium uppercase tracking-[0.3em] text-charcoal-light">
+            Quy Trình Đăng Ký
+          </p>
+          <h2 className="font-display text-3xl font-medium tracking-tight text-charcoal md:text-4xl lg:text-5xl">
+            Bốn Bước
+            <br />
+            Để Bắt Đầu
+          </h2>
+          <p className="mt-4 text-base text-charcoal-light lg:text-lg">
+            Quy trình đơn giản, nhanh chóng để bạn trở thành đối tác của Cogie.
+          </p>
+          <div className="mt-8">
+            <PremiumButton onClick={onScrollToForm} variant="primary" size="default">
+              Đăng Ký Ngay
+            </PremiumButton>
+          </div>
+        </div>
 
-        {/* Steps Timeline */}
-        <div className="relative mx-auto max-w-4xl">
-          {/* Vertical connection line - desktop */}
-          <div className="absolute left-1/2 top-0 hidden h-full w-px -translate-x-1/2 bg-gradient-to-b from-terracotta/20 via-terracotta/40 to-terracotta/20 lg:block" />
-
+        {/* Right - Timeline */}
+        <div className="relative lg:col-span-7 lg:col-start-6">
+          {/* Vertical Line */}
           <motion.div
-            variants={containerVariants}
+            variants={lineGrow}
             initial="hidden"
-            animate={isInView ? 'visible' : 'hidden'}
-            className="grid gap-8 lg:grid-cols-2"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="absolute left-6 top-0 h-full w-[2px] origin-top bg-charcoal/10 md:left-8"
+          />
+
+          {/* Steps */}
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="space-y-10 md:space-y-12"
           >
-            {steps.map((step, index) => (
+            {steps.map((step) => (
               <motion.div
                 key={step.number}
-                variants={itemVariants}
-                className={`relative ${index % 2 === 1 ? 'lg:mt-24' : ''}`}
+                variants={fadeInUp}
+                className="relative flex gap-6 md:gap-8"
               >
-                <div className="rounded-2xl border border-border/50 bg-background p-6 transition-shadow hover:shadow-lg">
-                  {/* Step number badge */}
-                  <div className="absolute -top-4 left-6 flex h-9 w-9 items-center justify-center rounded-full bg-terracotta font-display text-sm text-white shadow-md">
-                    {step.number}
-                  </div>
+                {/* Number Circle */}
+                <div className="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-cream text-sm font-medium text-charcoal ring-4 ring-cream-dark md:h-16 md:w-16 md:text-base">
+                  <step.icon className="h-5 w-5 text-lavender-dark md:h-6 md:w-6" />
+                </div>
 
-                  {/* Icon */}
-                  <div className="mb-4 mt-2 flex h-12 w-12 items-center justify-center rounded-xl bg-terracotta-light">
-                    <step.icon className="h-6 w-6 text-terracotta" />
-                  </div>
-
-                  <h3 className="mb-2 font-display text-lg text-foreground">
+                {/* Content */}
+                <div className="pb-2 pt-1">
+                  <span className="text-xs font-medium text-lavender-dark">
+                    Bước {step.number}
+                  </span>
+                  <h3 className="mt-1 font-display text-xl font-medium text-charcoal md:text-2xl">
                     {step.title}
                   </h3>
-                  <p className="text-sm leading-relaxed text-muted-foreground">
+                  <p className="mt-2 text-sm leading-relaxed text-charcoal-light md:text-base">
                     {step.description}
                   </p>
                 </div>
@@ -81,6 +85,6 @@ export function StepsSection() {
           </motion.div>
         </div>
       </div>
-    </section>
+    </SectionContainer>
   );
 }

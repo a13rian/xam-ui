@@ -22,8 +22,8 @@ const CompanionMap = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="w-full h-full min-h-[400px] bg-gray-100 animate-pulse flex items-center justify-center">
-        <span className="text-gray-400">Đang tải bản đồ...</span>
+      <div className="w-full h-full min-h-[400px] bg-cream-dark animate-pulse flex items-center justify-center rounded-[32px]">
+        <span className="text-charcoal-light">Đang tải bản đồ...</span>
       </div>
     ),
   }
@@ -33,8 +33,8 @@ const CompanionMap = dynamic(
 function LoadingState() {
   return (
     <div className="flex flex-col items-center justify-center min-h-[400px] gap-3">
-      <Loader2 className="size-8 animate-spin text-primary" />
-      <p className="text-gray-500">Đang tìm kiếm...</p>
+      <Loader2 className="size-8 animate-spin text-lavender-dark" />
+      <p className="text-charcoal-light">Đang tìm kiếm...</p>
     </div>
   );
 }
@@ -49,10 +49,10 @@ function ErrorState({
 }) {
   return (
     <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
-      <AlertCircle className="size-12 text-red-500" />
+      <AlertCircle className="size-12 text-destructive" />
       <div className="text-center">
-        <p className="text-red-500 font-medium">Không thể tải kết quả</p>
-        <p className="text-gray-500 text-sm mt-1">
+        <p className="text-destructive font-medium">Không thể tải kết quả</p>
+        <p className="text-charcoal-light text-sm mt-1">
           {message || 'Vui lòng thử lại sau'}
         </p>
       </div>
@@ -69,10 +69,10 @@ function ErrorState({
 function EmptyState() {
   return (
     <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
-      <MapPin className="size-12 text-gray-300" />
+      <MapPin className="size-12 text-charcoal-light/40" />
       <div className="text-center">
-        <p className="text-gray-500 font-medium">Không tìm thấy kết quả</p>
-        <p className="text-gray-400 text-sm mt-1">
+        <p className="text-charcoal font-medium">Không tìm thấy kết quả</p>
+        <p className="text-charcoal-light text-sm mt-1">
           Thử thay đổi vị trí hoặc mở rộng phạm vi tìm kiếm
         </p>
       </div>
@@ -85,7 +85,7 @@ function LocationNotice({ isUsingDefault }: { isUsingDefault: boolean }) {
   if (!isUsingDefault) return null;
 
   return (
-    <div className="bg-yellow-50 border border-yellow-200 rounded-lg px-4 py-2 mb-4 text-sm text-yellow-800">
+    <div className="bg-cream-dark border border-charcoal/10 rounded-xl px-4 py-3 mb-4 text-sm text-charcoal">
       <span className="font-medium">Lưu ý:</span> Đang sử dụng vị trí mặc định
       (TP. Hồ Chí Minh). Cho phép truy cập vị trí để có kết quả chính xác hơn.
     </div>
@@ -190,9 +190,9 @@ function SearchContent() {
   };
 
   return (
-    <div className="flex flex-col min-h-[calc(100vh-4rem)]">
+    <div className="flex flex-col min-h-[calc(100vh-4rem)] bg-cream">
       {/* Filters bar */}
-      <div className="bg-white border-b px-4 py-3">
+      <div className="bg-white/80 backdrop-blur-sm border-b border-cream-dark px-4 py-3 sticky top-16 z-40">
         <div className="max-w-7xl mx-auto">
           <SearchFilters />
         </div>
@@ -210,7 +210,7 @@ function SearchContent() {
           <div className="max-w-3xl mx-auto lg:max-w-none">
             <LocationNotice isUsingDefault={isUsingDefault} />
             {data && !isError && (
-              <p className="text-sm text-gray-500 mb-4">
+              <p className="text-sm text-charcoal-light mb-4">
                 Tìm thấy {data.total} kết quả
                 {data.totalPages > 1 &&
                   ` (trang ${data.page}/${data.totalPages})`}

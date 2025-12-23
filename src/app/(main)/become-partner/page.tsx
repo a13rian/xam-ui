@@ -21,7 +21,7 @@ export default function BecomePartnerPage() {
     <>
       <BecomePartnerHero onScrollToForm={scrollToForm} />
       <BecomePartnerBenefits />
-      <BecomePartnerSteps />
+      <BecomePartnerSteps onScrollToForm={scrollToForm} />
       <BecomePartnerForm ref={formRef} />
       <BecomePartnerFAQ />
       <BecomePartnerCTA onScrollToForm={scrollToForm} />
