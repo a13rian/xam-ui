@@ -1,12 +1,15 @@
-# Stage 1: Install dependencies
-FROM oven/bun:1.2-alpine AS deps
+# Stage 1: Install dependencies (Bun - faster)
+FROM node:22-alpine AS deps
 WORKDIR /app
+
+# Install Bun
+RUN npm install -g bun
 
 COPY package.json bun.lock ./
 RUN bun install --frozen-lockfile
 
-# Stage 2: Build the application
-FROM oven/bun:1.2-alpine AS builder
+# Stage 2: Build the application (Node.js - Turbopack compatibility)
+FROM node:22-alpine AS builder
 WORKDIR /app
 
 COPY --from=deps /app/node_modules ./node_modules
@@ -16,11 +19,15 @@ ARG SERVER_URL
 ENV SERVER_URL=${SERVER_URL}
 ENV NEXT_TELEMETRY_DISABLED=1
 
-RUN bun run build
+# Use npm/node for build (Turbopack needs worker_threads)
+RUN npm run build
 
-# Stage 3: Production runner
-FROM oven/bun:1.2-alpine AS runner
+# Stage 3: Production runner (Bun - faster startup)
+FROM node:22-alpine AS runner
 WORKDIR /app
+
+# Install Bun for runtime
+RUN npm install -g bun
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
