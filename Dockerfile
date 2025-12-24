@@ -22,12 +22,9 @@ ENV NEXT_TELEMETRY_DISABLED=1
 # Use npm/node for build (Turbopack needs worker_threads)
 RUN npm run build
 
-# Stage 3: Production runner (Bun - faster startup)
+# Stage 3: Production runner
 FROM node:22-alpine AS runner
 WORKDIR /app
-
-# Install Bun for runtime
-RUN npm install -g bun
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
@@ -45,4 +42,4 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-CMD ["bun", "server.js"]
+CMD ["node", "server.js"]
