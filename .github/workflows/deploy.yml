@@ -98,7 +98,7 @@ jobs:
             docker run -d \
               --name xam-ui \
               --restart unless-stopped \
-              -p 3000:3000 \
+              -p 8000:3000 \
               ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
             # Clean up old images
