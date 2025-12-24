@@ -14,6 +14,7 @@ export interface RegisterAccountRequest {
   // Common fields
   type: AccountType;
   displayName: string;
+  avatar?: string;
 
   // Individual-specific fields
   specialization?: string;

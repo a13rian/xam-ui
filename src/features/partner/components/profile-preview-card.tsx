@@ -9,11 +9,12 @@ import {
 } from '@/shared/components/ui/avatar';
 import { Badge } from '@/shared/components/ui';
 import { cn } from '@/shared/lib/utils';
+import { AccountTypeEnum } from '../types';
 
 interface ProfilePreviewCardProps {
   avatar?: string | null;
   displayName: string;
-  accountType: 'INDIVIDUAL' | 'BUSINESS';
+  accountType: AccountTypeEnum;
   specialization?: string;
   businessName?: string;
   bio?: string;
@@ -41,7 +42,7 @@ export function ProfilePreviewCard({
   certifications = [],
   className,
 }: ProfilePreviewCardProps) {
-  const isIndividual = accountType === 'INDIVIDUAL';
+  const isIndividual = accountType === AccountTypeEnum.INDIVIDUAL;
   const hasContent = displayName || specialization || bio;
 
   return (

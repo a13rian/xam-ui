@@ -5,59 +5,83 @@
  * Note: ESLint rule disabled because Playwright's `use` function
  * is incorrectly flagged as a React Hook violation
  */
-import { test as base, type Page, type BrowserContext } from '@playwright/test';
-import { createTestUser, type TestUser } from '../utils/api';
+import { test as base, expect as baseExpect, type Page, type BrowserContext } from '@playwright/test';
 import { generateTestUserData } from '../utils/generators';
 
 /**
  * Extended test fixtures
  */
 type AuthFixtures = {
-  /** Test user with credentials and tokens */
-  testUser: TestUser;
-  /** Page with auth cookies set */
+  /** Page with auth cookies set via real UI login */
   authenticatedPage: Page;
 };
 
 /**
  * Test with auth fixtures
+ * Uses real UI registration and login flow
  */
 export const test = base.extend<AuthFixtures>({
-  // Create a unique test user for each test
-  testUser: async ({}, use) => {
+  // Page authenticated via real UI sign-up and sign-in flow
+  authenticatedPage: async ({ page }, use) => {
+    // Capture console errors
+    const consoleErrors: string[] = [];
+    page.on('console', (msg) => {
+      if (msg.type() === 'error') {
+        consoleErrors.push(msg.text());
+      }
+    });
+
+    // 1. Generate unique user data
     const userData = generateTestUserData();
-    const user = await createTestUser(userData);
-    await use(user);
-    // Cleanup: No API to delete user, but test DB is reset between runs
-  },
 
-  // Page with authentication cookies already set
-  authenticatedPage: async ({ page, testUser }, use) => {
-    // Set auth cookies to simulate logged-in state
-    await page.context().addCookies([
-      {
-        name: 'accessToken',
-        value: testUser.accessToken,
-        domain: 'localhost',
-        path: '/',
-        sameSite: 'Strict',
-      },
-      {
-        name: 'refreshToken',
-        value: testUser.refreshToken,
-        domain: 'localhost',
-        path: '/',
-        sameSite: 'Strict',
-      },
-      {
-        name: 'tokenExpiry',
-        value: (Date.now() + 3600000).toString(), // 1 hour from now
-        domain: 'localhost',
-        path: '/',
-        sameSite: 'Strict',
-      },
-    ]);
+    // 2. Register via UI
+    await page.goto('/sign-up');
+    await page
+      .getByPlaceholder('Nhập họ và tên')
+      .fill(`${userData.firstName} ${userData.lastName}`);
+    await page.getByPlaceholder('Nhập email của bạn').fill(userData.email);
+    await page.getByPlaceholder('Tối thiểu 8 ký tự').fill(userData.password);
+    await page.getByPlaceholder('Nhập lại mật khẩu').fill(userData.password);
+    await page.getByRole('checkbox').check();
+    await page.getByRole('button', { name: 'Đăng ký', exact: true }).click();
 
+    // 3. Wait for success message then redirect to sign-in
+    await baseExpect(page.getByText('Đăng ký thành công!')).toBeVisible({ timeout: 10000 });
+    await page.waitForURL('/sign-in', { timeout: 15000 });
+
+    // 4. Login via UI
+    await page.getByPlaceholder('Nhập email của bạn').fill(userData.email);
+    await page.getByPlaceholder('Nhập mật khẩu').fill(userData.password);
+    await page.getByRole('button', { name: 'Đăng nhập', exact: true }).click();
+
+    // 5. Wait for redirect to home (login success)
+    await page.waitForURL('/', { timeout: 10000 });
+
+    // 6. Wait for page to fully load and auth state to hydrate
+    await page.waitForLoadState('networkidle');
+
+    // 7. Wait for authenticated UI element (user menu button)
+    // This confirms Zustand store has hydrated and user is logged in
+    await baseExpect(page.getByLabel('User menu')).toBeVisible({ timeout: 10000 });
+
+    // 8. Verify authentication by checking cookies
+    const cookies = await page.context().cookies();
+    const accessToken = cookies.find((c) => c.name === 'accessToken');
+    if (!accessToken) {
+      throw new Error('Authentication failed - no accessToken cookie found');
+    }
+
+    // 9. Log any console errors for debugging
+    if (consoleErrors.length > 0) {
+      console.log('Console errors during fixture:', consoleErrors);
+    }
+
+    // 10. Keep listening for errors during test execution
+    page.on('pageerror', (error) => {
+      console.log('Page error during test:', error.message);
+    });
+
+    // 11. Page now has auth cookies and hydrated state
     await use(page);
   },
 });
