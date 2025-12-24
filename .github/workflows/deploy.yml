@@ -67,6 +67,8 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            SERVER_URL=${{ secrets.SERVER_URL }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -97,7 +99,6 @@ jobs:
               --name xam-ui \
               --restart unless-stopped \
               -p 3000:3000 \
-              -e SERVER_URL=${{ secrets.SERVER_URL }} \
               ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
             # Clean up old images
