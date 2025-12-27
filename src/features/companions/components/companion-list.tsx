@@ -46,7 +46,7 @@ export function CompanionList({
 
   const getPageNumbers = () => {
     const pages: (number | "ellipsis")[] = [];
-    const maxVisible = 5;
+    const maxVisible = 10; // Increased from 5 to show more pages
 
     if (totalPages <= maxVisible) {
       // Show all pages if total pages is less than max visible
@@ -57,19 +57,22 @@ export function CompanionList({
       // Always show first page
       pages.push(1);
 
-      if (currentPage > 3) {
+      // Show more pages around current page (2 pages before and after)
+      const start = Math.max(2, currentPage - 2);
+      const end = Math.min(totalPages - 1, currentPage + 2);
+
+      // Add ellipsis if there's a gap between first page and start
+      if (start > 2) {
         pages.push("ellipsis");
       }
 
       // Show pages around current page
-      const start = Math.max(2, currentPage - 1);
-      const end = Math.min(totalPages - 1, currentPage + 1);
-
       for (let i = start; i <= end; i++) {
         pages.push(i);
       }
 
-      if (currentPage < totalPages - 2) {
+      // Add ellipsis if there's a gap between end and last page
+      if (end < totalPages - 1) {
         pages.push("ellipsis");
       }
 

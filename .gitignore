@@ -42,3 +42,8 @@ next-env.d.ts
 playwright-report
 test-results
 .playwright-mcp
+
+# Auto Claude data directory
+.auto-claude/*
+.worktrees/*
+.claude_settings.json

@@ -1,8 +1,15 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import type { CarouselApi } from "@/shared/components/ui/carousel";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/shared/components/ui/carousel";
 import { cn } from "@/shared/lib/utils";
 
 interface CompanionCardCarouselProps {
@@ -16,81 +23,112 @@ export function CompanionCardCarousel({
   alt,
   className,
 }: CompanionCardCarouselProps) {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
-  const goToPrevious = useCallback(
-    (e: React.MouseEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-    },
-    [images.length]
-  );
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
 
-  const goToNext = useCallback(
-    (e: React.MouseEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-    },
-    [images.length]
-  );
+    const onSelect = () => {
+      setCurrent(api.selectedScrollSnap());
+    };
 
-  const goToSlide = useCallback((e: React.MouseEvent, index: number) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setCurrentIndex(index);
-  }, []);
+    // Set initial state and subscribe to changes
+    onSelect();
+    api.on("select", onSelect);
+
+    return () => {
+      api.off("select", onSelect);
+    };
+  }, [api]);
+
+  const goToSlide = (index: number) => {
+    api?.scrollTo(index);
+  };
+
+  if (images.length === 0) {
+    return null;
+  }
 
   return (
     <div
       className={cn("relative overflow-hidden rounded-xl", className)}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={(e) => {
+        // Stop propagation for all clicks within carousel controls
+        const target = e.target as HTMLElement;
+        if (
+          target.closest('button') ||
+          target.closest('[data-slot="carousel-previous"]') ||
+          target.closest('[data-slot="carousel-next"]') ||
+          target.closest('[data-slot="pagination-link"]')
+        ) {
+          e.stopPropagation();
+        }
+      }}
     >
-      {/* Image container */}
-      <div className="relative aspect-square">
-        <Image
-          src={images[currentIndex]}
-          alt={`${alt} - Image ${currentIndex + 1}`}
-          fill
-          className="object-cover transition-opacity duration-300"
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-        />
-      </div>
+      <Carousel
+        setApi={setApi}
+        opts={{
+          align: "start",
+          loop: true,
+        }}
+        className="w-full"
+      >
+        <CarouselContent className="-ml-0">
+          {images.map((image, index) => (
+            <CarouselItem key={index} className="pl-0">
+              <div className="relative aspect-square">
+                <Image
+                  src={image}
+                  alt={`${alt} - Image ${index + 1}`}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                />
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
 
-      {/* Navigation arrows - only show on hover and if multiple images */}
-      {images.length > 1 && (
-        <>
-          <button
-            onClick={goToPrevious}
-            className={cn(
-              "absolute left-2 top-1/2 -translate-y-1/2 z-20",
-              "size-8 flex items-center justify-center",
-              "bg-white/90 hover:bg-white rounded-full shadow-md",
-              "transition-opacity duration-200",
-              isHovered ? "opacity-100" : "opacity-0"
-            )}
-            aria-label="Previous image"
-          >
-            <ChevronLeft className="size-4 text-gray-900" />
-          </button>
-          <button
-            onClick={goToNext}
-            className={cn(
-              "absolute right-2 top-1/2 -translate-y-1/2 z-20",
-              "size-8 flex items-center justify-center",
-              "bg-white/90 hover:bg-white rounded-full shadow-md",
-              "transition-opacity duration-200",
-              isHovered ? "opacity-100" : "opacity-0"
-            )}
-            aria-label="Next image"
-          >
-            <ChevronRight className="size-4 text-gray-900" />
-          </button>
-        </>
-      )}
+        {/* Navigation arrows - only show on hover and if multiple images */}
+        {images.length > 1 && (
+          <>
+            <CarouselPrevious
+              className={cn(
+                "left-2 top-1/2 -translate-y-1/2 z-20",
+                "size-8 bg-white/90 hover:bg-white rounded-full shadow-md",
+                "transition-opacity duration-200",
+                isHovered ? "opacity-100" : "opacity-0"
+              )}
+              onMouseDown={(e) => {
+                e.stopPropagation();
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            />
+            <CarouselNext
+              className={cn(
+                "right-2 top-1/2 -translate-y-1/2 z-20",
+                "size-8 bg-white/90 hover:bg-white rounded-full shadow-md",
+                "transition-opacity duration-200",
+                isHovered ? "opacity-100" : "opacity-0"
+              )}
+              onMouseDown={(e) => {
+                e.stopPropagation();
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            />
+          </>
+        )}
+      </Carousel>
 
       {/* Dot indicators */}
       {images.length > 1 && (
@@ -98,10 +136,14 @@ export function CompanionCardCarousel({
           {images.map((_, index) => (
             <button
               key={index}
-              onClick={(e) => goToSlide(e, index)}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                goToSlide(index);
+              }}
               className={cn(
                 "size-1.5 rounded-full transition-all duration-200",
-                index === currentIndex
+                index === current
                   ? "bg-white w-2"
                   : "bg-white/60 hover:bg-white/80"
               )}

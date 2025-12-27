@@ -1,12 +1,13 @@
 'use client';
 
-import { BookingCard } from '@/features/bookings/components';
 import type { IAccount } from '@/features/search/api/account-search.types';
-import { CompanionHeader } from './companion-header';
+import { BookingCard } from '@/features/bookings';
 import { CompanionHero } from './companion-hero';
 import { CompanionProfile } from './companion-profile';
-import { CompanionGallery } from './companion-gallery';
 import { CompanionBio } from './companion-bio';
+import { CompanionGallery } from './companion-gallery';
+import { CompanionServices } from './companion-services';
+import { CompanionBookingCTA } from './companion-booking-cta';
 
 interface CompanionDetailClientProps {
   account: IAccount;
@@ -14,42 +15,49 @@ interface CompanionDetailClientProps {
 
 export function CompanionDetailClient({ account }: CompanionDetailClientProps) {
   return (
-    <div className="min-h-screen bg-white">
-      <CompanionHeader />
-
+    <main className="min-h-screen bg-cream">
+      {/* Hero Section - Full width */}
       <CompanionHero
         coverImageUrl={account.coverImageUrl}
         videoIntroUrl={account.videoIntroUrl}
         displayName={account.displayName}
+        avatarUrl={account.avatarUrl}
       />
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <CompanionProfile
-          avatarUrl={account.avatarUrl}
-          displayName={account.displayName}
-          tagline={account.tagline}
-          specialization={account.specialization}
-          isVerified={account.isVerified}
-          rating={account.rating}
-          totalReviews={account.totalReviews}
-          completedBookings={account.completedBookings}
-          languages={account.languages}
-          priceRange={account.priceRange}
-        />
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pb-12">
-          {/* Main Content */}
+      {/* Two-column layout */}
+      <div className="container mx-auto px-4 lg:px-6 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Left column - Content sections */}
           <div className="lg:col-span-2 space-y-8">
+            {/* Profile Section */}
+            <CompanionProfile
+              displayName={account.displayName}
+              tagline={account.tagline}
+              specialization={account.specialization}
+              isVerified={account.isVerified}
+              rating={account.rating}
+              totalReviews={account.totalReviews}
+              completedBookings={account.completedBookings}
+              languages={account.languages}
+              priceRange={account.priceRange}
+              accountId={account.id}
+            />
+
+            {/* About Section */}
             <CompanionBio
               personalBio={account.personalBio}
               badges={account.badges}
             />
 
+            {/* Services Section */}
+            <CompanionServices services={account.services} />
+
+            {/* Gallery Section */}
             <CompanionGallery galleries={account.galleries} />
           </div>
 
-          {/* Booking Sidebar */}
-          <div className="lg:col-span-1">
+          {/* Right column - Booking form (desktop only) */}
+          <div className="hidden lg:block">
             <BookingCard
               accountId={account.id}
               organizationId={account.organizationId ?? null}
@@ -58,6 +66,15 @@ export function CompanionDetailClient({ account }: CompanionDetailClientProps) {
           </div>
         </div>
       </div>
-    </div>
+
+      {/* Mobile: Sticky CTA button */}
+      <div className="lg:hidden">
+        <CompanionBookingCTA
+          accountId={account.id}
+          displayName={account.displayName}
+          priceRange={account.priceRange}
+        />
+      </div>
+    </main>
   );
 }
