@@ -14,7 +14,7 @@ export function VideoHero() {
     <section className="relative h-screen min-h-[600px] w-full">
       <VideoBackground
         src="/videos/hero-background.mp4"
-        fallbackImage="/images/hero-fallback.jpg"
+        fallbackImage="/images/hero-bg.jpg"
         overlay
         overlayOpacity={0.5}
         className="absolute inset-0"

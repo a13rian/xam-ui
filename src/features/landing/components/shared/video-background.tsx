@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { motion } from 'motion/react';
 import { cn } from '@/shared/lib/utils';
@@ -27,21 +27,41 @@ export function VideoBackground({
   const [hasError, setHasError] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  // Check if video is already cached/ready on mount
+  const checkInitialReadyState = useCallback((video: HTMLVideoElement) => {
+    if (video.readyState >= 3) {
+      setIsLoaded(true);
+    }
+  }, []);
+
   useEffect(() => {
     const video = videoRef.current;
     if (!video || !src) return;
 
-    const handleCanPlay = () => setIsLoaded(true);
+    // Check initial state after a microtask to avoid synchronous setState in effect
+    queueMicrotask(() => checkInitialReadyState(video));
+
+    // Use 'canplay' instead of 'canplaythrough' for faster loading
+    // canplay: fires when enough data is available to start playing
+    // canplaythrough: fires when entire video can play without buffering (slow for large files)
+    const handleCanPlay = () => {
+      setIsLoaded(true);
+      // Ensure video plays after loading
+      video.play().catch(() => {
+        // Autoplay might be blocked, but video is still loaded
+      });
+    };
+
     const handleError = () => setHasError(true);
 
-    video.addEventListener('canplaythrough', handleCanPlay);
+    video.addEventListener('canplay', handleCanPlay);
     video.addEventListener('error', handleError);
 
     return () => {
-      video.removeEventListener('canplaythrough', handleCanPlay);
+      video.removeEventListener('canplay', handleCanPlay);
       video.removeEventListener('error', handleError);
     };
-  }, [src]);
+  }, [src, checkInitialReadyState]);
 
   const showVideo = src && !hasError;
 
@@ -67,6 +87,7 @@ export function VideoBackground({
           muted
           loop
           playsInline
+          preload="auto"
           className="absolute inset-0 h-full w-full object-cover"
           initial="hidden"
           animate={isLoaded ? 'visible' : 'hidden'}

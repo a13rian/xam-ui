@@ -192,7 +192,7 @@ function SearchContent() {
   return (
     <div className="flex flex-col min-h-[calc(100vh-4rem)] bg-cream">
       {/* Filters bar */}
-      <div className="bg-white/80 backdrop-blur-sm border-b border-cream-dark px-4 py-3 sticky top-16 z-40">
+      <div className="bg-white/80 backdrop-blur-sm border-b border-cream-dark px-4 py-3">
         <div className="max-w-7xl mx-auto">
           <SearchFilters />
         </div>
