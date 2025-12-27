@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useMemo, useEffect, useRef } from "react";
 import { cn } from "@/shared/lib/utils";
 import type { Companion } from "@/features/companions";
 import { CompanionCard } from "./companion-card";
@@ -21,7 +20,10 @@ interface CompanionListProps {
   onCompanionHover: (id: string | null) => void;
   onCompanionSelect: (id: string) => void;
   className?: string;
-  itemsPerPage?: number;
+  // Server-side pagination props
+  currentPage?: number;
+  totalPages?: number;
+  onPageChange?: (page: number) => void;
 }
 
 export function CompanionList({
@@ -31,35 +33,15 @@ export function CompanionList({
   onCompanionHover,
   onCompanionSelect,
   className,
-  itemsPerPage = 12,
+  currentPage = 1,
+  totalPages = 1,
+  onPageChange,
 }: CompanionListProps) {
-  const [currentPage, setCurrentPage] = useState(1);
-  const prevCompanionsLengthRef = useRef(companions.length);
-
-  // Reset to first page when companions change
-  useEffect(() => {
-    if (prevCompanionsLengthRef.current !== companions.length) {
-      prevCompanionsLengthRef.current = companions.length;
-      // Use setTimeout to schedule state update asynchronously
-      const timeoutId = setTimeout(() => {
-        setCurrentPage(1);
-      }, 0);
-      return () => clearTimeout(timeoutId);
-    }
-  }, [companions.length]);
-
-  const totalPages = Math.ceil(companions.length / itemsPerPage);
-
-  const paginatedCompanions = useMemo(() => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return companions.slice(startIndex, endIndex);
-  }, [companions, currentPage, itemsPerPage]);
-
   const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    // Scroll to top of companion list
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (onPageChange) {
+      onPageChange(page);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   };
 
   const getPageNumbers = () => {
@@ -102,16 +84,9 @@ export function CompanionList({
 
   return (
     <div className={cn("space-y-6", className)}>
-      {/* Results count */}
-      <div className="flex items-center justify-between">
-        <p className="text-sm text-gray-600">
-          Tìm thấy {companions.length.toLocaleString()} người đồng hành
-        </p>
-      </div>
-
       {/* Companion grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {paginatedCompanions.map((companion) => (
+        {companions.map((companion) => (
           <CompanionCard
             key={companion.id}
             companion={companion}
@@ -135,7 +110,7 @@ export function CompanionList({
       )}
 
       {/* Pagination */}
-      {totalPages > 1 && (
+      {totalPages > 1 && onPageChange && (
         <Pagination className="mt-8">
           <PaginationContent>
             <PaginationItem>

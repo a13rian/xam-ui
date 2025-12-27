@@ -117,7 +117,7 @@ function SearchContent() {
       district: state.filters.district || undefined,
       ward: state.filters.ward || undefined,
       page: state.filters.page || 1,
-      limit: state.filters.limit || 20,
+      limit: state.filters.limit || 12,
     };
   }, [latitude, longitude, state.filters]);
 
@@ -155,6 +155,10 @@ function SearchContent() {
     dispatch({ type: 'SET_MAP_VIEW_STATE', payload: viewState });
   };
 
+  const handlePageChange = (page: number) => {
+    dispatch({ type: 'SET_FILTERS', payload: { page } });
+  };
+
   const handleRetry = () => {
     refetch();
   };
@@ -185,6 +189,9 @@ function SearchContent() {
         hoveredId={state.hoveredCompanionId}
         onCompanionHover={handleCompanionHover}
         onCompanionSelect={handleCompanionSelect}
+        currentPage={data?.page || 1}
+        totalPages={data?.totalPages || 1}
+        onPageChange={handlePageChange}
       />
     );
   };
@@ -209,13 +216,6 @@ function SearchContent() {
         >
           <div className="max-w-3xl mx-auto lg:max-w-none">
             <LocationNotice isUsingDefault={isUsingDefault} />
-            {data && !isError && (
-              <p className="text-sm text-charcoal-light mb-4">
-                Tìm thấy {data.total} kết quả
-                {data.totalPages > 1 &&
-                  ` (trang ${data.page}/${data.totalPages})`}
-              </p>
-            )}
             {renderListContent()}
           </div>
         </div>

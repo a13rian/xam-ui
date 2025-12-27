@@ -50,7 +50,7 @@ const defaultFilters: SearchFilters = {
   district: '',
   ward: '',
   page: 1,
-  limit: 20,
+  limit: 12,
   // Legacy fields
   location: '',
   dateFrom: null,
